@@ -144,8 +144,3 @@ function Add-ODUConfigOctopusServer {
   }
 }
 
-
-
-function asdf {
-  Get-ODUConfigOctopusServer
-}
