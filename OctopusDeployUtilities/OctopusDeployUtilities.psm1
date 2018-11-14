@@ -15,6 +15,17 @@ Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | ForEach-Objec
   }
 }
 
+# script-level variables
+# web site url
+$ProjectUrl = 'https://github.com/DTW-DanWard/OctopusDeployUtilities'
+
+# version of configuration details
+$ConfigVersion = '1.0.0'
+# default text for settings still having placeholders - not configured by user yet
+Set-Variable Undefined -Option ReadOnly -Value 'UNDEFINED' -Scope Script
+
+
+
 # export public function names and alias id
 # asdf 
 # New-Alias -Name id -Value Invoke-DockerPSObject
