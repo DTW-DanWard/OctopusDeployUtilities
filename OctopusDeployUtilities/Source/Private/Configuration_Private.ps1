@@ -11,8 +11,10 @@ Get-ODUConfig
 function Get-ODUConfig {
   [CmdletBinding()]
   param()
-  if ($true -eq (Test-ODUConfigFilePath)) {
-    Import-Configuration -Version ([version]$ConfigVersion)
+  process {
+    if ($true -eq (Test-ODUConfigFilePath)) {
+      Import-Configuration -Version ([version]$ConfigVersion)
+    }
   }
 }
 
@@ -29,8 +31,11 @@ $true
 #>
 function Test-ODUConfigFilePath {
   [CmdletBinding()]
+  [OutputType([bool])]
   param()
-  Test-Path -Path (Get-ODUConfigFilePath)
+  process {
+    Test-Path -Path (Get-ODUConfigFilePath)
+  }
 }
 
 
@@ -53,6 +58,7 @@ $false
 #>
 function Confirm-ODUConfig {
   [CmdletBinding()]
+  [OutputType([bool])]
   param(
     [switch]$CheckFileOnly
   )
@@ -83,16 +89,18 @@ Initialize-ODUConfig
 function Initialize-ODUConfig {
   [CmdletBinding()]
   param()
-  $Config = @{}
-  $Config.ExportRootFolder = $Undefined
-  $Config.OctopusServers = @()
-  $Config.ExternalTools = @{
-    TextEditorPath = $Undefined
-    DiffViewerPath = $Undefined
-  }
-  $Config.ParallelJobsCount = 5
+  process {
+    $Config = @{}
+    $Config.ExportRootFolder = $Undefined
+    $Config.OctopusServers = @()
+    $Config.ExternalTools = @{
+      TextEditorPath = $Undefined
+      DiffViewerPath = $Undefined
+    }
+    $Config.ParallelJobsCount = 5
 
-  Save-ODUConfig -Config $Config
+    Save-ODUConfig -Config $Config
+  }
 }
 
 
@@ -142,6 +150,7 @@ PropertyBlackList              {}
 #>
 function Get-ODUConfigOctopusServer {
   [CmdletBinding()]
+  [OutputType([hashtable])]
   param()
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
@@ -170,6 +179,7 @@ API-........
 #>
 function Get-ODUConfigDecryptApiKey {
   [CmdletBinding()]
+  [OutputType([string])]
   param()
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
@@ -177,7 +187,6 @@ function Get-ODUConfigDecryptApiKey {
     # initial version supports only 1 server configuration so simply use that
     # this function is not public, there should be no need to check if registered by this point
     # should not have gotten this far if no server registered yet, just use first
-    $Config = Get-ODUConfig
     $ServerConfig = Get-ODUConfigOctopusServer
 
     # Decrypt ONLY if this IsWindows; PS versions 5 and below are only Windows, 6 has explicit variable

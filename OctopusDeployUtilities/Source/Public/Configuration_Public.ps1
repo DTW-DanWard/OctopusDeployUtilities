@@ -2,11 +2,37 @@
 
 # Because the configuration stores the API encrypted, the configuration is stored using User scope.
 
+<#
+.SYNOPSIS
+Returns path to configuration file
+.DESCRIPTION
+Returns path to configuration file
+.EXAMPLE
+Get-ODUConfigFilePath
+<path to file Configuration.psd1>
+#>
 function Get-ODUConfigFilePath {
-  Join-Path -Path (Get-StoragePath -Scope User -Version ([version]$ConfigVersion)) -ChildPath 'Configuration.psd1'
+  [CmdletBinding()]
+  param()
+  process {
+    Join-Path -Path (Get-ConfigurationPath -Scope User -Version ([version]$ConfigVersion)) -ChildPath 'Configuration.psd1'
+  }
 }
 
 
+<#
+.SYNOPSIS
+Sets paths to external tools (text editor and diff viewer)
+.DESCRIPTION
+Sets paths to external tools (text editor and diff viewer)
+.PARAMETER TextEditorPath
+Path to text editor
+.PARAMETER DiffViewerPath
+Path to diff viewer
+.EXAMPLE
+Set-ODUConfigExternalTools -TextEditorPath 'C:\Users\someuser\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd' -DiffViewerPath 'C:\Program Files\ExamDiff Pro\ExamDiff.exe'
+<sets paths>
+#>
 function Set-ODUConfigExternalTools {
   [CmdletBinding()]
   param(
@@ -15,7 +41,7 @@ function Set-ODUConfigExternalTools {
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
-    
+
     $Config = Get-ODUConfig
     # asdf need logic for allowing either but not necessary both - but should be at least one
 
@@ -28,6 +54,15 @@ function Set-ODUConfigExternalTools {
 }
 
 
+<#
+.SYNOPSIS
+Returns hashtable with external tools settings
+.DESCRIPTION
+Returns hashtable with external tools settings
+.EXAMPLE
+Get-ODUConfigExternalTools
+<external tools settings>
+#>
 function Get-ODUConfigExternalTools {
   [CmdletBinding()]
   param()
@@ -72,8 +107,18 @@ function Set-ODUConfigExportRootFolder {
   }
 }
 
-
+<#
+.SYNOPSIS
+Returns export root folder path
+.DESCRIPTION
+Returns export root folder path
+.EXAMPLE
+Get-ODUConfigExportRootFolder
+<export root folder path>
+#>
 function Get-ODUConfigExportRootFolder {
+  [CmdletBinding()]
+  param()
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
     (Get-ODUConfig).ExportRootFolder
@@ -96,9 +141,9 @@ function Add-ODUConfigOctopusServer {
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
-    
+
     $Config = Get-ODUConfig
-    
+
     # asdf if config settings already exist, ask to overwrite????
     # asdf validate server url format
     # asdf url remove trailing / if present

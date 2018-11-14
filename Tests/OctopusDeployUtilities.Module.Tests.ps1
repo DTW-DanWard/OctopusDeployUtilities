@@ -39,7 +39,7 @@ $SourceScripts | ForEach-Object {
     # check if parameters are defined in help while no param is defined in code
     It 'confirms if any Parameters defined in help but no params actually defined in function for each function' {
       $Functions | ForEach-Object {
-        if (($_.GetHelpContent().Parameters.Keys.Count -gt 0) -and 
+        if (($_.GetHelpContent().Parameters.Keys.Count -gt 0) -and
           ($null -eq (Get-Member -Name Parameters -InputObject $_.Body.ParamBlock) -or
             ($_.Body.ParamBlock.Parameters.Count -eq 0)
           )) { $_.Name }
@@ -49,7 +49,7 @@ $SourceScripts | ForEach-Object {
     # check if parameters are defined in code but none in help
     It 'confirms if any Parameters defined in code but none in help for each function' {
       $Functions | ForEach-Object {
-        if (($_.GetHelpContent().Parameters.Keys.Count -eq 0) -and 
+        if (($_.GetHelpContent().Parameters.Keys.Count -eq 0) -and
           ($null -ne $_.Body.ParamBlock) -and
           ($null -ne $_.Body.ParamBlock.Parameters) -and
           ($_.Body.ParamBlock.Parameters.Count -gt 0)
@@ -86,7 +86,7 @@ $SourceScripts | ForEach-Object {
         $Function = $_
         $Function.GetHelpContent().Parameters.Keys | ForEach-Object {
           $Key = $_
-          if ($Function.GetHelpContent().Parameters.$Key -eq $null -or 
+          if ($Function.GetHelpContent().Parameters.$Key -eq $null -or
             $Function.GetHelpContent().Parameters.$Key.Trim() -eq '') {
             $Function.Name + ':' + $Key
           }
@@ -117,7 +117,6 @@ $SourceScripts | ForEach-Object {
 #region Confirm which functions/aliases are exported
 Describe 'Confirm module public information is correct' {
   $Module = Import-Module $env:BHPSModuleManifest -Force -PassThru
-
   $PublicSourceRootPath = Join-Path -Path (Join-Path -Path $env:BHModulePath -ChildPath 'Source') -ChildPath 'Public'
   [string[]]$OfficialPublicFunctions = $null
   Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | ForEach-Object {
@@ -145,7 +144,7 @@ Describe 'Confirm module public information is correct' {
 
   It 'confirms exported alias count is correct' {
     if ($null -ne (Get-Command -Module $env:BHProjectName -Type Alias)) {
-      ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Count | 
+      ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Count |
         Should Be ($OfficialPublicAliases.Count)
     }
   }

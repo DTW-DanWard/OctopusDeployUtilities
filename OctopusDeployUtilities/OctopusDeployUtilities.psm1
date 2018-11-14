@@ -1,4 +1,3 @@
-
 $SourceRootPath = Join-Path -Path $PSScriptRoot -ChildPath 'Source'
 # dot source all ps1 scripts under Source; note: no pester test files not stored under Source
 Get-ChildItem -Path $SourceRootPath -Filter *.ps1 -Recurse | ForEach-Object {
@@ -17,17 +16,17 @@ Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | ForEach-Objec
 
 # script-level variables
 # web site url
-$ProjectUrl = 'https://github.com/DTW-DanWard/OctopusDeployUtilities'
+$script:ProjectUrl = 'https://github.com/DTW-DanWard/OctopusDeployUtilities'
 
 # version of configuration details
-$ConfigVersion = '1.0.0'
+$script:ConfigVersion = '1.0.0'
 # default text for settings still having placeholders - not configured by user yet
 Set-Variable Undefined -Option ReadOnly -Value 'UNDEFINED' -Scope Script
 
 
 
 # export public function names and alias id
-# asdf 
+# asdf
 # New-Alias -Name id -Value Invoke-DockerPSObject
 # Export-ModuleMember -Function $FunctionNames -Alias id
 Export-ModuleMember -Function $FunctionNames
