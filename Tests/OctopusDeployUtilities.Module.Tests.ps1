@@ -50,9 +50,10 @@ $SourceScripts | ForEach-Object {
     It 'confirms if any Parameters defined in code but none in help for each function' {
       $Functions | ForEach-Object {
         if (($_.GetHelpContent().Parameters.Keys.Count -eq 0) -and 
-          ($null -ne (Get-Member -Name Parameters -InputObject $_.Body.ParamBlock) -and
-            ($_.Body.ParamBlock.Parameters.Count -gt 0)
-          )) { $_.Name }
+          ($null -ne $_.Body.ParamBlock) -and
+          ($null -ne $_.Body.ParamBlock.Parameters) -and
+          ($_.Body.ParamBlock.Parameters.Count -gt 0)
+        ) { $_.Name }
       } | Should BeNullOrEmpty
     }
 
@@ -60,7 +61,7 @@ $SourceScripts | ForEach-Object {
     It 'confirms parameter count matches in both help and code for each function' {
       $Functions | ForEach-Object {
         $CodeParamCount = 0
-        if ($null -ne (Get-Member -Name Parameters -InputObject $_.Body.ParamBlock)) {
+        if (($null -ne $_.Body.ParamBlock) -and ($null -ne $_.Body.ParamBlock.Parameters)) {
           $CodeParamCount = $_.Body.ParamBlock.Parameters.Count
         }
         if (($_.GetHelpContent().Parameters.Keys.Count) -ne $CodeParamCount) { $_.Name }
@@ -116,7 +117,15 @@ $SourceScripts | ForEach-Object {
 #region Confirm which functions/aliases are exported
 Describe 'Confirm module public information is correct' {
   $Module = Import-Module $env:BHPSModuleManifest -Force -PassThru
-  [string[]]$OfficialPublicFunctions = @('Add-ODUConfigOctopusServer', 'Get-ODUConfigExportRootFolder', 'Get-ODUConfigExternalTools', 'Get-ODUConfigFilePath', 'Set-ODUConfigExportRootFolder', 'Set-ODUConfigExternalTools')
+
+  $PublicSourceRootPath = Join-Path -Path (Join-Path -Path $env:BHModulePath -ChildPath 'Source') -ChildPath 'Public'
+  [string[]]$OfficialPublicFunctions = $null
+  Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | ForEach-Object {
+    ([System.Management.Automation.Language.Parser]::ParseInput((Get-Content -Path $_.FullName -Raw), [ref]$null, [ref]$null)).FindAll( { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $false) | ForEach-Object {
+      $OfficialPublicFunctions += $_.Name
+    }
+  }
+  # this must be hard-coded; no fast/easy programmatic way of doing this other than doing the method used to test it
   [string[]]$OfficialPublicAliases = @()
 
   It 'confirms the module name matches the project name' {
@@ -124,20 +133,25 @@ Describe 'Confirm module public information is correct' {
   }
 
   It 'confirms exported function count is correct' {
-    ([object[]](Get-Command -Module $env:BHProjectName -Type Function)).Count | Should Be ($OfficialPublicFunctions.Count)
+    if ($null -ne (Get-Command -Module $env:BHProjectName -Type Function)) {
+      ([object[]](Get-Command -Module $env:BHProjectName -Type Function)).Count | Should Be ($OfficialPublicFunctions.Count)
+    }
   }
   It 'confirms all exported functions are in the official list' {
-    ([object[]](Get-Command -Module $env:BHProjectName -Type Function)).Name | Where-Object { $_ -notin $OfficialPublicFunctions} | Should BeNullOrEmpty
+    if ($null -ne (Get-Command -Module $env:BHProjectName -Type Function)) {
+      ([object[]](Get-Command -Module $env:BHProjectName -Type Function)).Name | Where-Object { $_ -notin $OfficialPublicFunctions} | Should BeNullOrEmpty
+    }
   }
 
   It 'confirms exported alias count is correct' {
     if ($null -ne (Get-Command -Module $env:BHProjectName -Type Alias)) {
-      (Get-Command -Module $env:BHProjectName -Type Alias).Count | Should Be ($OfficialPublicAliases.Count)
+      ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Count | 
+        Should Be ($OfficialPublicAliases.Count)
     }
   }
   It 'confirms all exported aliases are in the official list' {
     if ($null -ne (Get-Command -Module $env:BHProjectName -Type Alias)) {
-      (Get-Command -Module $env:BHProjectName -Type Alias).Name | Where-Object { $_ -notin $OfficialPublicAliases} | Should BeNullOrEmpty
+      ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Name | Where-Object { $_ -notin $OfficialPublicAliases} | Should BeNullOrEmpty
     }
   }
 }
