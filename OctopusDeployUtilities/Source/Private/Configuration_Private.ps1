@@ -12,8 +12,8 @@ $true
 (config already existed)
 .EXAMPLE
 Confirm-ODUConfig
+<error thrown>
 $false
-<plus content written to host - gasp!>
 #>
 function Confirm-ODUConfig {
   [CmdletBinding()]
@@ -21,6 +21,7 @@ function Confirm-ODUConfig {
   param()
   process {
     if ($false -eq (Test-ODUConfigFilePath)) {
+      Write-Verbose 'No configuration file found'
       throw "Octopus Deploy Utilities not initialized; run: Set-ODUConfigExportRootFolder - See instructions here: $ProjectUrl"
       $false
     } else {
@@ -47,6 +48,7 @@ function Get-ODUConfig {
   param()
   process {
     if ($true -eq (Test-ODUConfigFilePath)) {
+      Write-Verbose "Calling Import-Configuration with Version $ConfigVersion"
       Import-Configuration -Version ([version]$ConfigVersion)
     }
   }
@@ -80,6 +82,7 @@ function Get-ODUConfigDecryptApiKey {
     # Decrypt ONLY if this IsWindows; PS versions 5 and below are only Windows, 6 has explicit variable
     $ApiKey = $ServerConfig.ApiKey
     if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
+      Write-Verbose 'Decrypting ApiKey'
       $ApiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR( ($ApiKey | ConvertTo-SecureString) ))
     }
     $ApiKey
@@ -115,10 +118,13 @@ function Get-ODUConfigOctopusServer {
     if ($false -eq (Confirm-ODUConfig)) { return }
     # initial implementation supports only 1 server configuration so simply return that
     # but need to make sure one does exist
+    Write-Verbose 'Getting config'
     $Config = Get-ODUConfig
     if ($Config.OctopusServers.Count -eq 0) {
+      Write-Verbose 'No Octopus Server configured'
       throw "Octopus Server has not been registered yet; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
     } else {
+      Write-Verbose 'Retrieving Octopus Server configuration'
       $Config.OctopusServers[0]
     }
   }
@@ -150,6 +156,7 @@ function Initialize-ODUConfig {
     }
     $Config.ParallelJobsCount = 5
 
+    Write-Verbose 'Saving configuration with Save-ODUConfig'
     Save-ODUConfig -Config $Config
   }
 }
@@ -183,6 +190,7 @@ function Save-ODUConfig {
     # https://github.com/PoshCode/Configuration/issues/8
     # work around: if specify Scope User, need to specify CompanyName and Name, which need to
     # match values in PSD1 (in case bug ever fixed)
+    Write-Verbose "Saving configuration with Export-Configuration, scope user, version $ConfigVersion, company $($MyInvocation.MyCommand.Module.CompanyName) and name $($MyInvocation.MyCommand.Module.Name)"
     $Config | Export-Configuration -Scope User -Version ([version]$ConfigVersion) -CompanyName $MyInvocation.MyCommand.Module.CompanyName -Name $MyInvocation.MyCommand.Module.Name
   }
 }

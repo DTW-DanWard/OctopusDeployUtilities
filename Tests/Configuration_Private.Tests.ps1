@@ -32,7 +32,7 @@ Describe 'Configuration: not initialized' {
 
   It 'Get-ODUConfigDecryptApiKey throws error' { { Get-ODUConfigDecryptApiKey } | Should throw }
 
-  It 'Initialize-ODUConfig returns $null but behind the scenes Save-ODUConfig returns an initialize configuration' { 
+  It 'Initialize-ODUConfig returns $null but behind the scenes Save-ODUConfig returns an initialize configuration' {
     Initialize-ODUConfig | Should BeNullOrEmpty
   }
 
@@ -120,7 +120,7 @@ Describe 'Configuration: Octopus Server initialized' {
 
   New-Item -Path $ExportRootFolder -ItemType Directory > $null
   New-Item -Path $ConfigFolderPath -ItemType Directory > $null
-  
+
   $OctoServerName = 'test.com'
   $OctoServerUrl = 'https://test.com'
   $OctoServerApiKey = 'API-1234567890'
