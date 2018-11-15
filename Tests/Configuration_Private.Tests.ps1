@@ -42,8 +42,8 @@ Describe 'Configuration: not initialized' {
 #endregion
 
 
-#region Configuration only export root folder initialized
-Describe 'Configuration: only export root folder initialized' {
+#region Configuration export root folder initialized
+Describe 'Configuration: export root folder initialized' {
 
   # ensure config file DOES exist
   $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
@@ -81,7 +81,11 @@ ParallelJobsCount = 1
 
   Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
 
+  It 'Test-ODUConfigFilePath returns $true' { Test-ODUConfigFilePath | Should Be $true }
+
   It 'Confirm-ODUConfig returns $true' { Confirm-ODUConfig | Should Be $true  }
+
+  It 'Initialize-ODUConfig returns $null and does nothing' { Initialize-ODUConfig | Should BeNullOrEmpty }
 
   It 'Get-ODUConfig returns a hashtable' { Get-ODUConfig | Should BeOfType [hashtable] }
 
@@ -90,19 +94,24 @@ ParallelJobsCount = 1
   It 'Get-ODUConfigOctopusServer throws error' { { Get-ODUConfigOctopusServer } | Should throw }
 
   It 'Get-ODUConfigDecryptApiKey throws error' { { Get-ODUConfigDecryptApiKey } | Should throw }
-
-  It 'Initialize-ODUConfig returns $null and does nothing' { Initialize-ODUConfig | Should BeNullOrEmpty }
-
-  It 'Initialize-ODUConfig returns $null and does nothing' { Initialize-ODUConfig | Should BeNullOrEmpty }
-
-  It 'Test-ODUConfigFilePath returns $true' { Test-ODUConfigFilePath | Should Be $true }
-
 }
 #endregion
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 #region Configuration Octopus Server initialized
-Describe 'Configuration: only export root folder initialized' {
+Describe 'Configuration: Octopus Server initialized' {
 
   # ensure config file DOES exist
   $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
@@ -115,11 +124,11 @@ Describe 'Configuration: only export root folder initialized' {
   $OctoServerName = 'test.com'
   $OctoServerUrl = 'https://test.com'
   $OctoServerApiKey = 'API-1234567890'
+  # encrypt key they test decrypt with Get-ODUConfigDecryptApiKey
   $OctoServerApiKeyEncrypted = $OctoServerApiKey
   if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
     $OctoServerApiKeyEncrypted = ConvertTo-SecureString -String $OctoServerApiKey -AsPlainText -Force | ConvertFrom-SecureString
   }
-
 
   $ConfigString = @"
 @{
@@ -179,7 +188,11 @@ ParallelJobsCount = 1
 
   Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
 
+  It 'Test-ODUConfigFilePath returns $true' { Test-ODUConfigFilePath | Should Be $true }
+
   It 'Confirm-ODUConfig returns $true' { Confirm-ODUConfig | Should Be $true  }
+
+  It 'Initialize-ODUConfig returns $null and does nothing' { Initialize-ODUConfig | Should BeNullOrEmpty }
 
   It 'Get-ODUConfig returns a hashtable' { Get-ODUConfig | Should BeOfType [hashtable] }
 
@@ -189,39 +202,6 @@ ParallelJobsCount = 1
 
   It 'Get-ODUConfigOctopusServer.Url returns correct value' { (Get-ODUConfigOctopusServer).Url | Should Be $OctoServerUrl }
 
-  It 'Get-ODUConfigDecryptApiKey throws error' { Get-ODUConfigDecryptApiKey | Should Be $OctoServerApiKey }
-
-  It 'Initialize-ODUConfig returns $null and does nothing' { Initialize-ODUConfig | Should BeNullOrEmpty }
-
-  It 'Initialize-ODUConfig returns $null and does nothing' { Initialize-ODUConfig | Should BeNullOrEmpty }
-
-  It 'Test-ODUConfigFilePath returns $true' { Test-ODUConfigFilePath | Should Be $true }
+  It 'Get-ODUConfigDecryptApiKey returns correct value' { Get-ODUConfigDecryptApiKey | Should Be $OctoServerApiKey }
 }
-#endregion
-
-
-
-
-# do in steps: 
-# then individual tools
-#  nested contexts?
-
-
-
-Describe 'Configuration initialized' {
-
-  Mock -CommandName 'Test-ODUConfigFilePath' -MockWith { $true }
-
-  # asdf need mock for configured system
-  
-
-  It 'Confirm-ODUConfig returns $true' {
-    Confirm-ODUConfig | Should Be $true
-  }
-
-  # asdf need test for:
-  #   Get-ODUConfig - returns hashtable, has some config values
-}
-
-
 #endregion
