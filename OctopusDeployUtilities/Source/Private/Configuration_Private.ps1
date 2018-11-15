@@ -52,8 +52,6 @@ function Test-ODUConfigFilePath {
 Confirms configuration has been created; tell user which function to call if not
 .DESCRIPTION
 Confirms configuration has been created; tell user which function to call if not
-.PARAMETER CheckFileOnly
-If specified, checks if file is found but does not produce Host output if not (only returns $false)
 .EXAMPLE
 Confirm-ODUConfig
 $true
@@ -66,15 +64,11 @@ $false
 function Confirm-ODUConfig {
   [CmdletBinding()]
   [OutputType([bool])]
-  param(
-    [switch]$CheckFileOnly
-  )
+  param()
   process {
     if ($false -eq (Test-ODUConfigFilePath)) {
       if ($false -eq $CheckFileOnly) {
-        Write-Host "`nOctopus Deploy Utilities not initialized yet; run: " -ForegroundColor Cyan -NoNewline
-        Write-Host "Set-ODUConfigExportRootFolder"
-        Write-Host "See instructions here: $ProjectUrl`n"
+        Write-Error "Octopus Deploy Utilities not initialized; run: Set-ODUConfigExportRootFolder - See instructions here: $ProjectUrl" -ErrorAction Stop
       }
       $false
     } else {
@@ -177,9 +171,7 @@ function Get-ODUConfigOctopusServer {
     # but need to make sure one does exist
     $Config = Get-ODUConfig
     if ($Config.OctopusServers.Count -eq 0) {
-      Write-Host "`nOctopus Server has not been registered yet; run: " -ForegroundColor Cyan -NoNewline
-      Write-Host "Add-ODUConfigOctopusServer`n"
-      Write-Host "See instructions here: $ProjectUrl`n"
+      Write-Error "Octopus Server has not been registered yet; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl" -ErrorAction Stop
     } else {
       $Config.OctopusServers[0]
     }

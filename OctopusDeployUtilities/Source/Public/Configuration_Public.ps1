@@ -172,7 +172,7 @@ function Set-ODUConfigExportRootFolder {
 
       # this function is run to initialize the settings for the project so if settings files doesn't currently exist it should be created
       # however, it's possible for a user to update an existing instance to change the root export path, so only initialize config if first time
-      if ($false -eq (Confirm-ODUConfig -CheckFileOnly)) {
+      if ($false -eq (Confirm-ODUConfig)) {
         Initialize-ODUConfig
       } else {
         # asdf check if pre-existing folder value and if that folder exists and has content, write message to user to copy/move files
@@ -185,8 +185,7 @@ function Set-ODUConfigExportRootFolder {
 
     } catch {
       # asdf change to write error
-      Write-Host "`nAn error occurred creating export root folder; is this valid? " -ForegroundColor Cyan -NoNewline
-      Write-Host "$Path`n"
+      Write-Error "An error occurred creating export root folder; invalid path? $Path" -ErrorAction Stop
     }
   }
 }
