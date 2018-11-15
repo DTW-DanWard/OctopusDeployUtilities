@@ -15,15 +15,8 @@ Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | ForEach-Objec
 }
 
 # script-level variables
-# web site url
-$script:ProjectUrl = 'https://github.com/DTW-DanWard/OctopusDeployUtilities'
-
-# version of configuration details
-$script:ConfigVersion = '1.0.0'
-# default text for settings still having placeholders - not configured by user yet
-Set-Variable Undefined -Option ReadOnly -Value 'UNDEFINED' -Scope Script
-
-
+$ScriptLevelVariables = Join-Path -Path $PSScriptRoot -ChildPath 'Set-ScriptLevelVariables.ps1'
+. $ScriptLevelVariables
 
 # export public function names and alias id
 # asdf

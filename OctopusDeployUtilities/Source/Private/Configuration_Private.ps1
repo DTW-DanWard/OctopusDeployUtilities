@@ -21,9 +21,7 @@ function Confirm-ODUConfig {
   param()
   process {
     if ($false -eq (Test-ODUConfigFilePath)) {
-      if ($false -eq $CheckFileOnly) {
-        Write-Error "Octopus Deploy Utilities not initialized; run: Set-ODUConfigExportRootFolder - See instructions here: $ProjectUrl" -ErrorAction Stop
-      }
+      throw "Octopus Deploy Utilities not initialized; run: Set-ODUConfigExportRootFolder - See instructions here: $ProjectUrl"
       $false
     } else {
       $true
