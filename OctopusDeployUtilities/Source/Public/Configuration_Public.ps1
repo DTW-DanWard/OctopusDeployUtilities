@@ -1,90 +1,173 @@
 
-
-# Because the configuration stores the API encrypted, the configuration is stored using User scope.
+#region Function: Get-ODUConfigFilePath
 
 <#
 .SYNOPSIS
-Returns path to configuration file
+Gets path to configuration file
 .DESCRIPTION
-Returns path to configuration file
+Gets path to configuration file
 .EXAMPLE
 Get-ODUConfigFilePath
 <path to file Configuration.psd1>
 #>
 function Get-ODUConfigFilePath {
   [CmdletBinding()]
+  [OutputType([string])]
   param()
   process {
+    # Because the configuration stores the API encrypted, the configuration is stored using User scope.
     Join-Path -Path (Get-ConfigurationPath -Scope User -Version ([version]$ConfigVersion)) -ChildPath 'Configuration.psd1'
   }
 }
+#endregion
 
+
+#region Function: Set-ODUConfigDiffViewer
 
 <#
 .SYNOPSIS
-Sets paths to external tools (text editor and diff viewer)
+Sets path for diff viewer on local machine
 .DESCRIPTION
-Sets paths to external tools (text editor and diff viewer)
-.PARAMETER TextEditorPath
-Path to text editor
-.PARAMETER DiffViewerPath
+Sets path for diff viewer on local machine
+.PARAMETER Path
 Path to diff viewer
 .EXAMPLE
-Set-ODUConfigExternalTools -TextEditorPath 'C:\Users\someuser\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd' -DiffViewerPath 'C:\Program Files\ExamDiff Pro\ExamDiff.exe'
-<sets paths>
+Set-ODUConfigDiffViewer -Path 'C:\Program Files\ExamDiff Pro\ExamDiff.exe'
+<sets path to diff viewer>
 #>
-function Set-ODUConfigExternalTools {
+function Set-ODUConfigDiffViewer {
   [CmdletBinding()]
   param(
-    [string]$TextEditorPath,
-    [string]$DiffViewerPath
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$Path
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
-    $Config = Get-ODUConfig
-    # asdf need logic for allowing either but not necessary both - but should be at least one
-
-    # asdf need to test paths
-
-    $Config.ExternalTools.TextEditorPath = $TextEditorPath
-    $Config.ExternalTools.DiffViewerPath = $DiffViewerPath
-    Save-ODUConfig -Config $Config
+    if ($false -eq (Test-Path -Path $Path)) {
+      Write-Error "Path is not valid: $Path" -ErrorAction Stop
+    } else {
+      $Config = Get-ODUConfig
+      $Config.ExternalTools.DiffViewerPath = $Path
+      Save-ODUConfig -Config $Config
+    }
   }
 }
+#endregion
 
+
+#region Function: Set-ODUConfigTextEditor
 
 <#
 .SYNOPSIS
-Returns hashtable with external tools settings
+Sets path for text editor on local machine
 .DESCRIPTION
-Returns hashtable with external tools settings
+Sets path for text editor on local machine
+.PARAMETER Path
+Path to text editor
 .EXAMPLE
-Get-ODUConfigExternalTools
-<external tools settings>
+Set-ODUConfigTextEditor -Path ((Get-Command code.cmd).Source)
+<sets path for VS Code - if you have it installed>
 #>
-function Get-ODUConfigExternalTools {
+function Set-ODUConfigTextEditor {
   [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$Path
+  )
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+
+    if ($false -eq (Test-Path -Path $Path)) {
+      Write-Error "Path is not valid: $Path" -ErrorAction Stop
+    } else {
+      $Config = Get-ODUConfig
+      $Config.ExternalTools.TextEditorPath = $Path
+      Save-ODUConfig -Config $Config
+    }
+  }
+}
+#endregion
+
+
+
+
+
+#region Function: Get-ODUConfigDiffViewer
+
+<#
+.SYNOPSIS
+Gets path for diff viewer on local machine
+.DESCRIPTION
+Gets path for diff viewer on local machine
+.EXAMPLE
+Get-ODUConfigDiffViewer
+<path to diff viewer>
+#>
+function Get-ODUConfigDiffViewer {
+  [CmdletBinding()]
+  [OutputType([string])]
   param()
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
-    (Get-ODUConfig).ExternalTools
+    (Get-ODUConfig).ExternalTools.DiffViewerPath
   }
 }
+#endregion
 
 
+#region Function: Get-ODUConfigTextEditor
+
+<#
+.SYNOPSIS
+Gets path for text editor on local machine
+.DESCRIPTION
+Gets path for text editor on local machine
+.EXAMPLE
+Get-ODUConfigTextEditor
+<path to text editor>
+#>
+function Get-ODUConfigTextEditor {
+  [CmdletBinding()]
+  [OutputType([string])]
+  param()
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+    (Get-ODUConfig).ExternalTools.TextEditorPath
+  }
+}
+#endregion
+
+
+#region Function: Set-ODUConfigExportRootFolder
+
+<#
+.SYNOPSIS
+Sets path for export root folder
+.DESCRIPTION
+Sets path for export root folder
+.PARAMETER Path
+Path to export root folder
+.EXAMPLE
+Set-ODUConfigExportRootFolder -Path c:\OctoExports
+<sets root path for exports>
+#>
 function Set-ODUConfigExportRootFolder {
   [CmdletBinding()]
   param(
-    [string]$ExportRootFolder
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$Path
   )
   process {
 
     try {
       # try to create export folder first before creating config, if errors creating folder then exit without updating configuration
-      if ($false -eq (Test-Path -Path $ExportRootFolder)) {
+      if ($false -eq (Test-Path -Path $Path)) {
         # must explicitly stop if there's an error; don't create config unless this is valid
-        New-Item -Path $ExportRootFolder -ItemType Directory -ErrorAction Stop > $null
+        New-Item -Path $Path -ItemType Directory -ErrorAction Stop > $null
       }
 
       # this function is run to initialize the settings for the project so if settings files doesn't currently exist it should be created
@@ -97,15 +180,20 @@ function Set-ODUConfigExportRootFolder {
 
       # update root folder
       $Config = Get-ODUConfig
-      $Config.ExportRootFolder = $ExportRootFolder
+      $Config.ExportRootFolder = $Path
       Save-ODUConfig -Config $Config
 
     } catch {
+      # asdf change to write error
       Write-Host "`nAn error occurred creating export root folder; is this valid? " -ForegroundColor Cyan -NoNewline
-      Write-Host "$ExportRootFolder`n"
+      Write-Host "$Path`n"
     }
   }
 }
+#endregion
+
+
+#region Function: Get-ODUConfigExportRootFolder
 
 <#
 .SYNOPSIS
@@ -118,20 +206,37 @@ Get-ODUConfigExportRootFolder
 #>
 function Get-ODUConfigExportRootFolder {
   [CmdletBinding()]
+  [OutputType([string])]
   param()
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
     (Get-ODUConfig).ExportRootFolder
   }
 }
+#endregion
 
 
+#region Function: Add-ODUConfigOctopusServer
+
+<#
+.SYNOPSIS
+Sets Octopus Server configuration (root url and API key)
+.DESCRIPTION
+Sets Octopus Server configuration (root url and API key)
+See this for more info about API key: https://octopus.com/docs/api-and-integration/api/how-to-create-an-api-key
+
+Note: this is Add- not Set- because (eventually) ODU will support multiple Octo setups in the configuration
+.PARAMETER Url
+Root url of Octopus server
+.PARAMETER ApiKey
+API Key for a specific user account to use for exports
+.EXAMPLE
+Add-ODUConfigOctopusServer -Url https://MyOctoServer.octopus.app -ApiKey 'API-123456789012345678901234567'
+<validates then sets url and api key for Octo server>
+#>
 function Add-ODUConfigOctopusServer {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [string]$Name,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [string]$Url,
@@ -148,6 +253,15 @@ function Add-ODUConfigOctopusServer {
     # asdf validate server url format
     # asdf url remove trailing / if present
     # asdf validate server url and credentials - test swagger or /api or something
+
+
+    # asdf GET NAME
+    # asdf create Name - get server url for now
+    # when support multiple servers/instances, will expose Name parameter on this function
+
+
+    # asdf need integration testing to validate API key
+
 
     # Encrypt ONLY if this IsWindows; PS versions 5 and below are only Windows, 6 has explicit variable
     $ApiKeySecure = $ApiKey
@@ -188,4 +302,4 @@ function Add-ODUConfigOctopusServer {
     Save-ODUConfig -Config $Config
   }
 }
-
+#endregion

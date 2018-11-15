@@ -1,4 +1,6 @@
 
+#region Function: Get-ODUConfig
+
 <#
 .SYNOPSIS
 Returns configuration if exists
@@ -17,7 +19,10 @@ function Get-ODUConfig {
     }
   }
 }
+#endregion
 
+
+#region Function: Test-ODUConfigFilePath
 
 <#
 .SYNOPSIS
@@ -37,8 +42,10 @@ function Test-ODUConfigFilePath {
     Test-Path -Path (Get-ODUConfigFilePath)
   }
 }
+#endregion
 
 
+#region Function: Confirm-ODUConfig
 
 <#
 .SYNOPSIS
@@ -75,7 +82,10 @@ function Confirm-ODUConfig {
     }
   }
 }
+#endregion
 
+
+#region Function: Initialize-ODUConfig
 
 <#
 .SYNOPSIS
@@ -102,7 +112,10 @@ function Initialize-ODUConfig {
     Save-ODUConfig -Config $Config
   }
 }
+#endregion
 
+
+#region Function: Save-ODUConfig
 
 <#
 .SYNOPSIS
@@ -119,9 +132,12 @@ Save-ODUConfig $Config
 function Save-ODUConfig {
   [CmdletBinding()]
   param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
     [hashtable]$Config
   )
   process {
+    # Because the configuration stores the API encrypted, the configuration is stored using User scope.
     # want to use Configuration as-is from PSGallery but there's a bug
     # https://github.com/PoshCode/Configuration/issues/8
     # work around: if specify Scope User, need to specify CompanyName and Name, which need to
@@ -129,7 +145,10 @@ function Save-ODUConfig {
     $Config | Export-Configuration -Scope User -Version ([version]$ConfigVersion) -CompanyName $MyInvocation.MyCommand.Module.CompanyName -Name $MyInvocation.MyCommand.Module.Name
   }
 }
+#endregion
 
+
+#region Function: Get-ODUConfigOctopusServer
 
 <#
 .SYNOPSIS
@@ -166,7 +185,10 @@ function Get-ODUConfigOctopusServer {
     }
   }
 }
+#endregion
 
+
+#region Function: Get-ODUConfigDecryptApiKey
 
 <#
 .SYNOPSIS
@@ -197,3 +219,4 @@ function Get-ODUConfigDecryptApiKey {
     $ApiKey
   }
 }
+#endregion
