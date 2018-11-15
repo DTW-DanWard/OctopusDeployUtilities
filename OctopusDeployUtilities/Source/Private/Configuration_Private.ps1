@@ -117,7 +117,7 @@ function Get-ODUConfigOctopusServer {
     # but need to make sure one does exist
     $Config = Get-ODUConfig
     if ($Config.OctopusServers.Count -eq 0) {
-      Write-Error "Octopus Server has not been registered yet; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl" -ErrorAction Stop
+      throw "Octopus Server has not been registered yet; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
     } else {
       $Config.OctopusServers[0]
     }

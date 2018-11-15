@@ -206,7 +206,7 @@ function Set-ODUConfigDiffViewer {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
     if ($false -eq (Test-Path -Path $Path)) {
-      Write-Error "Path is not valid: $Path" -ErrorAction Stop
+      throw "Path is not valid: $Path"
     } else {
       $Config = Get-ODUConfig
       $Config.ExternalTools.DiffViewerPath = $Path
@@ -260,8 +260,7 @@ function Set-ODUConfigExportRootFolder {
       Save-ODUConfig -Config $Config
 
     } catch {
-      # asdf change to write error
-      Write-Error "An error occurred creating export root folder; invalid path? $Path" -ErrorAction Stop
+      throw "An error occurred creating export root folder; invalid path? $Path"
     }
   }
 }
@@ -292,7 +291,7 @@ function Set-ODUConfigTextEditor {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
     if ($false -eq (Test-Path -Path $Path)) {
-      Write-Error "Path is not valid: $Path" -ErrorAction Stop
+      throw "Path is not valid: $Path"
     } else {
       $Config = Get-ODUConfig
       $Config.ExternalTools.TextEditorPath = $Path
