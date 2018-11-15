@@ -55,29 +55,11 @@ function Add-ODUConfigOctopusServer {
     $OctoServer = @{ }
     $OctoServer.Name = $Name
     $OctoServer.Url = $Url
-    # $OctoServer.ApiKey = $ApiKey
     $OctoServer.ApiKey = $ApiKeySecure
-    # asdf values (in this case, empty array) to separate function
-    $OctoServer.TypeWhiteList = @()
-    # asdf move these to separate function with explanation
-    $OctoServer.TypeBlackList = 'CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'Releases', 'Reporting', 'Tasks', 'Packages'
-
-    # asdf move this to separate function
-    # Use this list (check latest export proto to see if updated)
-    # 'CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'LetsEncrypt', 'Licenses', 'MaintenanceConfiguration', 'Packages', 'Releases', 'Reporting', 'ServerConfiguration', 'ServerStatus-Extensions', 'ServerStatus-SystemInfo', 'Tasks'
-    # Explanation
-    # Skip these type by default
-    # These types have a LOT of values:
-    #   Events, Deployments, Releases, Tasks, Packages
-    # Don't work on cloud version and not really important
-    #   LetsEncrypt, Licenses, MaintenanceConfiguration, ServerConfiguration, ServerStatus-Extensions, ServerStatus-SystemInfo
-    # Not important:
-    #   CommunityActionTemplates, Interruptions, Reporting
-
-
-
-    $OctoServer.PropertyWhiteList = @{ }
-    $OctoServer.PropertyBlackList = @{ }
+    $OctoServer.TypeBlackList = Get-ODUConfigDefaultTypeBlackList
+    $OctoServer.TypeWhiteList = Get-ODUConfigDefaultTypeWhiteList
+    $OctoServer.PropertyBlackList = Get-ODUConfigDefaultPropertyBlackList
+    $OctoServer.PropertyWhiteList = Get-ODUConfigDefaultPropertyWhiteList
     $OctoServer.LastPurgeCompareFolder = $Undefined
     $OctoServer.Search = @{
       CodeRootPaths     = $Undefined
@@ -206,10 +188,12 @@ function Set-ODUConfigDiffViewer {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
     if ($false -eq (Test-Path -Path $Path)) {
+      Write-Verbose "Path is not valid: $Path"
       throw "Path is not valid: $Path"
     } else {
       $Config = Get-ODUConfig
       $Config.ExternalTools.DiffViewerPath = $Path
+      Write-Verbose "Saving configuration with DiffViewerPath: $Path"
       Save-ODUConfig -Config $Config
     }
   }
@@ -243,6 +227,7 @@ function Set-ODUConfigExportRootFolder {
       # try to create export folder first before creating config, if errors creating folder then exit without updating configuration
       if ($false -eq (Test-Path -Path $Path)) {
         # must explicitly stop if there's an error; don't create config unless this is valid
+        Write-Verbose "Creating root export folder: $Path"
         New-Item -Path $Path -ItemType Directory -ErrorAction Stop > $null
       }
 
@@ -251,12 +236,14 @@ function Set-ODUConfigExportRootFolder {
       if ($false -eq (Confirm-ODUConfig)) {
         Initialize-ODUConfig
       } else {
-        # asdf check if pre-existing folder value and if that folder exists and has content, write message to user to copy/move files
+        Write-Verbose 'Old configuration already found, user is updating export root folder'
+        Write-Output "Make sure you move any old exports from $((Get-ODUConfig).ExportRootFolder) to new path: $Path"
       }
 
       # update root folder
       $Config = Get-ODUConfig
       $Config.ExportRootFolder = $Path
+      Write-Verbose "Saving configuration with ExportRootFolder: $Path"
       Save-ODUConfig -Config $Config
 
     } catch {
@@ -291,10 +278,12 @@ function Set-ODUConfigTextEditor {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
     if ($false -eq (Test-Path -Path $Path)) {
+      Write-Verbose "Path is not valid: $Path"
       throw "Path is not valid: $Path"
     } else {
       $Config = Get-ODUConfig
       $Config.ExternalTools.TextEditorPath = $Path
+      Write-Verbose "Saving configuration with TextEditorPath: $Path"
       Save-ODUConfig -Config $Config
     }
   }

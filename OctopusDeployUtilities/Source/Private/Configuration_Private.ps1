@@ -91,6 +91,113 @@ function Get-ODUConfigDecryptApiKey {
 #endregion
 
 
+
+
+
+
+
+#region Function: Get-ODUConfigDefaultTypeBlackList
+
+<#
+.SYNOPSIS
+Returns object array of default types for blacklist
+.DESCRIPTION
+Returns object array of default types for blacklist
+.EXAMPLE
+Get-ODUConfigDefaultTypeBlackList
+...
+#>
+function Get-ODUConfigDefaultTypeBlackList {
+  [CmdletBinding()]
+  [OutputType([System.Array])]
+  param()
+  process {
+    # here's the rationale for the default black list selection below:
+    # These types have a LOT of values and generally aren't important for reviewing the configuration:
+    #   Deployments, Events, Packages, Releases, Tasks
+    # These types don't work on cloud version and are not really important:
+    #   LetsEncrypt, Licenses, MaintenanceConfiguration, ServerConfiguration, ServerStatus-Extensions, ServerStatus-SystemInfo
+    # These are generally not important... but I'm on the fence with CommunityActionTemplates
+    #   CommunityActionTemplates, Interruptions, Reporting
+
+    @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'Releases', 'Reporting', 'Tasks', 'Packages')
+  }
+}
+#endregion
+
+
+#region Function: Get-ODUConfigDefaultTypeWhiteList
+
+<#
+.SYNOPSIS
+Returns object array of default types for whitelist
+.DESCRIPTION
+Returns object array of default types for whitelist
+.EXAMPLE
+Get-ODUConfigDefaultTypeWhiteList
+...
+#>
+function Get-ODUConfigDefaultTypeWhiteList {
+  [CmdletBinding()]
+  [OutputType([System.Array])]
+  param()
+  process {
+    @()
+  }
+}
+#endregion
+
+
+
+
+#region Function: Get-ODUConfigDefaultPropertyBlackList
+
+<#
+.SYNOPSIS
+Returns hashtable default values for property blacklist
+.DESCRIPTION
+Returns hashtable default values for property blacklist
+.EXAMPLE
+Get-ODUConfigDefaultPropertyBlackList
+...
+#>
+function Get-ODUConfigDefaultPropertyBlackList {
+  [CmdletBinding()]
+  [OutputType([hashtable])]
+  param()
+  process {
+    @{}
+  }
+}
+#endregion
+
+
+
+#region Function: Get-ODUConfigDefaultPropertyWhiteList
+
+<#
+.SYNOPSIS
+Returns hashtable default values for property whitelist
+.DESCRIPTION
+Returns hashtable default values for property whitelist
+.EXAMPLE
+Get-ODUConfigDefaultPropertyWhiteList
+...
+#>
+function Get-ODUConfigDefaultPropertyWhiteList {
+  [CmdletBinding()]
+  [OutputType([hashtable])]
+  param()
+  process {
+    @{}
+  }
+}
+#endregion
+
+
+
+
+
 #region Function: Get-ODUConfigOctopusServer
 
 <#

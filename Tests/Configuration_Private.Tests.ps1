@@ -83,7 +83,7 @@ ParallelJobsCount = 1
 
   It 'Test-ODUConfigFilePath returns $true' { Test-ODUConfigFilePath | Should Be $true }
 
-  It 'Confirm-ODUConfig returns $true' { Confirm-ODUConfig | Should Be $true  }
+  It 'Confirm-ODUConfig returns $true' { Confirm-ODUConfig | Should Be $true }
 
   It 'Initialize-ODUConfig returns $null and does nothing' { Initialize-ODUConfig | Should BeNullOrEmpty }
 
@@ -96,18 +96,6 @@ ParallelJobsCount = 1
   It 'Get-ODUConfigDecryptApiKey throws error' { { Get-ODUConfigDecryptApiKey } | Should throw }
 }
 #endregion
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #region Configuration Octopus Server initialized
@@ -190,7 +178,7 @@ ParallelJobsCount = 1
 
   It 'Test-ODUConfigFilePath returns $true' { Test-ODUConfigFilePath | Should Be $true }
 
-  It 'Confirm-ODUConfig returns $true' { Confirm-ODUConfig | Should Be $true  }
+  It 'Confirm-ODUConfig returns $true' { Confirm-ODUConfig | Should Be $true }
 
   It 'Initialize-ODUConfig returns $null and does nothing' { Initialize-ODUConfig | Should BeNullOrEmpty }
 

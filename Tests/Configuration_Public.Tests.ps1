@@ -16,6 +16,49 @@ Describe "Re/loading: $SourceScript" { }
 #endregion
 
 
+#region Configuration export root folder accessible
+Describe 'Configuration: export root folder initialized' {
+
+  # ensure config file DOES exist
+  $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
+  $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
+  $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
+
+  New-Item -Path $ExportRootFolder -ItemType Directory > $null
+  New-Item -Path $ConfigFolderPath -ItemType Directory > $null
+
+  $ConfigString = @"
+@{
+ExportRootFolder = $ExportRootFolder
+OctopusServers = @()
+ExternalTools = @{
+  DiffViewerPath = 'UNDEFINED'
+  TextEditorPath = 'UNDEFINED'
+}
+ParallelJobsCount = 1
+}
+"@
+  Set-Content -Path $ConfigFilePath -Value $ConfigString
+  Mock -CommandName 'Get-ODUConfigFilePath' -MockWith { $ConfigFilePath }
+
+  $Config = @{
+    ExportRootFolder  = $ExportRootFolder
+    OctopusServers    = @()
+    ExternalTools     = @{
+      DiffViewerPath = 'UNDEFINED'
+      TextEditorPath = 'UNDEFINED'
+    }
+    ParallelJobsCount = 1
+  }
+
+  function Confirm-ODUConfig { $true }
+  function Get-ODUConfig { $Config }
+
+  It 'Get-ODUConfigExportRootFolder returns correct value' { Get-ODUConfigExportRootFolder | Should Be $ExportRootFolder }
+}
+#endregion
+
+
 #region Configuration external tools initialized
 Describe 'Configuration: external tools initialized' {
 
