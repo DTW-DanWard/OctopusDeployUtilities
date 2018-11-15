@@ -1,50 +1,4 @@
 
-#region Function: Get-ODUConfig
-
-<#
-.SYNOPSIS
-Returns configuration if exists
-.DESCRIPTION
-Returns configuration if exists, $null otherwise
-.EXAMPLE
-Get-ODUConfig
-<hash table with configuration>
-#>
-function Get-ODUConfig {
-  [CmdletBinding()]
-  param()
-  process {
-    if ($true -eq (Test-ODUConfigFilePath)) {
-      Import-Configuration -Version ([version]$ConfigVersion)
-    }
-  }
-}
-#endregion
-
-
-#region Function: Test-ODUConfigFilePath
-
-<#
-.SYNOPSIS
-Tests if configuration file exists
-.DESCRIPTION
-Tests if configuration file exists; returns $true if it does, $false otherwise
-.EXAMPLE
-Test-ODUConfigFilePath
-$true
-(already existed)
-#>
-function Test-ODUConfigFilePath {
-  [CmdletBinding()]
-  [OutputType([bool])]
-  param()
-  process {
-    Test-Path -Path (Get-ODUConfigFilePath)
-  }
-}
-#endregion
-
-
 #region Function: Confirm-ODUConfig
 
 <#
@@ -73,6 +27,101 @@ function Confirm-ODUConfig {
       $false
     } else {
       $true
+    }
+  }
+}
+#endregion
+
+
+#region Function: Get-ODUConfig
+
+<#
+.SYNOPSIS
+Returns configuration if exists
+.DESCRIPTION
+Returns configuration if exists, $null otherwise
+.EXAMPLE
+Get-ODUConfig
+<hash table with configuration>
+#>
+function Get-ODUConfig {
+  [CmdletBinding()]
+  param()
+  process {
+    if ($true -eq (Test-ODUConfigFilePath)) {
+      Import-Configuration -Version ([version]$ConfigVersion)
+    }
+  }
+}
+#endregion
+
+
+#region Function: Get-ODUConfigDecryptApiKey
+
+<#
+.SYNOPSIS
+Returns decrypted API key for Octopus user account
+.DESCRIPTION
+Returns decrypted API key for Octopus user account
+.EXAMPLE
+Get-ODUConfigDecryptApiKey
+API-........
+#>
+function Get-ODUConfigDecryptApiKey {
+  [CmdletBinding()]
+  [OutputType([string])]
+  param()
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+
+    # initial version supports only 1 server configuration so simply use that
+    # this function is not public, there should be no need to check if registered by this point
+    # should not have gotten this far if no server registered yet, just use first
+    $ServerConfig = Get-ODUConfigOctopusServer
+
+    # Decrypt ONLY if this IsWindows; PS versions 5 and below are only Windows, 6 has explicit variable
+    $ApiKey = $ServerConfig.ApiKey
+    if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
+      $ApiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR( ($ApiKey | ConvertTo-SecureString) ))
+    }
+    $ApiKey
+  }
+}
+#endregion
+
+
+#region Function: Get-ODUConfigOctopusServer
+
+<#
+.SYNOPSIS
+Get configuration settings for Octopus Server
+.DESCRIPTION
+Get configuration settings for Octopus Server
+.EXAMPLE
+Get-ODUConfigOctopusServer
+Name                           Value
+----                           -----
+Name                           Main
+Url                            https://my.octoserver.com
+ApiKey                         010dfdf30ddf011423425365d1118c7a00c.....
+TypeBlackList                  {CommunityActionTemplates, Deployments, Events, Interruptions...}
+TypeWhiteList                  {}
+PropertyBlackList              {}
+...
+#>
+function Get-ODUConfigOctopusServer {
+  [CmdletBinding()]
+  [OutputType([hashtable])]
+  param()
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+    # initial implementation supports only 1 server configuration so simply return that
+    # but need to make sure one does exist
+    $Config = Get-ODUConfig
+    if ($Config.OctopusServers.Count -eq 0) {
+      Write-Error "Octopus Server has not been registered yet; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl" -ErrorAction Stop
+    } else {
+      $Config.OctopusServers[0]
     }
   }
 }
@@ -142,73 +191,24 @@ function Save-ODUConfig {
 #endregion
 
 
-#region Function: Get-ODUConfigOctopusServer
+#region Function: Test-ODUConfigFilePath
 
 <#
 .SYNOPSIS
-Get configuration settings for Octopus Server
+Tests if configuration file exists
 .DESCRIPTION
-Get configuration settings for Octopus Server
+Tests if configuration file exists; returns $true if it does, $false otherwise
 .EXAMPLE
-Get-ODUConfigOctopusServer
-Name                           Value
-----                           -----
-Name                           Main
-Url                            https://my.octoserver.com
-ApiKey                         010dfdf30ddf011423425365d1118c7a00c.....
-TypeBlackList                  {CommunityActionTemplates, Deployments, Events, Interruptions...}
-TypeWhiteList                  {}
-PropertyBlackList              {}
-...
+Test-ODUConfigFilePath
+$true
+(already existed)
 #>
-function Get-ODUConfigOctopusServer {
+function Test-ODUConfigFilePath {
   [CmdletBinding()]
-  [OutputType([hashtable])]
+  [OutputType([bool])]
   param()
   process {
-    if ($false -eq (Confirm-ODUConfig)) { return }
-    # initial implementation supports only 1 server configuration so simply return that
-    # but need to make sure one does exist
-    $Config = Get-ODUConfig
-    if ($Config.OctopusServers.Count -eq 0) {
-      Write-Error "Octopus Server has not been registered yet; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl" -ErrorAction Stop
-    } else {
-      $Config.OctopusServers[0]
-    }
-  }
-}
-#endregion
-
-
-#region Function: Get-ODUConfigDecryptApiKey
-
-<#
-.SYNOPSIS
-Returns decrypted API key for Octopus user account
-.DESCRIPTION
-Returns decrypted API key for Octopus user account
-.EXAMPLE
-Get-ODUConfigDecryptApiKey
-API-........
-#>
-function Get-ODUConfigDecryptApiKey {
-  [CmdletBinding()]
-  [OutputType([string])]
-  param()
-  process {
-    if ($false -eq (Confirm-ODUConfig)) { return }
-
-    # initial version supports only 1 server configuration so simply use that
-    # this function is not public, there should be no need to check if registered by this point
-    # should not have gotten this far if no server registered yet, just use first
-    $ServerConfig = Get-ODUConfigOctopusServer
-
-    # Decrypt ONLY if this IsWindows; PS versions 5 and below are only Windows, 6 has explicit variable
-    $ApiKey = $ServerConfig.ApiKey
-    if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
-      $ApiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR( ($ApiKey | ConvertTo-SecureString) ))
-    }
-    $ApiKey
+    Test-Path -Path (Get-ODUConfigFilePath)
   }
 }
 #endregion
