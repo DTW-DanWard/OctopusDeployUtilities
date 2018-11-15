@@ -91,11 +91,6 @@ function Get-ODUConfigDecryptApiKey {
 #endregion
 
 
-
-
-
-
-
 #region Function: Get-ODUConfigDefaultTypeBlackList
 
 <#
@@ -148,8 +143,6 @@ function Get-ODUConfigDefaultTypeWhiteList {
 #endregion
 
 
-
-
 #region Function: Get-ODUConfigDefaultPropertyBlackList
 
 <#
@@ -170,7 +163,6 @@ function Get-ODUConfigDefaultPropertyBlackList {
   }
 }
 #endregion
-
 
 
 #region Function: Get-ODUConfigDefaultPropertyWhiteList

@@ -22,29 +22,38 @@ function Add-ODUConfigOctopusServer {
   param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
+    [ValidatePattern("^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}\/?$")]
     [string]$Url,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
+    [ValidatePattern("^API\-[a-z0-9]{27}$")]
     [string]$ApiKey
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
-    $Config = Get-ODUConfig
-
     # asdf if config settings already exist, ask to overwrite????
-    # asdf validate server url format
-    # asdf url remove trailing / if present
-    # asdf validate server url and credentials - test swagger or /api or something
 
+    # if $Url ends with trailing /, remove it
+    if ($Url.EndsWith('/')) { $Url = $Url.Substring(0, $Url.Length - 1) }
 
-    # asdf GET NAME
-    # asdf create Name - get server url for now
-    # when support multiple servers/instances, will expose Name parameter on this function
+    # quick validation of Url / API key - refactor this
+    try {
+      $Headers = @{ 'X-Octopus-ApiKey' = $ApiKey }
+      Invoke-WebRequest -Uri ($Url + "/api/machineroles/all") -Headers $Headers > $null
+    } catch {
+      throw "Error occurred testing Octopus api with $Url and $ApiKey - are these correct?  Error was: $_"
+    }
 
-
-    # asdf need integration testing to validate API key
-
+    #region Get default Name from Url - with explanation
+    # future versions will support multiple Octopus Server configurations, at that time having a
+    # specific name for the configuration will be important; for now, only one is supported so
+    # we will hide the Name parameter from this/all functions and just use the url domain name by default
+    # first, remove http:// or https:// protocol
+    $Name = $Url.Substring($Url.IndexOf('//') + 2)
+    # next, get domain name (content) before first / (if it even exists)
+    $Name = ($Name -split '/')[0]
+    #endregion
 
     # Encrypt ONLY if this IsWindows; PS versions 5 and below are only Windows, 6 has explicit variable
     $ApiKeySecure = $ApiKey
@@ -52,9 +61,13 @@ function Add-ODUConfigOctopusServer {
       $ApiKeySecure = ConvertTo-SecureString -String $ApiKey -AsPlainText -Force | ConvertFrom-SecureString
     }
 
+    Write-Verbose 'Creating Octopus Server configuration section'
     $OctoServer = @{ }
+    Write-Verbose "Octopus server Name: $Name"
     $OctoServer.Name = $Name
+    Write-Verbose "Octopus server Url: $Url"
     $OctoServer.Url = $Url
+    Write-Verbose "Octopus API Key - first 7 characters: $($ApiKey.Substring(0,7))..."
     $OctoServer.ApiKey = $ApiKeySecure
     $OctoServer.TypeBlackList = Get-ODUConfigDefaultTypeBlackList
     $OctoServer.TypeWhiteList = Get-ODUConfigDefaultTypeWhiteList
@@ -65,6 +78,8 @@ function Add-ODUConfigOctopusServer {
       CodeRootPaths     = $Undefined
       CodeSearchPattern = $Undefined
     }
+    Write-Verbose 'Adding Octopus Server settings to configuration'
+    $Config = Get-ODUConfig
     $Config.OctopusServers += $OctoServer
     Save-ODUConfig -Config $Config
   }
