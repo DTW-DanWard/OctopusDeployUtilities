@@ -424,6 +424,92 @@ function Set-ODUConfigExportRootFolder {
 #endregion
 
 
+#region Function: Set-ODUConfigPropertyBlackList
+
+<#
+.SYNOPSIS
+Sets value for property black list
+.DESCRIPTION
+Sets value for property black list
+.PARAMETER Hashtable
+Hashtable of types|prperty names to not export
+.EXAMPLE
+Set-ODUConfigPropertyBlackList -Hashtable @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
+<sets property black list - don't export those particular properties on those types>
+#>
+function Set-ODUConfigPropertyBlackList {
+  [CmdletBinding()]
+  param(
+    [hashtable]$Hashtable
+  )
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+
+    # asdf need to validate types
+
+    Write-Verbose "Getting Octopus server configuration"
+    $OctopusServer = Get-ODUConfigOctopusServer
+    # if not configured yet throw error
+    if ($null -eq ($OctopusServer)) {
+      Write-Verbose 'Octopus Deploy server settings not configured'
+      throw "Octopus Deploy server not configured; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
+    }
+
+    $Config = Get-ODUConfig
+    # reset property whitelist - can't have blacklist and whitelist at same time
+    Write-Verbose 'Reset whitelist and set blacklist'
+    $Config.OctopusServers[0].PropertyWhiteList = @{}
+    $Config.OctopusServers[0].PropertyBlackList = $Hashtable
+    Write-Verbose 'Saving configuration'
+    Save-ODUConfig -Config $Config
+  }
+}
+#endregion
+
+
+#region Function: Set-ODUConfigPropertyWhiteList
+
+<#
+.SYNOPSIS
+Sets value for property white list
+.DESCRIPTION
+Sets value for property white list
+.PARAMETER Hashtable
+Hashtable of types|prperty names to not export
+.EXAMPLE
+Set-ODUConfigPropertyBlackList -Hashtable @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
+<sets property black list - ONLY export those particular properties on those types>
+#>
+function Set-ODUConfigPropertyWhiteList {
+  [CmdletBinding()]
+  param(
+    [hashtable]$Hashtable
+  )
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+
+    # asdf need to validate types
+
+    Write-Verbose "Getting Octopus server configuration"
+    $OctopusServer = Get-ODUConfigOctopusServer
+    # if not configured yet throw error
+    if ($null -eq ($OctopusServer)) {
+      Write-Verbose 'Octopus Deploy server settings not configured'
+      throw "Octopus Deploy server not configured; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
+    }
+
+    $Config = Get-ODUConfig
+    # reset property blacklist - can't have blacklist and whitelist at same time
+    Write-Verbose 'Reset blacklist and set whitelist'
+    $Config.OctopusServers[0].PropertyBlackList = @{}
+    $Config.OctopusServers[0].PropertyWhiteList = $Hashtable
+    Write-Verbose 'Saving configuration'
+    Save-ODUConfig -Config $Config
+  }
+}
+#endregion
+
+
 #region Function: Set-ODUConfigTextEditor
 
 <#
@@ -477,8 +563,6 @@ Set-ODUConfigTypeBlackList -List @('Deployments', 'Events', 'Interruptions')
 function Set-ODUConfigTypeBlackList {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
     [string[]]$List
   )
   process {
@@ -522,8 +606,6 @@ Set-ODUConfigTypeWhiteList -List @('Deployments', 'Events', 'Interruptions')
 function Set-ODUConfigTypeWhiteList {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
     [string[]]$List
   )
   process {
