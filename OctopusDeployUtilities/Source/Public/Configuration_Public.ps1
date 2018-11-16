@@ -184,12 +184,12 @@ function Get-ODUConfigFilePath {
 
 <#
 .SYNOPSIS
-Gets path for text editor on local machine
+Gets values for property black list
 .DESCRIPTION
-Gets path for text editor on local machine
+Gets values for property black list
 .EXAMPLE
 Get-ODUConfigPropertyBlackList
-<path to text editor>
+<property black list - could be null>
 #>
 function Get-ODUConfigPropertyBlackList {
   [CmdletBinding()]
@@ -199,7 +199,7 @@ function Get-ODUConfigPropertyBlackList {
     if ($false -eq (Confirm-ODUConfig)) { return }
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet return $null
-    if ($null -eq ($OctopusServers)) {
+    if ($null -eq ($OctopusServer)) {
       Write-Verbose 'Octopus Deploy server settings not configured'
       return
     }
@@ -215,12 +215,12 @@ function Get-ODUConfigPropertyBlackList {
 
 <#
 .SYNOPSIS
-Gets path for text editor on local machine
+Gets values for property white list
 .DESCRIPTION
-Gets path for text editor on local machine
+Gets values for property white list
 .EXAMPLE
 Get-ODUConfigPropertyWhiteList
-<path to text editor>
+<property white list - could be null>
 #>
 function Get-ODUConfigPropertyWhiteList {
   [CmdletBinding()]
@@ -230,7 +230,7 @@ function Get-ODUConfigPropertyWhiteList {
     if ($false -eq (Confirm-ODUConfig)) { return }
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet return $null
-    if ($null -eq ($OctopusServers)) {
+    if ($null -eq ($OctopusServer)) {
       Write-Verbose 'Octopus Deploy server settings not configured'
       return
     }
@@ -260,6 +260,68 @@ function Get-ODUConfigTextEditor {
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
     (Get-ODUConfig).ExternalTools.TextEditorPath
+  }
+}
+#endregion
+
+
+#region Function: Get-ODUConfigTypeBlackList
+
+<#
+.SYNOPSIS
+Gets values for type black list
+.DESCRIPTION
+Gets values for type black list
+.EXAMPLE
+Get-ODUConfigTypeBlackList
+<type black list - could be null>
+#>
+function Get-ODUConfigTypeBlackList {
+  [CmdletBinding()]
+  [OutputType([string])]
+  param()
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+    $OctopusServer = Get-ODUConfigOctopusServer
+    # if not configured yet return $null
+    if ($null -eq ($OctopusServer)) {
+      Write-Verbose 'Octopus Deploy server settings not configured'
+      return
+    }
+    # else return
+    Write-Verbose 'Returning values'
+    $OctopusServer.TypeBlackList
+  }
+}
+#endregion
+
+
+#region Function: Get-ODUConfigTypeWhiteList
+
+<#
+.SYNOPSIS
+Gets values for type white list
+.DESCRIPTION
+Gets values for type white list
+.EXAMPLE
+Get-ODUConfigTypeWhiteList
+<type white list - could be null>
+#>
+function Get-ODUConfigTypeWhiteList {
+  [CmdletBinding()]
+  [OutputType([string])]
+  param()
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+    $OctopusServer = Get-ODUConfigOctopusServer
+    # if not configured yet return $null
+    if ($null -eq ($OctopusServer)) {
+      Write-Verbose 'Octopus Deploy server settings not configured'
+      return
+    }
+    # else return
+    Write-Verbose 'Returning values'
+    $OctopusServer.TypeWhiteList
   }
 }
 #endregion
