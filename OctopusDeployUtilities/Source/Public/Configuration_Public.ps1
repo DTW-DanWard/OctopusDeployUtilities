@@ -459,3 +459,93 @@ function Set-ODUConfigTextEditor {
   }
 }
 #endregion
+
+
+#region Function: Set-ODUConfigTypeBlackList
+
+<#
+.SYNOPSIS
+Sets value for type black list
+.DESCRIPTION
+Sets value for type black list
+.PARAMETER List
+List of names of types to not export
+.EXAMPLE
+Set-ODUConfigTypeBlackList -List @('Deployments', 'Events', 'Interruptions')
+<sets type black list to those values>
+#>
+function Set-ODUConfigTypeBlackList {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string[]]$List
+  )
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+
+    # asdf need to validate types
+
+    Write-Verbose "Getting Octopus server configuration"
+    $OctopusServer = Get-ODUConfigOctopusServer
+    # if not configured yet throw error
+    if ($null -eq ($OctopusServer)) {
+      Write-Verbose 'Octopus Deploy server settings not configured'
+      throw "Octopus Deploy server not configured; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
+    }
+
+    $Config = Get-ODUConfig
+    # reset type whitelist - can't have blacklist and whitelist at same time
+    Write-Verbose 'Reset whitelist and set blacklist'
+    $Config.OctopusServers[0].TypeWhiteList = @()
+    $Config.OctopusServers[0].TypeBlackList = $List
+    Write-Verbose 'Saving configuration'
+    Save-ODUConfig -Config $Config
+  }
+}
+#endregion
+
+
+#region Function: Set-ODUConfigTypeWhiteList
+
+<#
+.SYNOPSIS
+Sets value for type white list
+.DESCRIPTION
+Sets value for type white list
+.PARAMETER List
+List of names of types to not export
+.EXAMPLE
+Set-ODUConfigTypeWhiteList -List @('Deployments', 'Events', 'Interruptions')
+<sets type white list to those values>
+#>
+function Set-ODUConfigTypeWhiteList {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string[]]$List
+  )
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+
+    # asdf need to validate types
+
+    Write-Verbose "Getting Octopus server configuration"
+    $OctopusServer = Get-ODUConfigOctopusServer
+    # if not configured yet throw error
+    if ($null -eq ($OctopusServer)) {
+      Write-Verbose 'Octopus Deploy server settings not configured'
+      throw "Octopus Deploy server not configured; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
+    }
+
+    $Config = Get-ODUConfig
+    # reset type blacklist - can't have blacklist and whitelist at same time
+    Write-Verbose 'Reset blacklist and set whitelist'
+    $Config.OctopusServers[0].TypeBlackList = @()
+    $Config.OctopusServers[0].TypeWhiteList = $List
+    Write-Verbose 'Saving configuration'
+    Save-ODUConfig -Config $Config
+  }
+}
+#endregion
