@@ -8,7 +8,7 @@ Sets Octopus Server configuration (root url and API key)
 Sets Octopus Server configuration (root url and API key)
 See this for more info about API key: https://octopus.com/docs/api-and-integration/api/how-to-create-an-api-key
 
-Note: this is Add- not Set- because (eventually) ODU will support multiple Octo setups in the configuration
+Note: this function is Add- not Set- because (eventually) ODU will support multiple Octo setups in the configuration
 .PARAMETER Url
 Root url of Octopus server
 .PARAMETER ApiKey
@@ -39,10 +39,10 @@ function Add-ODUConfigOctopusServer {
 
     # quick validation of Url / API key - refactor this
     try {
-      $Headers = @{ 'X-Octopus-ApiKey' = $ApiKey }
-      Invoke-WebRequest -Uri ($Url + "/api/machineroles/all") -Headers $Headers > $null
+      # use machine roles api to test - should be fast, simple call
+      Invoke-WebRequest -Uri ($Url + "/api/machineroles/all") -Headers @{ 'X-Octopus-ApiKey' = $ApiKey } > $null
     } catch {
-      throw "Error occurred testing Octopus api with $Url and $ApiKey - are these correct?  Error was: $_"
+      throw "Error occurred testing Octopus Deploy credentials with $Url and $ApiKey - are these correct?  Error was: $_"
     }
 
     #region Get default Name from Url - with explanation
@@ -248,21 +248,28 @@ function Set-ODUConfigExportRootFolder {
 
       # this function is run to initialize the settings for the project so if settings files doesn't currently exist it should be created
       # however, it's possible for a user to update an existing instance to change the root export path, so only initialize config if first time
-      if ($false -eq (Confirm-ODUConfig)) {
+      # use Test-ODUConfigFilePath instead of Confirm-ODUConfig; won't throw error if no config
+      if ($false -eq (Test-ODUConfigFilePath)) {
+        Write-Verbose 'Initializing configuration'
         Initialize-ODUConfig
-      } else {
-        Write-Verbose 'Old configuration already found, user is updating export root folder'
-        Write-Output "Make sure you move any old exports from $((Get-ODUConfig).ExportRootFolder) to new path: $Path"
       }
 
-      # update root folder
       $Config = Get-ODUConfig
+      # store old value for now in case need to alert user
+      $OldExportRootFolder = $Config.ExportRootFolder
+      # update root folder and save
       $Config.ExportRootFolder = $Path
       Write-Verbose "Saving configuration with ExportRootFolder: $Path"
       Save-ODUConfig -Config $Config
 
+      # if 'old' value isn't undefined (system initialized before) then export root folder has been set before
+      # if so, and if new value is different, give use reminder to move files
+      if ($OldExportRootFolder -ne $Undefined -and $OldExportRootFolder -ne $Path) {
+        Write-Verbose 'Old configuration already found with different setting, user is updating export root folder'
+        Write-Output "Root export location changed from $OldExportRootFolder to $Path; make sure to move any old exports to new location."
+      }
     } catch {
-      throw "An error occurred creating export root folder; invalid path? $Path"
+      throw "An error occurred creating export root folder; invalid path? $Path :: $_"
     }
   }
 }

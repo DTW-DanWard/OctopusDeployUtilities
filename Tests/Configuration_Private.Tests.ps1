@@ -20,9 +20,9 @@ Describe "Re/loading: $SourceScript" { }
 Describe 'Configuration: not initialized' {
 
   # ensure config file does not exist
-  Mock -CommandName 'Get-ODUConfigFilePath' -MockWith { 'Test:\No\File\Found.txt' }
-
   Mock -CommandName 'Save-ODUConfig' -MockWith { }
+
+  function Get-ODUConfigFilePath { 'Test:\No\File\Found.txt' }
 
   It 'Confirm-ODUConfig throws error' { { Confirm-ODUConfig } | Should throw  }
 
@@ -65,7 +65,6 @@ ParallelJobsCount = 1
 }
 "@
   Set-Content -Path $ConfigFilePath -Value $ConfigString
-  Mock -CommandName 'Get-ODUConfigFilePath' -MockWith { $ConfigFilePath }
 
   $Config = @{
     ExportRootFolder  = $ExportRootFolder
@@ -80,6 +79,8 @@ ParallelJobsCount = 1
   Mock -CommandName 'Save-ODUConfig' -MockWith { }
 
   Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
+
+  function Get-ODUConfigFilePath { $ConfigFilePath }
 
   It 'Test-ODUConfigFilePath returns $true' { Test-ODUConfigFilePath | Should Be $true }
 
@@ -145,7 +146,7 @@ ParallelJobsCount = 1
 }
 "@
   Set-Content -Path $ConfigFilePath -Value $ConfigString
-  Mock -CommandName 'Get-ODUConfigFilePath' -MockWith { $ConfigFilePath }
+
 
   $Config = @{
     ExportRootFolder  = $ExportRootFolder
@@ -175,6 +176,8 @@ ParallelJobsCount = 1
   Mock -CommandName 'Save-ODUConfig' -MockWith { }
 
   Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
+
+  function Get-ODUConfigFilePath { $ConfigFilePath }
 
   It 'Test-ODUConfigFilePath returns $true' { Test-ODUConfigFilePath | Should Be $true }
 

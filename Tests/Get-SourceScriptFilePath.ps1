@@ -31,18 +31,15 @@ function Get-SourceScriptFilePath {
   $SourceFolderPath = Join-Path -Path $env:BHModulePath -ChildPath 'Source'
   # confirm Source path is good
   if ($false -eq (Test-Path -Path $SourceFolderPath)) {
-    Write-Error "Source path not found: $SourceFolderPath"
-    return
+    throw "Source path not found: $SourceFolderPath"
   }
 
   # now find $SourceScriptName under Source; make sure exactly one found
   [object[]]$SourceFile = Get-ChildItem -Path $SourceFolderPath -Include $SourceScriptName -Recurse
   if ($SourceFile.Count -eq 0) {
-    Write-Error -Message "No corresponding source file $SourceScriptName found found for $TestScriptName"
-    return
+    throw "No corresponding source file $SourceScriptName found found for $TestScriptName"
   } elseif ($SourceFile.Count -gt 1) {
-    Write-Error -Message "Multiple source files named $SourceScriptName found found for $TestScriptName"
-    return
+    throw -Message "Multiple source files named $SourceScriptName found found for $TestScriptName"
   }
   # return the full path
   $SourceFile[0].FullName

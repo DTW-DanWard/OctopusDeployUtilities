@@ -5,7 +5,9 @@
 .SYNOPSIS
 Confirms configuration has been created; tell user which function to call if not
 .DESCRIPTION
-Confirms configuration has been created; tell user which function to call if not
+Confirms configuration has been created; tell user which function to call if not.
+Key point: this throws an exception (with useful info) as opposed to simply
+returning $true or $false.  If you want the simple bool test, use Test-ODUConfigFilePath
 .EXAMPLE
 Confirm-ODUConfig
 $true
@@ -107,7 +109,7 @@ function Get-ODUConfigDefaultTypeBlackList {
   [OutputType([System.Array])]
   param()
   process {
-    # here's the rationale for the default black list selection below:
+    # here's the rationale for the default type black list selection below:
     # These types have a LOT of values and generally aren't important for reviewing the configuration:
     #   Deployments, Events, Packages, Releases, Tasks
     # These types don't work on cloud version and are not really important:
@@ -115,7 +117,8 @@ function Get-ODUConfigDefaultTypeBlackList {
     # These are generally not important... but I'm on the fence with CommunityActionTemplates
     #   CommunityActionTemplates, Interruptions, Reporting
 
-    @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'Releases', 'Reporting', 'Tasks', 'Packages')
+    # asdf re-add: CommunityActionTemplates
+    @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'LetsEncrypt', 'Licenses', 'MaintenanceConfiguration', 'Packages', 'Releases', 'Reporting', 'ServerConfiguration', 'ServerStatus-Extensions', 'ServerStatus-SystemInfo', 'Tasks')
   }
 }
 #endregion
@@ -160,6 +163,22 @@ function Get-ODUConfigDefaultPropertyBlackList {
   param()
   process {
     @{}
+    # if you want to filter out time-sensitive properties that don't really affect the important config values
+    # i.e. you want to make it easier to see changes over time by filtering out properties that are likely
+    # to be different like HasLatestCalamari or LastSeen, then comment the above line and uncomment this section
+    <#
+    @{
+      Licenses                  = @('MaintenanceExpiresIn')
+      Machines                  = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary')
+      OctopusServerNodes        = @('LastSeen')
+      Projects                  = @('Links')
+      ServerStatus              = @('MaximumAvailableVersion','MaximumAvailableVersionCoveredByLicense')
+      'ServerStatus-Nuget'      = @('TotalPackages')
+      'ServerStatus-SystemInfo' = @('ThreadCount', 'Uptime', 'WorkingSetBytes')
+    }
+
+    #>
+
   }
 }
 #endregion
@@ -300,9 +319,11 @@ function Save-ODUConfig {
 
 <#
 .SYNOPSIS
-Tests if configuration file exists
+Tests if configuration file exists (returns $true or $false)
 .DESCRIPTION
-Tests if configuration file exists; returns $true if it does, $false otherwise
+Tests if configuration file exists; returns $true if it does, $false otherwise.
+Use this to test if configuration initialized without throwing exception like
+Confirm-ODUConfig does.
 .EXAMPLE
 Test-ODUConfigFilePath
 $true
