@@ -92,7 +92,7 @@ ParallelJobsCount = 1
 
   It 'Get-ODUConfig returns value for ExportRootFolder' { (Get-ODUConfig).ExportRootFolder | Should Be $ExportRootFolder }
 
-  It 'Get-ODUConfigOctopusServer throws error' { { Get-ODUConfigOctopusServer } | Should throw }
+  It 'Get-ODUConfigOctopusServer returns null' { Get-ODUConfigOctopusServer | Should BeNullOrEmpty }
 
   It 'Get-ODUConfigDecryptApiKey throws error' { { Get-ODUConfigDecryptApiKey } | Should throw }
 }
@@ -127,10 +127,10 @@ OctopusServers = @(
     Name = $OctoServerName
     Url = $OctoServerUrl
     ApiKey = $OctoServerApiKeyEncrypted
-    TypeBlackList = @('CommunityActionTemplates','Deployments','Events','Interruptions','Releases','Reporting','Tasks','Packages')
-    TypeWhiteList = @()
-    PropertyBlackList = @{ }
-    PropertyWhiteList = @{ }
+    TypeBlacklist = @('CommunityActionTemplates','Deployments','Events','Interruptions','Releases','Reporting','Tasks','Packages')
+    TypeWhitelist = @()
+    PropertyBlacklist = @{ }
+    PropertyWhitelist = @{ }
     LastPurgeCompareFolder = 'UNDEFINED'
     Search = @{
       CodeSearchPattern = 'UNDEFINED'
@@ -155,10 +155,10 @@ ParallelJobsCount = 1
         Name                   = $OctoServerName
         Url                    = $OctoServerUrl
         ApiKey                 = $OctoServerApiKeyEncrypted
-        TypeBlackList          = @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'Releases', 'Reporting', 'Tasks', 'Packages')
-        TypeWhiteList          = @()
-        PropertyBlackList      = @{ }
-        PropertyWhiteList      = @{ }
+        TypeBlacklist          = @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'Releases', 'Reporting', 'Tasks', 'Packages')
+        TypeWhitelist          = @()
+        PropertyBlacklist      = @{ }
+        PropertyWhitelist      = @{ }
         LastPurgeCompareFolder = 'UNDEFINED'
         Search                 = @{
           CodeSearchPattern = 'UNDEFINED'

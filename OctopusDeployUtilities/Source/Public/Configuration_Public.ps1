@@ -69,10 +69,10 @@ function Add-ODUConfigOctopusServer {
     $OctoServer.Url = $Url
     Write-Verbose "Octopus API Key - first 7 characters: $($ApiKey.Substring(0,7))..."
     $OctoServer.ApiKey = $ApiKeySecure
-    $OctoServer.TypeBlackList = Get-ODUConfigDefaultTypeBlackList
-    $OctoServer.TypeWhiteList = Get-ODUConfigDefaultTypeWhiteList
-    $OctoServer.PropertyBlackList = Get-ODUConfigDefaultPropertyBlackList
-    $OctoServer.PropertyWhiteList = Get-ODUConfigDefaultPropertyWhiteList
+    $OctoServer.TypeBlacklist = Get-ODUConfigDefaultTypeBlacklist
+    $OctoServer.TypeWhitelist = Get-ODUConfigDefaultTypeWhitelist
+    $OctoServer.PropertyBlacklist = Get-ODUConfigDefaultPropertyBlacklist
+    $OctoServer.PropertyWhitelist = Get-ODUConfigDefaultPropertyWhitelist
     $OctoServer.LastPurgeCompareFolder = $Undefined
     $OctoServer.Search = @{
       CodeRootPaths     = $Undefined
@@ -180,7 +180,7 @@ function Get-ODUConfigFilePath {
 #endregion
 
 
-#region Function: Get-ODUConfigPropertyBlackList
+#region Function: Get-ODUConfigPropertyBlacklist
 
 <#
 .SYNOPSIS
@@ -188,10 +188,10 @@ Gets values for property black list
 .DESCRIPTION
 Gets values for property black list
 .EXAMPLE
-Get-ODUConfigPropertyBlackList
+Get-ODUConfigPropertyBlacklist
 <property black list - could be null>
 #>
-function Get-ODUConfigPropertyBlackList {
+function Get-ODUConfigPropertyBlacklist {
   [CmdletBinding()]
   [OutputType([string])]
   param()
@@ -205,13 +205,13 @@ function Get-ODUConfigPropertyBlackList {
     }
     # else return
     Write-Verbose 'Returning values'
-    $OctopusServer.PropertyBlackList
+    $OctopusServer.PropertyBlacklist
   }
 }
 #endregion
 
 
-#region Function: Get-ODUConfigPropertyWhiteList
+#region Function: Get-ODUConfigPropertyWhitelist
 
 <#
 .SYNOPSIS
@@ -219,10 +219,10 @@ Gets values for property white list
 .DESCRIPTION
 Gets values for property white list
 .EXAMPLE
-Get-ODUConfigPropertyWhiteList
+Get-ODUConfigPropertyWhitelist
 <property white list - could be null>
 #>
-function Get-ODUConfigPropertyWhiteList {
+function Get-ODUConfigPropertyWhitelist {
   [CmdletBinding()]
   [OutputType([string])]
   param()
@@ -236,7 +236,7 @@ function Get-ODUConfigPropertyWhiteList {
     }
     # else return
     Write-Verbose 'Returning values'
-    $OctopusServer.PropertyWhiteList
+    $OctopusServer.PropertyWhitelist
   }
 }
 #endregion
@@ -265,7 +265,7 @@ function Get-ODUConfigTextEditor {
 #endregion
 
 
-#region Function: Get-ODUConfigTypeBlackList
+#region Function: Get-ODUConfigTypeBlacklist
 
 <#
 .SYNOPSIS
@@ -273,10 +273,10 @@ Gets values for type black list
 .DESCRIPTION
 Gets values for type black list
 .EXAMPLE
-Get-ODUConfigTypeBlackList
+Get-ODUConfigTypeBlacklist
 <type black list - could be null>
 #>
-function Get-ODUConfigTypeBlackList {
+function Get-ODUConfigTypeBlacklist {
   [CmdletBinding()]
   [OutputType([string])]
   param()
@@ -290,13 +290,13 @@ function Get-ODUConfigTypeBlackList {
     }
     # else return
     Write-Verbose 'Returning values'
-    $OctopusServer.TypeBlackList
+    $OctopusServer.TypeBlacklist
   }
 }
 #endregion
 
 
-#region Function: Get-ODUConfigTypeWhiteList
+#region Function: Get-ODUConfigTypeWhitelist
 
 <#
 .SYNOPSIS
@@ -304,10 +304,10 @@ Gets values for type white list
 .DESCRIPTION
 Gets values for type white list
 .EXAMPLE
-Get-ODUConfigTypeWhiteList
+Get-ODUConfigTypeWhitelist
 <type white list - could be null>
 #>
-function Get-ODUConfigTypeWhiteList {
+function Get-ODUConfigTypeWhitelist {
   [CmdletBinding()]
   [OutputType([string])]
   param()
@@ -321,7 +321,7 @@ function Get-ODUConfigTypeWhiteList {
     }
     # else return
     Write-Verbose 'Returning values'
-    $OctopusServer.TypeWhiteList
+    $OctopusServer.TypeWhitelist
   }
 }
 #endregion
@@ -424,7 +424,7 @@ function Set-ODUConfigExportRootFolder {
 #endregion
 
 
-#region Function: Set-ODUConfigPropertyBlackList
+#region Function: Set-ODUConfigPropertyBlacklist
 
 <#
 .SYNOPSIS
@@ -434,10 +434,10 @@ Sets value for property black list
 .PARAMETER Hashtable
 Hashtable of types|prperty names to not export
 .EXAMPLE
-Set-ODUConfigPropertyBlackList -Hashtable @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
+Set-ODUConfigPropertyBlacklist -Hashtable @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
 <sets property black list - don't export those particular properties on those types>
 #>
-function Set-ODUConfigPropertyBlackList {
+function Set-ODUConfigPropertyBlacklist {
   [CmdletBinding()]
   param(
     [hashtable]$Hashtable
@@ -458,8 +458,8 @@ function Set-ODUConfigPropertyBlackList {
     $Config = Get-ODUConfig
     # reset property whitelist - can't have blacklist and whitelist at same time
     Write-Verbose 'Reset whitelist and set blacklist'
-    $Config.OctopusServers[0].PropertyWhiteList = @{}
-    $Config.OctopusServers[0].PropertyBlackList = $Hashtable
+    $Config.OctopusServers[0].PropertyWhitelist = @{}
+    $Config.OctopusServers[0].PropertyBlacklist = $Hashtable
     Write-Verbose 'Saving configuration'
     Save-ODUConfig -Config $Config
   }
@@ -467,7 +467,7 @@ function Set-ODUConfigPropertyBlackList {
 #endregion
 
 
-#region Function: Set-ODUConfigPropertyWhiteList
+#region Function: Set-ODUConfigPropertyWhitelist
 
 <#
 .SYNOPSIS
@@ -477,10 +477,10 @@ Sets value for property white list
 .PARAMETER Hashtable
 Hashtable of types|prperty names to not export
 .EXAMPLE
-Set-ODUConfigPropertyBlackList -Hashtable @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
+Set-ODUConfigPropertyBlacklist -Hashtable @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
 <sets property black list - ONLY export those particular properties on those types>
 #>
-function Set-ODUConfigPropertyWhiteList {
+function Set-ODUConfigPropertyWhitelist {
   [CmdletBinding()]
   param(
     [hashtable]$Hashtable
@@ -501,8 +501,8 @@ function Set-ODUConfigPropertyWhiteList {
     $Config = Get-ODUConfig
     # reset property blacklist - can't have blacklist and whitelist at same time
     Write-Verbose 'Reset blacklist and set whitelist'
-    $Config.OctopusServers[0].PropertyBlackList = @{}
-    $Config.OctopusServers[0].PropertyWhiteList = $Hashtable
+    $Config.OctopusServers[0].PropertyBlacklist = @{}
+    $Config.OctopusServers[0].PropertyWhitelist = $Hashtable
     Write-Verbose 'Saving configuration'
     Save-ODUConfig -Config $Config
   }
@@ -547,7 +547,7 @@ function Set-ODUConfigTextEditor {
 #endregion
 
 
-#region Function: Set-ODUConfigTypeBlackList
+#region Function: Set-ODUConfigTypeBlacklist
 
 <#
 .SYNOPSIS
@@ -557,10 +557,10 @@ Sets value for type black list
 .PARAMETER List
 List of names of types to not export
 .EXAMPLE
-Set-ODUConfigTypeBlackList -List @('Deployments', 'Events', 'Interruptions')
+Set-ODUConfigTypeBlacklist -List @('Deployments', 'Events', 'Interruptions')
 <sets type black list to those values>
 #>
-function Set-ODUConfigTypeBlackList {
+function Set-ODUConfigTypeBlacklist {
   [CmdletBinding()]
   param(
     [string[]]$List
@@ -581,8 +581,8 @@ function Set-ODUConfigTypeBlackList {
     $Config = Get-ODUConfig
     # reset type whitelist - can't have blacklist and whitelist at same time
     Write-Verbose 'Reset whitelist and set blacklist'
-    $Config.OctopusServers[0].TypeWhiteList = @()
-    $Config.OctopusServers[0].TypeBlackList = $List
+    $Config.OctopusServers[0].TypeWhitelist = @()
+    $Config.OctopusServers[0].TypeBlacklist = $List
     Write-Verbose 'Saving configuration'
     Save-ODUConfig -Config $Config
   }
@@ -590,7 +590,7 @@ function Set-ODUConfigTypeBlackList {
 #endregion
 
 
-#region Function: Set-ODUConfigTypeWhiteList
+#region Function: Set-ODUConfigTypeWhitelist
 
 <#
 .SYNOPSIS
@@ -600,10 +600,10 @@ Sets value for type white list
 .PARAMETER List
 List of names of types to not export
 .EXAMPLE
-Set-ODUConfigTypeWhiteList -List @('Deployments', 'Events', 'Interruptions')
+Set-ODUConfigTypeWhitelist -List @('Deployments', 'Events', 'Interruptions')
 <sets type white list to those values>
 #>
-function Set-ODUConfigTypeWhiteList {
+function Set-ODUConfigTypeWhitelist {
   [CmdletBinding()]
   param(
     [string[]]$List
@@ -624,8 +624,8 @@ function Set-ODUConfigTypeWhiteList {
     $Config = Get-ODUConfig
     # reset type blacklist - can't have blacklist and whitelist at same time
     Write-Verbose 'Reset blacklist and set whitelist'
-    $Config.OctopusServers[0].TypeBlackList = @()
-    $Config.OctopusServers[0].TypeWhiteList = $List
+    $Config.OctopusServers[0].TypeBlacklist = @()
+    $Config.OctopusServers[0].TypeWhitelist = $List
     Write-Verbose 'Saving configuration'
     Save-ODUConfig -Config $Config
   }

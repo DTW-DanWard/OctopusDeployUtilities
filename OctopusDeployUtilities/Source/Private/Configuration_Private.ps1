@@ -93,7 +93,7 @@ function Get-ODUConfigDecryptApiKey {
 #endregion
 
 
-#region Function: Get-ODUConfigDefaultTypeBlackList
+#region Function: Get-ODUConfigDefaultTypeBlacklist
 
 <#
 .SYNOPSIS
@@ -101,10 +101,10 @@ Returns object array of default types for blacklist
 .DESCRIPTION
 Returns object array of default types for blacklist
 .EXAMPLE
-Get-ODUConfigDefaultTypeBlackList
+Get-ODUConfigDefaultTypeBlacklist
 ...
 #>
-function Get-ODUConfigDefaultTypeBlackList {
+function Get-ODUConfigDefaultTypeBlacklist {
   [CmdletBinding()]
   [OutputType([System.Array])]
   param()
@@ -124,7 +124,7 @@ function Get-ODUConfigDefaultTypeBlackList {
 #endregion
 
 
-#region Function: Get-ODUConfigDefaultTypeWhiteList
+#region Function: Get-ODUConfigDefaultTypeWhitelist
 
 <#
 .SYNOPSIS
@@ -132,10 +132,10 @@ Returns object array of default types for whitelist
 .DESCRIPTION
 Returns object array of default types for whitelist
 .EXAMPLE
-Get-ODUConfigDefaultTypeWhiteList
+Get-ODUConfigDefaultTypeWhitelist
 ...
 #>
-function Get-ODUConfigDefaultTypeWhiteList {
+function Get-ODUConfigDefaultTypeWhitelist {
   [CmdletBinding()]
   [OutputType([System.Array])]
   param()
@@ -146,7 +146,7 @@ function Get-ODUConfigDefaultTypeWhiteList {
 #endregion
 
 
-#region Function: Get-ODUConfigDefaultPropertyBlackList
+#region Function: Get-ODUConfigDefaultPropertyBlacklist
 
 <#
 .SYNOPSIS
@@ -154,10 +154,10 @@ Returns hashtable default values for property blacklist
 .DESCRIPTION
 Returns hashtable default values for property blacklist
 .EXAMPLE
-Get-ODUConfigDefaultPropertyBlackList
+Get-ODUConfigDefaultPropertyBlacklist
 ...
 #>
-function Get-ODUConfigDefaultPropertyBlackList {
+function Get-ODUConfigDefaultPropertyBlacklist {
   [CmdletBinding()]
   [OutputType([hashtable])]
   param()
@@ -184,7 +184,7 @@ function Get-ODUConfigDefaultPropertyBlackList {
 #endregion
 
 
-#region Function: Get-ODUConfigDefaultPropertyWhiteList
+#region Function: Get-ODUConfigDefaultPropertyWhitelist
 
 <#
 .SYNOPSIS
@@ -192,10 +192,10 @@ Returns hashtable default values for property whitelist
 .DESCRIPTION
 Returns hashtable default values for property whitelist
 .EXAMPLE
-Get-ODUConfigDefaultPropertyWhiteList
+Get-ODUConfigDefaultPropertyWhitelist
 ...
 #>
-function Get-ODUConfigDefaultPropertyWhiteList {
+function Get-ODUConfigDefaultPropertyWhitelist {
   [CmdletBinding()]
   [OutputType([hashtable])]
   param()
@@ -220,9 +220,9 @@ Name                           Value
 Name                           Main
 Url                            https://my.octoserver.com
 ApiKey                         010dfdf30ddf011423425365d1118c7a00c.....
-TypeBlackList                  {CommunityActionTemplates, Deployments, Events, Interruptions...}
-TypeWhiteList                  {}
-PropertyBlackList              {}
+TypeBlacklist                  {CommunityActionTemplates, Deployments, Events, Interruptions...}
+TypeWhitelist                  {}
+PropertyBlacklist              {}
 ...
 #>
 function Get-ODUConfigOctopusServer {
