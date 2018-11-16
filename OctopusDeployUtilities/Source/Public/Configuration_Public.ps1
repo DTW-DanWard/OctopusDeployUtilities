@@ -80,17 +80,17 @@ function Add-ODUConfigOctopusServer {
     }
     #endregion
 
-    # config settings already exist, ask to overwrite????
-    $OctopusServers = Get-ODUConfigOctopusServer
-    if ($null -ne ($OctopusServers)) {
+    # check if config settings already exist, ask to overwrite
+    $OctopusServer = Get-ODUConfigOctopusServer
+    if ($null -ne ($OctopusServer)) {
       Write-Verbose 'Octopus Deploy server settings already exist'
       # if settings are the same as before just return without making any changes
-      if ($Url -eq $OctopusServers.Url -and $ApiKey -eq (Get-ODUConfigDecryptApiKey)) {
+      if ($Url -eq $OctopusServer.Url -and $ApiKey -eq (Get-ODUConfigDecryptApiKey)) {
         Write-Verbose 'Settings same as before'
         return
       }
       Write-Host "These settings already exist: " -NoNewline
-      Write-Host $OctopusServers.Url -ForegroundColor Cyan -NoNewline
+      Write-Host $OctopusServer.Url -ForegroundColor Cyan -NoNewline
       Write-Host " :: " -NoNewline
       Write-Host (Get-ODUConfigDecryptApiKey) -ForegroundColor Cyan
       $Prompt = Read-Host -Prompt "Overwrite? (Yes/No)"
@@ -103,7 +103,7 @@ function Add-ODUConfigOctopusServer {
     Write-Verbose 'Adding Octopus Server settings to configuration'
     $Config = Get-ODUConfig
     # add as an array, overwrite existing array
-    $Config.OctopusServers = ,$OctoServer
+    $Config.OctopusServers = , $OctoServer
     Write-Verbose 'Saving configuration'
     Save-ODUConfig -Config $Config
   }
@@ -175,6 +175,68 @@ function Get-ODUConfigFilePath {
   process {
     # Because the configuration stores the API encrypted, the configuration is stored using User scope.
     Join-Path -Path (Get-ConfigurationPath -Scope User -Version ([version]$ConfigVersion)) -ChildPath 'Configuration.psd1'
+  }
+}
+#endregion
+
+
+#region Function: Get-ODUConfigPropertyBlackList
+
+<#
+.SYNOPSIS
+Gets path for text editor on local machine
+.DESCRIPTION
+Gets path for text editor on local machine
+.EXAMPLE
+Get-ODUConfigPropertyBlackList
+<path to text editor>
+#>
+function Get-ODUConfigPropertyBlackList {
+  [CmdletBinding()]
+  [OutputType([string])]
+  param()
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+    $OctopusServer = Get-ODUConfigOctopusServer
+    # if not configured yet return $null
+    if ($null -eq ($OctopusServers)) {
+      Write-Verbose 'Octopus Deploy server settings not configured'
+      return
+    }
+    # else return
+    Write-Verbose 'Returning values'
+    $OctopusServer.PropertyBlackList
+  }
+}
+#endregion
+
+
+#region Function: Get-ODUConfigPropertyWhiteList
+
+<#
+.SYNOPSIS
+Gets path for text editor on local machine
+.DESCRIPTION
+Gets path for text editor on local machine
+.EXAMPLE
+Get-ODUConfigPropertyWhiteList
+<path to text editor>
+#>
+function Get-ODUConfigPropertyWhiteList {
+  [CmdletBinding()]
+  [OutputType([string])]
+  param()
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+    $OctopusServer = Get-ODUConfigOctopusServer
+    # if not configured yet return $null
+    if ($null -eq ($OctopusServers)) {
+      Write-Verbose 'Octopus Deploy server settings not configured'
+      return
+    }
+    # else return
+    Write-Verbose 'Returning values'
+    $OctopusServer.PropertyWhiteList
   }
 }
 #endregion
