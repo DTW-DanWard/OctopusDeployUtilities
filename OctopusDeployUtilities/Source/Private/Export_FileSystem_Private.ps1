@@ -36,6 +36,38 @@ function ConvertTo-ODUSanitizedFileName {
 #endregion
 
 
+
+#region Function: New-ODUIExportItemFolder
+
+<#
+.SYNOPSIS
+Creates folder if doesn't already exist
+.DESCRIPTION
+Creates folder if doesn't already exist
+.PARAMETER FolderPath
+Full path to new folder
+.EXAMPLE
+New-ODUIExportItemFolder -FolderPath c:\temp\MyNewFolder
+<Creates c:\temp\MyNewFolder if doesn't exist>
+#>
+function New-ODUIExportItemFolder {
+  #region Function parameters
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$FolderPath
+  )
+  #endregion
+  process {
+    if ($false -eq (Test-Path -Path $FolderPath)) {
+      New-Item -ItemType Directory -Path $FolderPath > $null
+    }
+  }
+}
+#endregion
+
+
 #region Function: Out-ODUFileJson
 
 <#
