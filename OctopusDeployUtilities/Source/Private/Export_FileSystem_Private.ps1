@@ -1,4 +1,40 @@
 
+#region Function: ConvertTo-ODUSanitizedFileName
+
+<#
+.SYNOPSIS
+Removes questionable characters from string so can be used as file name
+.DESCRIPTION
+Removes questionable characters from string so can be used as file name
+Whitelisted characters: a-z 0-9 space dash
+Trims as well
+.PARAMETER FileName
+File name to review and clean
+.EXAMPLE
+ConvertTo-ODUSanitizedFileName -FileName " Test#File  /4QQ "
+<returns (no quotes): "TestFile 4QQ"
+#>
+function ConvertTo-ODUSanitizedFileName {
+  #region Function parameters
+  [CmdletBinding()]
+  [OutputType([string])]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$FileName
+  )
+  #endregion
+  process {
+    # clean out characters non alpha-numeric, space, dash
+    $FileName = $FileName -replace '[^a-z0-9 -]', ''
+    # replace any multiple spaces with a single space
+    $FileName = $FileName -replace ' +', ' '
+    # and trim spaces as well
+    $FileName.Trim()
+  }
+}
+#endregion
+
 
 #region Function: Out-ODUFileJson
 
