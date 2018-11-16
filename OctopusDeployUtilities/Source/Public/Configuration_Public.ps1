@@ -32,8 +32,6 @@ function Add-ODUConfigOctopusServer {
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
-    # asdf if config settings already exist, ask to overwrite????
-
     # if $Url ends with trailing /, remove it
     if ($Url.EndsWith('/')) { $Url = $Url.Substring(0, $Url.Length - 1) }
 
@@ -61,6 +59,8 @@ function Add-ODUConfigOctopusServer {
       $ApiKeySecure = ConvertTo-SecureString -String $ApiKey -AsPlainText -Force | ConvertFrom-SecureString
     }
 
+    #region Creating Octopus Server configuration section
+    # this should be refactored
     Write-Verbose 'Creating Octopus Server configuration section'
     $OctoServer = @{ }
     Write-Verbose "Octopus server Name: $Name"
@@ -78,9 +78,33 @@ function Add-ODUConfigOctopusServer {
       CodeRootPaths     = $Undefined
       CodeSearchPattern = $Undefined
     }
+    #endregion
+
+    # config settings already exist, ask to overwrite????
+    $OctopusServers = Get-ODUConfigOctopusServer
+    if ($null -ne ($OctopusServers)) {
+      Write-Verbose 'Octopus Deploy server settings already exist'
+      # if settings are the same as before just return without making any changes
+      if ($Url -eq $OctopusServers.Url -and $ApiKey -eq (Get-ODUConfigDecryptApiKey)) {
+        Write-Verbose 'Settings same as before'
+        return
+      }
+      Write-Host "These settings already exist: " -NoNewline
+      Write-Host $OctopusServers.Url -ForegroundColor Cyan -NoNewline
+      Write-Host " :: " -NoNewline
+      Write-Host (Get-ODUConfigDecryptApiKey) -ForegroundColor Cyan
+      $Prompt = Read-Host -Prompt "Overwrite? (Yes/No)"
+      if ($Prompt -ne 'yes') {
+        Write-Verbose 'Do not overwrite settings'
+        return
+      }
+    }
+
     Write-Verbose 'Adding Octopus Server settings to configuration'
     $Config = Get-ODUConfig
-    $Config.OctopusServers += $OctoServer
+    # add as an array, overwrite existing array
+    $Config.OctopusServers = ,$OctoServer
+    Write-Verbose 'Saving configuration'
     Save-ODUConfig -Config $Config
   }
 }

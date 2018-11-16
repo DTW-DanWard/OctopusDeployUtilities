@@ -206,9 +206,6 @@ function Get-ODUConfigDefaultPropertyWhiteList {
 #endregion
 
 
-
-
-
 #region Function: Get-ODUConfigOctopusServer
 
 <#
@@ -240,7 +237,7 @@ function Get-ODUConfigOctopusServer {
     $Config = Get-ODUConfig
     if ($Config.OctopusServers.Count -eq 0) {
       Write-Verbose 'No Octopus Server configured'
-      throw "Octopus Server has not been registered yet; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
+      $null
     } else {
       Write-Verbose 'Retrieving Octopus Server configuration'
       $Config.OctopusServers[0]
