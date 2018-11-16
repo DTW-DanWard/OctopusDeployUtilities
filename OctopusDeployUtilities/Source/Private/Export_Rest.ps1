@@ -18,6 +18,7 @@ Invoke-ODURestMethod -Url https://MyOctoServer.octopus.app -ApiKey 'API-12345678
 function Invoke-ODURestMethod {
   #region Function parameters
   [CmdletBinding()]
+  [OutputType([string])]
   param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
