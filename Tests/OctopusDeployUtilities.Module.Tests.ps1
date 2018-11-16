@@ -15,7 +15,7 @@ Get-ChildItem -Path $SourceRootPath -Filter *.ps1 -Recurse | ForEach-Object {
 
 
 #region Confirming all Source functions in the module have help defined
-$SourceScripts | ForEach-Object {
+$SourceScripts | Where-Object { ($null -ne (Get-Content $_)) -and ((Get-Content $_).Trim() -ne '') } | ForEach-Object {
   $SourceScript = $_
   Describe "Source script: $SourceScript" { }
   $Functions = ([System.Management.Automation.Language.Parser]::ParseInput((Get-Content -Path $SourceScript -Raw), [ref]$null, [ref]$null)).FindAll( { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $false)
