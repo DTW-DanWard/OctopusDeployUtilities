@@ -116,10 +116,11 @@ $SourceScripts | Where-Object { ($null -ne (Get-Content $_)) -and ((Get-Content 
 
 #region Confirm which functions/aliases are exported
 Describe 'Confirm module public information is correct' {
+  Get-Module -Name $env:BHProjectName | Remove-Module -Force
   $Module = Import-Module $env:BHPSModuleManifest -Force -PassThru
   $PublicSourceRootPath = Join-Path -Path (Join-Path -Path $env:BHModulePath -ChildPath 'Source') -ChildPath 'Public'
   [string[]]$OfficialPublicFunctions = $null
-  Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | ForEach-Object {
+  Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | Where-Object { ($null -ne (Get-Content $_.FullName)) -and ((Get-Content $_.FullName).Trim() -ne '') } | ForEach-Object {
     ([System.Management.Automation.Language.Parser]::ParseInput((Get-Content -Path $_.FullName -Raw), [ref]$null, [ref]$null)).FindAll( { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $false) | ForEach-Object {
       $OfficialPublicFunctions += $_.Name
     }
