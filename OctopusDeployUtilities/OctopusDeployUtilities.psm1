@@ -10,10 +10,10 @@ Get-ChildItem -Path $SourceRootPath -Filter *.ps1 -Recurse | ForEach-Object {
 # use Zachary Loeber AST method to get names of public functions instead of storing/assuming function per file
 # https://www.the-little-things.net/blog/2015/10/03/powershell-thoughts-on-module-design/
 $PublicSourceRootPath = Join-Path -Path $SourceRootPath -ChildPath 'Public'
-[string[]]$FunctionNames = $null
+[string[]]$PublicFunctionNames = $null
 Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | Where-Object { ($null -ne (Get-Content $_.FullName)) -and ((Get-Content $_.FullName).Trim() -ne '') } | ForEach-Object {
   ([System.Management.Automation.Language.Parser]::ParseInput((Get-Content -Path $_.FullName -Raw), [ref]$null, [ref]$null)).FindAll( { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $false) | ForEach-Object {
-    $FunctionNames += $_.Name
+    $PublicFunctionNames += $_.Name
   }
 }
 
@@ -22,6 +22,9 @@ $ScriptLevelVariables = Join-Path -Path $PSScriptRoot -ChildPath 'Set-ScriptLeve
 . $ScriptLevelVariables
 
 # export public function names and aliases
-# all aliases created here should also be listed in script level variable $OfficialAliasExportList
-New-Alias -Name oduexport -Value Export-ODUOctopusDeployConfig
-Export-ModuleMember -Function $FunctionNames -Alias $OfficialAliasExportList
+# first create aliases
+$OfficialAliasExports.Keys | ForEach-Object {
+  New-Alias -Name $_ -Value $OfficialAliasExports.$_
+}
+# export Public functions and aliases
+Export-ModuleMember -Function $PublicFunctionNames -Alias ($OfficialAliasExports.Keys)

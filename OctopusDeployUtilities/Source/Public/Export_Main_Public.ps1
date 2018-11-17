@@ -17,6 +17,6 @@ function Export-ODUOctopusDeployConfig {
   [CmdletBinding()]
   param()
   process {
-    "EXPORTING!"
+    Write-Host "EXPORTING!"
   }
 }

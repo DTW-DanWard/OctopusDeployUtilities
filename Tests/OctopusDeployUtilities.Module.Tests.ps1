@@ -151,12 +151,12 @@ Describe 'Confirm module public information is correct' {
   It 'confirms exported alias count is correct' {
     if ($null -ne (Get-Command -Module $env:BHProjectName -Type Alias)) {
       ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Count |
-        Should Be ($OfficialAliasExportList.Count)
+        Should Be ($OfficialAliasExports.Keys.Count)
     }
   }
   It 'confirms all exported aliases are in the official list' {
     if ($null -ne (Get-Command -Module $env:BHProjectName -Type Alias)) {
-      ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Name | Where-Object { $_ -notin $OfficialAliasExportList} | Should BeNullOrEmpty
+      ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Name | Where-Object { $_ -notin ($OfficialAliasExports.Keys)} | Should BeNullOrEmpty
     }
   }
 }
