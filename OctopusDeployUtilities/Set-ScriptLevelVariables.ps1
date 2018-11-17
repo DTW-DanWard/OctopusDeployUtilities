@@ -15,6 +15,8 @@ $script:ProjectUrl = 'https://github.com/DTW-DanWard/OctopusDeployUtilities'
 #             manually collect the Ids that are referenced then explicitly fetch by Id
 Set-Variable ApiFetchTypeList -Option ReadOnly -Value @('Simple', 'MultiFetch', 'ItemIdOnly') -Scope Script
 
+Set-Variable OfficialAliasExportList -Option ReadOnly -Value @('oduexport') -Scope Script
+
 # version of configuration details
 $script:ConfigVersion = '1.0.0'
 # default text for settings still having placeholders - not configured by user yet

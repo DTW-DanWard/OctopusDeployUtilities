@@ -1,6 +1,12 @@
 
 Set-StrictMode -Version Latest
 
+#region Set module/script-level variables
+$ScriptLevelVariables = Join-Path -Path $env:BHModulePath -ChildPath 'Set-ScriptLevelVariables.ps1'
+. $ScriptLevelVariables
+#endregion
+
+
 # This file does not have tests for any specific file:
 #  - it has tests across all Source files in the module;
 #  - it has tests for the module itself (functions/aliases exported, etc.)
@@ -126,8 +132,6 @@ Describe 'Confirm module public information is correct' {
       $OfficialPublicFunctions += $_.Name
     }
   }
-  # this must be hard-coded; no fast/easy programmatic way of doing this other than doing the method used to test it
-  [string[]]$OfficialPublicAliases = @()
 
   It 'confirms the module name matches the project name' {
     $Module.Name | Should Be $env:BHProjectName
@@ -147,12 +151,12 @@ Describe 'Confirm module public information is correct' {
   It 'confirms exported alias count is correct' {
     if ($null -ne (Get-Command -Module $env:BHProjectName -Type Alias)) {
       ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Count |
-        Should Be ($OfficialPublicAliases.Count)
+        Should Be ($OfficialAliasExportList.Count)
     }
   }
   It 'confirms all exported aliases are in the official list' {
     if ($null -ne (Get-Command -Module $env:BHProjectName -Type Alias)) {
-      ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Name | Where-Object { $_ -notin $OfficialPublicAliases} | Should BeNullOrEmpty
+      ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Name | Where-Object { $_ -notin $OfficialAliasExportList} | Should BeNullOrEmpty
     }
   }
 }

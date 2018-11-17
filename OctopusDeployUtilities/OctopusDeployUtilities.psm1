@@ -21,8 +21,7 @@ Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | Where-Object 
 $ScriptLevelVariables = Join-Path -Path $PSScriptRoot -ChildPath 'Set-ScriptLevelVariables.ps1'
 . $ScriptLevelVariables
 
-# export public function names and alias id
-# asdf
-# New-Alias -Name id -Value Invoke-DockerPSObject
-# Export-ModuleMember -Function $FunctionNames -Alias id
-Export-ModuleMember -Function $FunctionNames
+# export public function names and aliases
+# all aliases created here should also be listed in script level variable $OfficialAliasExportList
+New-Alias -Name oduexport -Value Export-ODUOctopusDeployConfig
+Export-ModuleMember -Function $FunctionNames -Alias $OfficialAliasExportList
