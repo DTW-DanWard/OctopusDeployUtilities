@@ -1,3 +1,6 @@
+
+Set-StrictMode -Version Latest
+
 #region Description of REST API call properties
 <#
 These names are not pretty but they have been named so as to (hopefully) be not confusing:

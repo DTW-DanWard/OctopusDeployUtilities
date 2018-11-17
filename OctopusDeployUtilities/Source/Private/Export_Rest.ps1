@@ -1,4 +1,5 @@
 
+Set-StrictMode -Version Latest
 
 #region Function: Invoke-ODURestMethod
 

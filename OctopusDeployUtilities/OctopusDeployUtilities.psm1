@@ -1,3 +1,6 @@
+
+Set-StrictMode -Version Latest
+
 $SourceRootPath = Join-Path -Path $PSScriptRoot -ChildPath 'Source'
 # dot source all ps1 scripts under Source; note: no pester test files not stored under Source
 Get-ChildItem -Path $SourceRootPath -Filter *.ps1 -Recurse | ForEach-Object {

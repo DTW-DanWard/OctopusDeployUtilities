@@ -1,4 +1,6 @@
 
+Set-StrictMode -Version Latest
+
 # script-level variables
 # web site url
 $script:ProjectUrl = 'https://github.com/DTW-DanWard/OctopusDeployUtilities'

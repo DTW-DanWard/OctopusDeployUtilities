@@ -1,4 +1,5 @@
 
+Set-StrictMode -Version Latest
 
 # This file does not have tests for any specific file:
 #  - it has tests across all Source files in the module;

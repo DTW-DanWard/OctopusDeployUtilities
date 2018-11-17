@@ -1,4 +1,6 @@
 
+Set-StrictMode -Version Latest
+
 # make sure BuildHelpers is installed and loaded; it will be when this is called from
 # standard build process but do it just in case manually testing a single file's tests individually
 $ModuleName = 'BuildHelpers'

@@ -1,4 +1,6 @@
 
+Set-StrictMode -Version Latest
+
 #region Function: ConvertTo-ODUSanitizedFileName
 
 <#
