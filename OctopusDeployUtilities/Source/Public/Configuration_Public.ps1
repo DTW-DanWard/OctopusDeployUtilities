@@ -63,13 +63,13 @@ function Add-ODUConfigOctopusServer {
 
     #region Creating Octopus Server configuration section
     # this should be refactored
-    Write-Verbose 'Creating Octopus Server configuration section'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Creating Octopus Server configuration section"
     $OctoServer = @{ }
-    Write-Verbose "Octopus server Name: $Name"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Octopus server Name: $Name"
     $OctoServer.Name = $Name
-    Write-Verbose "Octopus server Url: $Url"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Octopus server Url: $Url"
     $OctoServer.Url = $Url
-    Write-Verbose "Octopus API Key - first 7 characters: $($ApiKey.Substring(0,7))..."
+    Write-Verbose "$($MyInvocation.MyCommand) :: Octopus API Key - first 7 characters: $($ApiKey.Substring(0,7))..."
     $OctoServer.ApiKey = $ApiKeySecure
     $OctoServer.TypeBlacklist = Get-ODUConfigDefaultTypeBlacklist
     $OctoServer.TypeWhitelist = Get-ODUConfigDefaultTypeWhitelist
@@ -85,10 +85,10 @@ function Add-ODUConfigOctopusServer {
     # check if config settings already exist, ask to overwrite
     $OctopusServer = Get-ODUConfigOctopusServer
     if ($null -ne ($OctopusServer)) {
-      Write-Verbose 'Octopus Deploy server settings already exist'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings already exist"
       # if settings are the same as before just return without making any changes
       if ($Url -eq $OctopusServer.Url -and $ApiKey -eq (Get-ODUConfigDecryptApiKey)) {
-        Write-Verbose 'Settings same as before'
+        Write-Verbose "$($MyInvocation.MyCommand) :: Settings same as before"
         return
       }
       Write-Host "These settings already exist: " -NoNewline
@@ -97,16 +97,16 @@ function Add-ODUConfigOctopusServer {
       Write-Host (Get-ODUConfigDecryptApiKey) -ForegroundColor Cyan
       $Prompt = Read-Host -Prompt "Overwrite? (Yes/No)"
       if ($Prompt -ne 'yes') {
-        Write-Verbose 'Do not overwrite settings'
+        Write-Verbose "$($MyInvocation.MyCommand) :: Do not overwrite settings"
         return
       }
     }
 
-    Write-Verbose 'Adding Octopus Server settings to configuration'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Adding Octopus Server settings to configuration"
     $Config = Get-ODUConfig
     # add as an array, overwrite existing array
     $Config.OctopusServers = , $OctoServer
-    Write-Verbose 'Saving configuration'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }
 }
@@ -202,11 +202,11 @@ function Get-ODUConfigPropertyBlacklist {
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet return $null
     if ($null -eq ($OctopusServer)) {
-      Write-Verbose 'Octopus Deploy server settings not configured'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings not configured"
       return
     }
     # else return
-    Write-Verbose 'Returning values'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Returning values"
     $OctopusServer.PropertyBlacklist
   }
 }
@@ -233,11 +233,11 @@ function Get-ODUConfigPropertyWhitelist {
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet return $null
     if ($null -eq ($OctopusServer)) {
-      Write-Verbose 'Octopus Deploy server settings not configured'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings not configured"
       return
     }
     # else return
-    Write-Verbose 'Returning values'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Returning values"
     $OctopusServer.PropertyWhitelist
   }
 }
@@ -287,11 +287,11 @@ function Get-ODUConfigTypeBlacklist {
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet return $null
     if ($null -eq ($OctopusServer)) {
-      Write-Verbose 'Octopus Deploy server settings not configured'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings not configured"
       return
     }
     # else return
-    Write-Verbose 'Returning values'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Returning values"
     $OctopusServer.TypeBlacklist
   }
 }
@@ -318,11 +318,11 @@ function Get-ODUConfigTypeWhitelist {
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet return $null
     if ($null -eq ($OctopusServer)) {
-      Write-Verbose 'Octopus Deploy server settings not configured'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings not configured"
       return
     }
     # else return
-    Write-Verbose 'Returning values'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Returning values"
     $OctopusServer.TypeWhitelist
   }
 }
@@ -353,12 +353,12 @@ function Set-ODUConfigDiffViewer {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
     if ($false -eq (Test-Path -Path $Path)) {
-      Write-Verbose "Path is not valid: $Path"
+      Write-Verbose "$($MyInvocation.MyCommand) :: Path is not valid: $Path"
       throw "Path is not valid: $Path"
     } else {
       $Config = Get-ODUConfig
       $Config.ExternalTools.DiffViewerPath = $Path
-      Write-Verbose "Saving configuration with DiffViewerPath: $Path"
+      Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration with DiffViewerPath: $Path"
       Save-ODUConfig -Config $Config
     }
   }
@@ -392,7 +392,7 @@ function Set-ODUConfigExportRootFolder {
       # try to create export folder first before creating config, if errors creating folder then exit without updating configuration
       if ($false -eq (Test-Path -Path $Path)) {
         # must explicitly stop if there's an error; don't create config unless this is valid
-        Write-Verbose "Creating root export folder: $Path"
+        Write-Verbose "$($MyInvocation.MyCommand) :: Creating root export folder: $Path"
         New-Item -Path $Path -ItemType Directory -ErrorAction Stop > $null
       }
 
@@ -400,7 +400,7 @@ function Set-ODUConfigExportRootFolder {
       # however, it's possible for a user to update an existing instance to change the root export path, so only initialize config if first time
       # use Test-ODUConfigFilePath instead of Confirm-ODUConfig; won't throw error if no config
       if ($false -eq (Test-ODUConfigFilePath)) {
-        Write-Verbose 'Initializing configuration'
+        Write-Verbose "$($MyInvocation.MyCommand) :: Initializing configuration"
         Initialize-ODUConfig
       }
 
@@ -409,13 +409,13 @@ function Set-ODUConfigExportRootFolder {
       $OldExportRootFolder = $Config.ExportRootFolder
       # update root folder and save
       $Config.ExportRootFolder = $Path
-      Write-Verbose "Saving configuration with ExportRootFolder: $Path"
+      Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration with ExportRootFolder: $Path"
       Save-ODUConfig -Config $Config
 
       # if 'old' value isn't undefined (system initialized before) then export root folder has been set before
       # if so, and if new value is different, give use reminder to move files
       if ($OldExportRootFolder -ne $Undefined -and $OldExportRootFolder -ne $Path) {
-        Write-Verbose 'Old configuration already found with different setting, user is updating export root folder'
+        Write-Verbose "$($MyInvocation.MyCommand) :: Old configuration already found with different setting, user is updating export root folder"
         Write-Output "Root export location changed from $OldExportRootFolder to $Path; make sure to move any old exports to new location."
       }
     } catch {
@@ -449,20 +449,20 @@ function Set-ODUConfigPropertyBlacklist {
 
     # asdf need to validate types
 
-    Write-Verbose "Getting Octopus server configuration"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Getting Octopus server configuration"
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet throw error
     if ($null -eq ($OctopusServer)) {
-      Write-Verbose 'Octopus Deploy server settings not configured'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings not configured"
       throw "Octopus Deploy server not configured; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
     }
 
     $Config = Get-ODUConfig
     # reset property whitelist - can't have blacklist and whitelist at same time
-    Write-Verbose 'Reset whitelist and set blacklist'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Reset whitelist and set blacklist"
     $Config.OctopusServers[0].PropertyWhitelist = @{}
     $Config.OctopusServers[0].PropertyBlacklist = $Hashtable
-    Write-Verbose 'Saving configuration'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }
 }
@@ -492,20 +492,20 @@ function Set-ODUConfigPropertyWhitelist {
 
     # asdf need to validate types
 
-    Write-Verbose "Getting Octopus server configuration"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Getting Octopus server configuration"
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet throw error
     if ($null -eq ($OctopusServer)) {
-      Write-Verbose 'Octopus Deploy server settings not configured'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings not configured"
       throw "Octopus Deploy server not configured; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
     }
 
     $Config = Get-ODUConfig
     # reset property blacklist - can't have blacklist and whitelist at same time
-    Write-Verbose 'Reset blacklist and set whitelist'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Reset blacklist and set whitelist"
     $Config.OctopusServers[0].PropertyBlacklist = @{}
     $Config.OctopusServers[0].PropertyWhitelist = $Hashtable
-    Write-Verbose 'Saving configuration'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }
 }
@@ -536,12 +536,12 @@ function Set-ODUConfigTextEditor {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
     if ($false -eq (Test-Path -Path $Path)) {
-      Write-Verbose "Path is not valid: $Path"
+      Write-Verbose "$($MyInvocation.MyCommand) :: Path is not valid: $Path"
       throw "Path is not valid: $Path"
     } else {
       $Config = Get-ODUConfig
       $Config.ExternalTools.TextEditorPath = $Path
-      Write-Verbose "Saving configuration with TextEditorPath: $Path"
+      Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration with TextEditorPath: $Path"
       Save-ODUConfig -Config $Config
     }
   }
@@ -572,20 +572,20 @@ function Set-ODUConfigTypeBlacklist {
 
     # asdf need to validate types
 
-    Write-Verbose "Getting Octopus server configuration"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Getting Octopus server configuration"
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet throw error
     if ($null -eq ($OctopusServer)) {
-      Write-Verbose 'Octopus Deploy server settings not configured'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings not configured"
       throw "Octopus Deploy server not configured; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
     }
 
     $Config = Get-ODUConfig
     # reset type whitelist - can't have blacklist and whitelist at same time
-    Write-Verbose 'Reset whitelist and set blacklist'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Reset whitelist and set blacklist"
     $Config.OctopusServers[0].TypeWhitelist = @()
     $Config.OctopusServers[0].TypeBlacklist = $List
-    Write-Verbose 'Saving configuration'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }
 }
@@ -615,20 +615,20 @@ function Set-ODUConfigTypeWhitelist {
 
     # asdf need to validate types
 
-    Write-Verbose "Getting Octopus server configuration"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Getting Octopus server configuration"
     $OctopusServer = Get-ODUConfigOctopusServer
     # if not configured yet throw error
     if ($null -eq ($OctopusServer)) {
-      Write-Verbose 'Octopus Deploy server settings not configured'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings not configured"
       throw "Octopus Deploy server not configured; run: Add-ODUConfigOctopusServer - See instructions here: $ProjectUrl"
     }
 
     $Config = Get-ODUConfig
     # reset type blacklist - can't have blacklist and whitelist at same time
-    Write-Verbose 'Reset blacklist and set whitelist'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Reset blacklist and set whitelist"
     $Config.OctopusServers[0].TypeBlacklist = @()
     $Config.OctopusServers[0].TypeWhitelist = $List
-    Write-Verbose 'Saving configuration'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }
 }

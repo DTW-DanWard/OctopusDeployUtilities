@@ -20,13 +20,13 @@ function Export-ODUOctopusDeployConfigPrivate {
   process {
     # root folder was tested/created when initially set; unless user manually modified the config these will always work
     [string]$CurrentExportRootFolder = Join-Path -Path (Get-ODUConfigExportRootFolder) -ChildPath ('{0:yyyyMMdd-HHmmss}' -f (Get-Date))
-    Write-Verbose "Create root folder: $CurrentExportRootFolder"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Create root folder: $CurrentExportRootFolder"
     New-Item -ItemType Directory -Path $CurrentExportRootFolder > $null
 
     # get filtered list of api call details to process
     $ApiCalls = Get-ODUFilteredExportRestApiCalls
     # create folders for each api call
-    Write-Verbose 'Creating folder for api calls'
+    Write-Verbose "$($MyInvocation.MyCommand) :: Creating folder for api calls"
     New-ODUFolderForEachApiCall -ParentFolder $CurrentExportRootFolder -ApiCalls $ApiCalls
 
     # for ItemIdOnly calls, get create lookup with key of reference property names and value empty array (for capturing values)
@@ -87,7 +87,7 @@ function Get-ODUFilteredExportRestApiCalls {
     # either type whitelist or blacklist should be set - but not both!
     # this shouldn't be possible unless user hand-edit config file
     if (($null -ne $TypeBlackList) -and ($null -ne $TypeWhiteList)) {
-      Write-Verbose 'Both Type blacklist and whitelist defined; that''s a no no'
+      Write-Verbose "$($MyInvocation.MyCommand) :: Both Type blacklist and whitelist defined; that's a no no"
       throw 'Type blacklist and type whitelist both have values; this cannot be processed. Check your config values using Get-ODUConfigTypeBlacklist (or ...WhiteList) then set with Set-ODUConfigTypeBlackWhitelist (or ...WhiteList)'
     }
 
@@ -95,10 +95,10 @@ function Get-ODUFilteredExportRestApiCalls {
     [object[]]$ApiCallInfo = Get-ODUStandardExportRestApiCalls
     # filter as necessary
     if ($null -ne $TypeWhiteList -and $TypeWhiteList.Count -gt 0) {
-      Write-Verbose "Filtering RestApiCalls based on Type whitelist: $TypeWhiteList"
+      Write-Verbose "$($MyInvocation.MyCommand) :: Filtering RestApiCalls based on Type whitelist: $TypeWhiteList"
       $ApiCallInfo = $ApiCallInfo | Where-Object { $TypeWhiteList -contains $_.RestName }
     } elseif ($null -ne $TypeBlackList -and $TypeBlackList.Count -gt 0) {
-      Write-Verbose "Filtering RestApiCalls based on Type blacklist: $TypeBlackList"
+      Write-Verbose "$($MyInvocation.MyCommand) :: Filtering RestApiCalls based on Type blacklist: $TypeBlackList"
       $ApiCallInfo = $ApiCallInfo | Where-Object { $TypeBlackList -notcontains $_.RestName }
     }
 
@@ -172,7 +172,7 @@ function New-ODUFolderForEachApiCall {
     [object[]]$ApiCalls
   )
   process {
-    Write-Verbose "Parent folder is: $ParentFolder"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Parent folder is: $ParentFolder"
     $ApiCalls | ForEach-Object {
       New-ODUIExportItemFolder -FolderPath (Join-Path -Path $ParentFolder -ChildPath (Get-ODUFolderNameForApiCall -ApiCall $_))
     }

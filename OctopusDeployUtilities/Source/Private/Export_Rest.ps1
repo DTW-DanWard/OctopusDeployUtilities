@@ -30,7 +30,7 @@ function Invoke-ODURestMethod {
   )
   #endregion
   process {
-    Write-Verbose "Calling Url $Url with API Key (first 7 characters) $($ApiKey.Substring(0,7))"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Calling Url $Url with API Key (first 7 characters) $($ApiKey.Substring(0,7))"
     Invoke-RestMethod -Method Get -Uri $Url -Headers @{ 'X-Octopus-ApiKey' = $ApiKey }
   }
 }
