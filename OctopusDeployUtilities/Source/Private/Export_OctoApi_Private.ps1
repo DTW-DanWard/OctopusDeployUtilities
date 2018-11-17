@@ -47,7 +47,7 @@ function New-ODUExportRestApiCall {
     [string]$ItemIdOnlyReferencePropertyName
   )
   process {
-    [PSCustomObject]@{ 
+    [PSCustomObject]@{
       RestName                        = $RestName
       RestMethod                      = $RestMethod
       ApiFetchType                    = $ApiFetchType
@@ -85,36 +85,36 @@ function Get-ODUStandardExportRestApiCalls {
 
 
 # MultiFetch REST API calls
-  New-ODUExportRestApiCall 'Accounts' '/api/accounts/all' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('EnvironmentIds', 'TenantIds')
-  New-ODUExportRestApiCall 'ActionTemplates' '/api/actiontemplates/all' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('CommunityActionTemplateId')
+  New-ODUExportRestApiCall 'Accounts' '/api/accounts' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('EnvironmentIds', 'TenantIds')
+  New-ODUExportRestApiCall 'ActionTemplates' '/api/actiontemplates' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('CommunityActionTemplateId')
   New-ODUExportRestApiCall 'Artifacts' '/api/artifacts' 'MultiFetch' 'Id'
   New-ODUExportRestApiCall 'Channels' '/api/channels' 'MultiFetch' 'Id' -ExternalIdToResolvePropertyName @('LifecycleId', 'ProjectId')
   New-ODUExportRestApiCall 'CommunityActionTemplates' '/api/communityactiontemplates' 'MultiFetch' 'Name'
   New-ODUExportRestApiCall 'Deployments' '/api/deployments' 'MultiFetch' 'Id'
-  New-ODUExportRestApiCall 'Environments' '/api/environments/all' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'Environments' '/api/environments' 'MultiFetch' 'Name'
   New-ODUExportRestApiCall 'Events' '/api/events' 'MultiFetch' 'Id'
-  New-ODUExportRestApiCall 'Feeds' '/api/feeds/all' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'Feeds' '/api/feeds' 'MultiFetch' 'Name'
   New-ODUExportRestApiCall 'Interruptions' '/api/interruptions' 'MultiFetch' 'Id'
-  New-ODUExportRestApiCall 'LibraryVariableSets' '/api/libraryvariablesets/all' 'MultiFetch' 'Id'
-  New-ODUExportRestApiCall 'Lifecycles' '/api/lifecycles/all' 'MultiFetch' 'Name'
-  New-ODUExportRestApiCall 'MachinePolicies' '/api/machinepolicies/all' 'MultiFetch' 'Name'
-  New-ODUExportRestApiCall 'Machines' '/api/machines/all' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('MachinePolicyId')
-  New-ODUExportRestApiCall 'OctopusServerNodes' '/api/octopusservernodes/all' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'LibraryVariableSets' '/api/libraryvariablesets' 'MultiFetch' 'Id'
+  New-ODUExportRestApiCall 'Lifecycles' '/api/lifecycles' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'MachinePolicies' '/api/machinepolicies' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'Machines' '/api/machines' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('MachinePolicyId')
+  New-ODUExportRestApiCall 'OctopusServerNodes' '/api/octopusservernodes' 'MultiFetch' 'Name'
   New-ODUExportRestApiCall 'Packages' '/api/packages' 'MultiFetch' 'Id'
-  New-ODUExportRestApiCall 'ProjectGroups' '/api/projectgroups/all' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('EnvironmentIds', 'RetentionPolicyId')
-  New-ODUExportRestApiCall 'Projects' '/api/projects/all' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('ClonedFromProjectId', 'IncludedLibraryVariableSetIds', 'LifecycleId', 'ProjectGroupId')
+  New-ODUExportRestApiCall 'ProjectGroups' '/api/projectgroups' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('EnvironmentIds', 'RetentionPolicyId')
+  New-ODUExportRestApiCall 'Projects' '/api/projects' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('ClonedFromProjectId', 'IncludedLibraryVariableSetIds', 'LifecycleId', 'ProjectGroupId')
   New-ODUExportRestApiCall 'ProjectTriggers' '/api/projecttriggers' 'MultiFetch' 'Id'
-  New-ODUExportRestApiCall 'Proxies' '/api/proxies/all' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'Proxies' '/api/proxies' 'MultiFetch' 'Name'
   New-ODUExportRestApiCall 'Releases' '/api/releases' 'MultiFetch' 'Id'
   New-ODUExportRestApiCall 'ServerStatus-Extensions' '/api/serverstatus/extensions' 'MultiFetch' 'Name'
-  New-ODUExportRestApiCall 'Subscriptions' '/api/subscriptions/all' 'MultiFetch' 'Name'
-  New-ODUExportRestApiCall 'TagSets' '/api/tagsets/all' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'Subscriptions' '/api/subscriptions' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'TagSets' '/api/tagsets' 'MultiFetch' 'Name'
   New-ODUExportRestApiCall 'Tasks' '/api/tasks' 'MultiFetch' 'Id'
-  New-ODUExportRestApiCall 'Teams' '/api/teams/all' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('EnvironmentIds', 'MemberUserIds', 'ProjectGroupIds', 'ProjectIds', 'TenantIds', 'UserRoleIds')
-  New-ODUExportRestApiCall 'Tenants' '/api/tenants/all' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'Teams' '/api/teams' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('EnvironmentIds', 'MemberUserIds', 'ProjectGroupIds', 'ProjectIds', 'TenantIds', 'UserRoleIds')
+  New-ODUExportRestApiCall 'Tenants' '/api/tenants' 'MultiFetch' 'Name'
   New-ODUExportRestApiCall 'TenantVariables' '/api/tenantvariables/all' 'MultiFetch' 'TenantName'
-  New-ODUExportRestApiCall 'UserRoles' '/api/userroles/all' 'MultiFetch' 'Name'
-  New-ODUExportRestApiCall 'Users' '/api/users/all' 'MultiFetch' 'Username' -IdToNamePropertyName 'Username'
+  New-ODUExportRestApiCall 'UserRoles' '/api/userroles' 'MultiFetch' 'Name'
+  New-ODUExportRestApiCall 'Users' '/api/users' 'MultiFetch' 'Username' -IdToNamePropertyName 'Username'
 
   # ItemIdOnly REST API calls
   New-ODUExportRestApiCall 'DeploymentProcesses' '/api/deploymentprocesses' 'ItemIdOnly' 'Id' -ExternalIdToResolvePropertyName @('LastSnapshotId', 'ProjectId') -ItemIdOnlyReferencePropertyName 'DeploymentProcessId'

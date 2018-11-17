@@ -9,7 +9,7 @@ $script:ProjectUrl = 'https://github.com/DTW-DanWard/OctopusDeployUtilities'
 # MultiFetch  make call to get TotalResults, Number of Pages, etc. info, need to call API in loop until all items retrieved
 #             used for most user-specific data calls; data saved one item per file in folder with same name as API call
 # ItemIdOnly  fetch item ONLY by it's Id; certain versioned items (variables, deployment processes) have so many instances
-#             that call to fetch the TotalResults values time out or hit out of memory exceptions; for these we have to 
+#             that call to fetch the TotalResults values time out or hit out of memory exceptions; for these we have to
 #             manually collect the Ids that are referenced then explicitly fetch by Id
 Set-Variable ApiFetchTypeList -Option ReadOnly -Value @('Simple', 'MultiFetch', 'ItemIdOnly') -Scope Script
 
