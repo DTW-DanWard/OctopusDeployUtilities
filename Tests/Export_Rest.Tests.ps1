@@ -14,3 +14,7 @@ if ($null -eq $SourceScript) { exit }
 Describe "Re/loading: $SourceScript" { }
 . $SourceScript
 #endregion
+
+
+# asdf tests:
+# call with bad url, bad API key

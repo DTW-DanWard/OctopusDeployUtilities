@@ -14,3 +14,9 @@ if ($null -eq $SourceScript) { exit }
 Describe "Re/loading: $SourceScript" { }
 . $SourceScript
 #endregion
+
+
+
+# asdf tests to do
+# validation on New-ODUExportRestApiCall
+#  RestMethod must match regular expression - starts with /api/<something> and no trailing slash
