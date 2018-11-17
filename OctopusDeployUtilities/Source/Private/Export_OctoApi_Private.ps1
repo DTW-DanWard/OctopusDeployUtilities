@@ -38,7 +38,7 @@ ItemIdOnlyReferencePropertyName   for items fetched by ItemIdOnly, this is the n
 Creates single PSObject with Octopus Deploy REST API call information
 .DESCRIPTION
 Creates single PSObject with Octopus Deploy REST API call information
-Helper function for Get-ODUStandardExportRestApiCalls
+Helper function for Get-ODUStandardExportRestApiCallInfo
 .PARAMETER RestName
 Proper name of REST method
 .PARAMETER RestMethod
@@ -91,7 +91,7 @@ function New-ODUExportRestApiCall {
 #endregion
 
 
-#region Function: Get-ODUStandardExportRestApiCalls
+#region Function: Get-ODUStandardExportRestApiCallInfo
 
 <#
 .SYNOPSIS
@@ -99,10 +99,10 @@ Returns PSObjects with Octopus Deploy API call details
 .DESCRIPTION
 Returns PSObjects with Octopus Deploy API call details
 .EXAMPLE
-Get-ODUStandardExportRestApiCalls
+Get-ODUStandardExportRestApiCallInfo
 <returns info>
 #>
-function Get-ODUStandardExportRestApiCalls {
+function Get-ODUStandardExportRestApiCallInfo {
   [CmdletBinding()]
   param()
   process {
