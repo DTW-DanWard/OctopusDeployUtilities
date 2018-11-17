@@ -10,5 +10,5 @@ asdf delete this
 asdf delete this
 asdf delete this
 #>
-# function Test { Get-ODUStandardExportRestApiCallInfo }
+# function Test { Get-ODUStandardExportRestApiCalls }
 

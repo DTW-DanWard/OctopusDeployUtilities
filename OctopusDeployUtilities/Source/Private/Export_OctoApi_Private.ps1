@@ -38,7 +38,7 @@ ItemIdOnlyReferencePropertyName   for items fetched by ItemIdOnly, this is the n
 Creates single PSObject with Octopus Deploy REST API call information
 .DESCRIPTION
 Creates single PSObject with Octopus Deploy REST API call information
-Helper function for Get-ODUStandardExportRestApiCallInfo
+Helper function for Get-ODUStandardExportRestApiCalls
 .PARAMETER RestName
 Proper name of REST method
 .PARAMETER RestMethod
@@ -58,6 +58,7 @@ New-ODUExportRestApiCall 'Artifacts' '/api/artifacts' 'MultiFetch' 'Id'
 <creates and returns PSObject with Artifacts info>
 #>
 function New-ODUExportRestApiCall {
+  [CmdletBinding()]
   param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
@@ -91,7 +92,7 @@ function New-ODUExportRestApiCall {
 #endregion
 
 
-#region Function: Get-ODUStandardExportRestApiCallInfo
+#region Function: Get-ODUStandardExportRestApiCalls
 
 <#
 .SYNOPSIS
@@ -99,10 +100,10 @@ Returns PSObjects with Octopus Deploy API call details
 .DESCRIPTION
 Returns PSObjects with Octopus Deploy API call details
 .EXAMPLE
-Get-ODUStandardExportRestApiCallInfo
+Get-ODUStandardExportRestApiCalls
 <returns info>
 #>
-function Get-ODUStandardExportRestApiCallInfo {
+function Get-ODUStandardExportRestApiCalls {
   [CmdletBinding()]
   param()
   process {

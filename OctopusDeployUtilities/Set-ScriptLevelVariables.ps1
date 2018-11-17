@@ -13,15 +13,18 @@ $script:ProjectUrl = 'https://github.com/DTW-DanWard/OctopusDeployUtilities'
 # ItemIdOnly  fetch item ONLY by it's Id; certain versioned items (variables, deployment processes) have so many instances
 #             that call to fetch the TotalResults values time out or hit out of memory exceptions; for these we have to
 #             manually collect the Ids that are referenced then explicitly fetch by Id
-Set-Variable ApiFetchTypeList -Option ReadOnly -Value @('Simple', 'MultiFetch', 'ItemIdOnly') -Scope Script
+Set-Variable ApiFetchType_Simple -Value 'Simple' -Option ReadOnly -Scope Script
+Set-Variable ApiFetchType_MultiFetch -Value 'MultiFetch' -Option ReadOnly -Scope Script
+Set-Variable ApiFetchType_ItemIdOnly -Value 'ItemIdOnly' -Option ReadOnly -Scope Script
+Set-Variable ApiFetchTypeList -Value @($ApiFetchType_Simple, $ApiFetchType_MultiFetch, $ApiFetchType_ItemIdOnly) -Option ReadOnly -Scope Script
 
 # define alias/function mappings
 $Exports = @{
   oduexport = 'Export-ODUOctopusDeployConfig'
 }
-Set-Variable OfficialAliasExports -Option ReadOnly -Value $Exports -Scope Script
+Set-Variable OfficialAliasExports -Value $Exports -Option ReadOnly -Scope Script
 
 # version of configuration details
 $script:ConfigVersion = '1.0.0'
 # default text for settings still having placeholders - not configured by user yet
-Set-Variable Undefined -Option ReadOnly -Value 'UNDEFINED' -Scope Script
+Set-Variable Undefined -Value 'UNDEFINED' -Option ReadOnly -Scope Script

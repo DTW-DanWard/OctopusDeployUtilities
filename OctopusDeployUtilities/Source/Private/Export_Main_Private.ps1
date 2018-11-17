@@ -3,6 +3,7 @@ Set-StrictMode -Version Latest
 
 
 #region Function: Export-ODUOctopusDeployConfigPrivate
+
 <#
 .SYNOPSIS
 asdf Main function controlling export process
@@ -17,14 +18,16 @@ function Export-ODUOctopusDeployConfigPrivate {
   [OutputType([string])]
   param()
   process {
-
+    # root folder was tested/created when initially set; unless user manually modified the config these will always work
     [string]$CurrentExportRootFolder = Join-Path -Path (Get-ODUConfigExportRootFolder) -ChildPath ('{0:yyyyMMdd-HHmmss}' -f (Get-Date))
+    Write-Verbose "Create root folder: $CurrentExportRootFolder"
     New-Item -ItemType Directory -Path $CurrentExportRootFolder > $null
 
     # get filtered list of api call details to process
-    $ApiCallInfo = Get-ODUFilteredExportRestApiCallInfo
-
-    # separate function: loop through all, create folders
+    $ApiCalls = Get-ODUFilteredExportRestApiCalls
+    # create folders for each api call
+    Write-Verbose 'Creating folder for api calls'
+    New-ODUFolderForEachApiCall -ParentFolder $CurrentExportRootFolder -ApiCalls $ApiCalls
 
     # for ItemIdOnly calls, get create lookup with key of reference property names and value empty array (for capturing values)
 
@@ -40,7 +43,7 @@ function Export-ODUOctopusDeployConfigPrivate {
       #  full folder path
       #  ApiCallInfo
       #  full url
-      
+
       # in export process
       #   make rest call
       #   get ItemIdOnly lookup info from this item
@@ -61,17 +64,18 @@ function Export-ODUOctopusDeployConfigPrivate {
 #endregion
 
 
-#region Function: Get-ODUFilteredExportRestApiCallInfo
+#region Function: Get-ODUFilteredExportRestApiCalls
+
 <#
 .SYNOPSIS
 Returns standard export rest api call info filtered based on user black / white list
 .DESCRIPTION
 Returns standard export rest api call info filtered based on user black / white list
 .EXAMPLE
-Get-ODUFilteredExportRestApiCallInfo
+Get-ODUFilteredExportRestApiCalls
 <returns subset of rest api call objects>
 #>
-function Get-ODUFilteredExportRestApiCallInfo {
+function Get-ODUFilteredExportRestApiCalls {
   [CmdletBinding()]
   param()
   process {
@@ -83,15 +87,18 @@ function Get-ODUFilteredExportRestApiCallInfo {
     # either type whitelist or blacklist should be set - but not both!
     # this shouldn't be possible unless user hand-edit config file
     if (($null -ne $TypeBlackList) -and ($null -ne $TypeWhiteList)) {
+      Write-Verbose 'Both Type blacklist and whitelist defined; that''s a no no'
       throw 'Type blacklist and type whitelist both have values; this cannot be processed. Check your config values using Get-ODUConfigTypeBlacklist (or ...WhiteList) then set with Set-ODUConfigTypeBlackWhitelist (or ...WhiteList)'
     }
 
     # get all call info
-    [object[]]$ApiCallInfo = Get-ODUStandardExportRestApiCallInfo
+    [object[]]$ApiCallInfo = Get-ODUStandardExportRestApiCalls
     # filter as necessary
     if ($null -ne $TypeWhiteList -and $TypeWhiteList.Count -gt 0) {
+      Write-Verbose "Filtering RestApiCalls based on Type whitelist: $TypeWhiteList"
       $ApiCallInfo = $ApiCallInfo | Where-Object { $TypeWhiteList -contains $_.RestName }
     } elseif ($null -ne $TypeBlackList -and $TypeBlackList.Count -gt 0) {
+      Write-Verbose "Filtering RestApiCalls based on Type blacklist: $TypeBlackList"
       $ApiCallInfo = $ApiCallInfo | Where-Object { $TypeBlackList -notcontains $_.RestName }
     }
 
@@ -101,6 +108,83 @@ function Get-ODUFilteredExportRestApiCallInfo {
 #endregion
 
 
+
+#region Function: Get-ODUFolderNameForApiCall
+
+<#
+.SYNOPSIS
+Gets folder name to use for storing api call results
+.DESCRIPTION
+Gets folder name to use for storing api call results
+Will be 'Miscellaneous' for Simple fetch types and the RestName for all others
+.PARAMETER ApiCall
+Object with api call information
+.EXAMPLE
+asdf update this
+asdf update this
+#>
+function Get-ODUFolderNameForApiCall {
+  #region Function parameters
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object]$ApiCall
+  )
+  #endregion
+  process {
+
+    $FolderName = $null
+    if ($ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
+      $FolderName = 'Miscellaneous'
+    } else {
+      $FolderName = $ApiCall.RestName
+    }
+    $FolderName
+  }
+}
+#endregion
+
+
+
+#region Function: New-ODUFolderForEachApiCall
+
+<#
+.SYNOPSIS
+Creates a folder for each rest api call in ApiCallInfo under ParentFolder
+.DESCRIPTION
+Creates a folder for each rest api call in ApiCallInfo under ParentFolder
+.PARAMETER ParentFolder
+Folder under which to create the new folders
+.PARAMETER ApiCalls
+Object array of api calls
+.EXAMPLE
+New-ODUFolderForEachApiCall -ParentFolder c:\Temp -ApiCallInfo <PSObjects with api call info>
+#>
+function New-ODUFolderForEachApiCall {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ParentFolder,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object[]]$ApiCalls
+  )
+  process {
+    Write-Verbose "Parent folder is: $ParentFolder"
+    $ApiCalls | ForEach-Object {
+      New-ODUIExportItemFolder -FolderPath (Join-Path -Path $ParentFolder -ChildPath (Get-ODUFolderNameForApiCall -ApiCall $_))
+    }
+  }
+
+}
+#endregion
+
+
+
+
+#region Function: xxx-ODUxxx
 
 <#
 .SYNOPSIS
@@ -120,3 +204,4 @@ function xxx-ODUxxx {
   }
 
 }
+#endregion
