@@ -111,12 +111,12 @@ function Get-ODUConfigDefaultTypeBlacklist {
     # These types have a LOT of values and generally aren't important for reviewing the configuration:
     #   Deployments, Events, Packages, Releases, Tasks
     # These types don't work on cloud version and are not really important:
-    #   LetsEncrypt, Licenses, MaintenanceConfiguration, ServerConfiguration, ServerStatus-Extensions, ServerStatus-SystemInfo
+    #   LetsEncrypt, Licenses, MaintenanceConfiguration, OctopusServerNodes, ServerConfiguration, ServerStatus-Extensions, ServerStatus-SystemInfo
     # These are generally not important... but I'm on the fence with CommunityActionTemplates
     #   CommunityActionTemplates, Interruptions, Reporting
 
     # asdf re-add: CommunityActionTemplates
-    @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'LetsEncrypt', 'Licenses', 'MaintenanceConfiguration', 'Packages', 'Releases', 'Reporting', 'ServerConfiguration', 'ServerStatus-Extensions', 'ServerStatus-SystemInfo', 'Tasks')
+    @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'LetsEncrypt', 'Licenses', 'MaintenanceConfiguration', 'OctopusServerNodes', 'Packages', 'Releases', 'Reporting', 'ServerConfiguration', 'ServerStatus-Extensions', 'ServerStatus-SystemInfo', 'Tasks')
   }
 }
 #endregion

@@ -1,6 +1,68 @@
 
 Set-StrictMode -Version Latest
 
+#region Function: Export-ODUJob
+
+<#
+.SYNOPSIS
+Processes a single ExportJobDetail
+.DESCRIPTION
+Processes a single ExportJobDetail
+.PARAMETER ExportJobDetail
+asdf
+.PARAMETER ItemIdOnlyReferencePropertyName
+ItemIdOnly property names to look for; return values if found
+.EXAMPLE
+Export-ODUJob
+<asdf lots of notes needed here>
+#>
+function Export-ODUJob {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object]$ExportJobDetail,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string[]]$ItemIdOnlyReferencePropertyNames
+  )
+  process {
+    $ExportItems = Invoke-ODURestMethod -Url $ExportJobDetail.Url -ApiKey $ExportJobDetail.ApiKey
+
+    [hashtable]$ItemIdOnlyReferenceValues = @{}
+    if (($null -ne $ExportItems) -and ($null -ne (Get-Member -InputObject $ExportItems -Name Items))) {
+      $ExportItems.Items | ForEach-Object {
+        $ExportItem = $_
+
+        # asdf refactor this
+
+        # inspect exported item for ItemIdOnly id references
+        $ItemIdOnlyReferencePropertyNames | ForEach-Object {
+          $ItemIdOnlyReferencePropertyName = $_
+          if ($null -ne (Get-Member -InputObject $ExportItem -Name $ItemIdOnlyReferencePropertyName)) { 
+            Write-Verbose "$($MyInvocation.MyCommand) :: Property $ItemIdOnlyReferencePropertyName FOUND on $($ExportJobDetail.ApiCall.RestName) with id $($ExportItem.Id)"
+            # add array entry if first time
+            if (! $ItemIdOnlyReferenceValues.Contains($ItemIdOnlyReferencePropertyName)) {
+              $ItemIdOnlyReferenceValues.$ItemIdOnlyReferencePropertyName = @()
+            }
+            Write-Verbose "$($MyInvocation.MyCommand) :: ItemIdOnly reference value is: $($ExportItem.$ItemIdOnlyReferencePropertyName)"
+            $ItemIdOnlyReferenceValues.$ItemIdOnlyReferencePropertyName += $ExportItem.$ItemIdOnlyReferencePropertyName
+          } else {
+            Write-Verbose "$($MyInvocation.MyCommand) :: Property $ItemIdOnlyReferencePropertyName NOT found on $($ExportJobDetail.ApiCall.RestName) with id $($ExportItem.Id)"
+          }
+        }
+
+        
+      }
+    }
+
+
+
+    $ItemIdOnlyReferenceValues
+  }
+}
+#endregion
+
 
 #region Function: Export-ODUOctopusDeployConfigPrivate
 
@@ -33,23 +95,23 @@ function Export-ODUOctopusDeployConfigPrivate {
     Write-Verbose "$($MyInvocation.MyCommand) :: Creating folder for api calls"
     New-ODUFolderForEachApiCall -ParentFolder $CurrentExportRootFolder -ApiCalls $ApiCalls
 
-    # for ItemIdOnly calls, get create lookup with key of reference property names and value empty array (for capturing values)
+    # for ItemIdOnly calls, create lookup with key of reference property names and value empty array (for capturing values)
     [hashtable]$ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
 
 
     # loop through non-ItemIdOnly calls
-    [object[]]$ExportJobs = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | ForEach-Object {
+    [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | ForEach-Object {
       $ApiCall = $_
       New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
-      # pass in root folder
     }
 
-    #    $ExportJobs
+    $ExportJobDetails | ForEach-Object {
+      $ExportJobDetail = $_
+      Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
+    }
 
 
     # process ExportJobs:
-    #   make rest call
-    #   get ItemIdOnly lookup info from this item
     #   determine file name - difference between Simple, etc.
     #   save contents to file (filtering if necessary)
     #  *return ItemIdOnly lookup info
@@ -63,16 +125,13 @@ function Export-ODUOctopusDeployConfigPrivate {
     #   run export process
 
     
+    # asdf uncomment this!
+
     # return path to this export
-    $CurrentExportRootFolder
+    #    $CurrentExportRootFolder
   }
 }
 #endregion
-
-
-
-
-
 
 
 #region Function: New-ODUExportJobInfo
@@ -109,7 +168,7 @@ function New-ODUExportJobInfo {
     # this appears to be the Octo desired default; I won't increase this least it beats up the servers
     [int]$DefaultTake = 30
 
-    [object[]]$ExportJobs = $null
+    [object[]]$ExportJobs = @()
     
     
     # get base info
@@ -154,18 +213,12 @@ function New-ODUExportJobInfo {
           ExportFolder = $ExportFolder
           ApiCall      = $ApiCall
         }
-
       }
     }
     $ExportJobs
   }
 }
 #endregion
-
-
-
-
-
 
 
 #region Function: Get-ODUFilteredExportRestApiCalls
