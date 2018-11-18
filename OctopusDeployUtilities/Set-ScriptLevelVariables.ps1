@@ -1,6 +1,8 @@
 
 Set-StrictMode -Version Latest
 
+Write-Verbose "Creating script-level variables"
+
 # script-level variables
 # web site url
 $script:ProjectUrl = 'https://github.com/DTW-DanWard/OctopusDeployUtilities'

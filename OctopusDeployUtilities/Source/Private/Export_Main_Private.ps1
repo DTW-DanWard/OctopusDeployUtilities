@@ -30,30 +30,36 @@ function Export-ODUOctopusDeployConfigPrivate {
     New-ODUFolderForEachApiCall -ParentFolder $CurrentExportRootFolder -ApiCalls $ApiCalls
 
     # for ItemIdOnly calls, get create lookup with key of reference property names and value empty array (for capturing values)
+    [hashtable]$ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
 
     # loop through non-ItemIdOnly calls
-      # get folder name
-      # generate export info object
+    $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | ForEach-Object {
 
-      # create array of export info:
-      #   simple calls, one object
-      #   multicall, lookup take 1 and return 0 or more objects
 
-      # export info:
-      #  full folder path
-      #  ApiCallInfo
-      #  full url
+    }
 
-      # in export process
-      #   make rest call
-      #   get ItemIdOnly lookup info from this item
-      #   determine file name
-      #   save contents to file (filtering if necessary)
-      #  *return ItemIdOnly lookup info
+    # get folder name
+    # generate export info object
+
+    # create array of export info:
+    #   simple calls, one object
+    #   multicall, lookup take 1 and return 0 or more objects
+
+    # export info:
+    #  full folder path
+    #  ApiCallInfo
+    #  full url
+
+    # in export process
+    #   make rest call
+    #   get ItemIdOnly lookup info from this item
+    #   determine file name
+    #   save contents to file (filtering if necessary)
+    #  *return ItemIdOnly lookup info
 
     # loop through ItemIdCalls
-      # generate export info object
-      # run export process
+    # generate export info object
+    # run export process
 
 
 
@@ -108,7 +114,6 @@ function Get-ODUFilteredExportRestApiCalls {
 #endregion
 
 
-
 #region Function: Get-ODUFolderNameForApiCall
 
 <#
@@ -146,6 +151,40 @@ function Get-ODUFolderNameForApiCall {
 #endregion
 
 
+#region Function: Initialize-ODUFetchTypeItemIdOnlyIdsLookup
+
+<#
+.SYNOPSIS
+Creates hashtable initialized for storing ItemIdOnly Id values
+.DESCRIPTION
+Creates hashtable initialized for storing ItemIdOnly Id values
+Key is property name to look for on objects, value is empty array (to be filled later)
+.PARAMETER ApiCalls
+Object array with api call information
+.EXAMPLE
+Initialize-ODUFetchTypeItemIdOnlyIdsLookup $ApiCalls
+<returns initialized hashtable>
+#>
+function Initialize-ODUFetchTypeItemIdOnlyIdsLookup {
+  #region Function parameters
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object[]]$ApiCalls
+  )
+  #endregion
+  process {
+    [hashtable]$ItemIdOnlyIdsLookup = @{ }
+    $ApiCalls | ForEach-Object {
+      $ItemIdOnlyReferencePropertyName = $_.ItemIdOnlyReferencePropertyName
+      $ItemIdOnlyIdsLookup.$ItemIdOnlyReferencePropertyName = @()
+    }
+    $ItemIdOnlyIdsLookup
+  }
+}
+#endregion
+
 
 #region Function: New-ODUFolderForEachApiCall
 
@@ -180,8 +219,6 @@ function New-ODUFolderForEachApiCall {
 
 }
 #endregion
-
-
 
 
 #region Function: xxx-ODUxxx
