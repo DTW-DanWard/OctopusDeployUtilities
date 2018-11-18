@@ -44,7 +44,12 @@ function Export-ODUJob {
           $ExportItem = $_
 
           # inspect exported item for ItemIdOnly id references
-          $ItemIdOnlyReferenceValues = Get-ODUItemIdOnlyReferenceValues -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames -ExportItem $ExportItem
+          $ItemIdOnlyReferenceValuesOnItem = Get-ODUItemIdOnlyReferenceValues -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames -ExportItem $ExportItem
+          # transfer values to main hash table
+          $ItemIdOnlyReferenceValuesOnItem.Keys | ForEach-Object { 
+            if (! $ItemIdOnlyReferenceValues.Contains($_)) { $ItemIdOnlyReferenceValues.$_ = @() }
+            $ItemIdOnlyReferenceValues.$_ += $ItemIdOnlyReferenceValuesOnItem.$_
+          }
 
           $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((ConvertTo-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItem)) + '.json')
           Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
@@ -98,14 +103,13 @@ function Export-ODUOctopusDeployConfigPrivate {
       New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
     }
 
-    # process only non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process
+    # process only non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process later
     $ExportJobDetails | ForEach-Object {
       $ExportJobDetail = $_
       $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
+      # transfer values to main hash table
       $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
     }
-
-    $ItemIdOnlyIdsLookup
 
     # loop through ItemIdOnly calls
     [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly } | ForEach-Object {
@@ -116,25 +120,11 @@ function Export-ODUOctopusDeployConfigPrivate {
       }
     }
 
-    "`n`n`n"
-
-    $ExportJobDetails
-
-    "`n`n`n"
-
+    # process only ItemIdOnly jobs
     $ExportJobDetails | ForEach-Object {
       $ExportJobDetail = $_
       $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
     }
-
-    # for ItemIdOnly values:
-    #   create New-ODUExportJobInfo, passing in Ids in ItemIdOnlyIds
-    #   loop through ItemIdCalls
-    #   generate export info object
-    #   run export process
-
-    
-    # asdf uncomment this!
 
     # return path to this export
     #    $CurrentExportRootFolder
