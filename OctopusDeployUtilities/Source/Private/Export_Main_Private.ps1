@@ -52,6 +52,16 @@ function Export-ODUJob {
           }
         }
 
+        # asdf get file name
+        $FileName = (ConvertTo-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItem)) + '.json'
+        Write-Verbose "$($MyInvocation.MyCommand) :: FileName is: $FileName"
+        $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath $FileName
+
+
+        # save contents to file
+        Out-ODUFileJson -FilePath $FilePath -Data $ExportItem
+
+
 
       }
     }
@@ -132,6 +142,53 @@ function Export-ODUOctopusDeployConfigPrivate {
   }
 }
 #endregion
+
+
+
+
+
+
+
+
+
+#region Function: Get-ODUExportItemFileName
+
+# asdf need help
+
+function Get-ODUExportItemFileName {
+  #region Function parameters
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object]$ApiCall,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object]$ExportItem
+  )
+  #endregion
+  process {
+    $FileName = $null
+    # for Simple calls, file name is rest method 
+    if ($ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
+      Write-Verbose "$($MyInvocation.MyCommand) :: Simple rest call $($ApiCall.RestName) use RestName for file name"
+      $FileName = $ApiCall.RestName
+    } else {
+      Write-Verbose "$($MyInvocation.MyCommand) :: Rest call $($ApiCall.RestName) uses property $($ApiCall.FileNamePropertyName)"
+      $FileNamePropertyName = $ApiCall.FileNamePropertyName
+      if ($null -eq (Get-Member -InputObject $ExportItem -Name $FileNamePropertyName)) {
+        throw "FileNamePropertyName $FileNamePropertyName not found on rest type $($ApiCall.RestName) on item with Id $($ExportItem.Id)"
+      }
+      $FileName = $ExportItem.$FileNamePropertyName
+      Write-Verbose "$($MyInvocation.MyCommand) :: File name for this item: $FileName"
+    }
+    $FileName
+  }
+}
+#endregion
+
+
+
 
 
 #region Function: Get-ODUFilteredExportRestApiCalls

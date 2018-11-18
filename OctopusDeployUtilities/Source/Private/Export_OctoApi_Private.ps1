@@ -110,7 +110,6 @@ function Get-ODUStandardExportRestApiCalls {
     # Simple REST API calls
     New-ODUExportRestApiCall 'Authentication' '/api/authentication' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'BuiltInRepository' '/api/repository/configuration' 'Simple' 'NOT_USED'
-    New-ODUExportRestApiCall 'Configuration' '/api/configuration' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'ExternalSecurityGroups' '/api/externalsecuritygroupproviders' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'FeaturesConfiguration' '/api/featuresconfiguration' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'LetsEncrypt' '/api/letsencryptconfiguration' 'Simple' 'NOT_USED'
@@ -135,6 +134,7 @@ function Get-ODUStandardExportRestApiCalls {
     New-ODUExportRestApiCall 'Artifacts' '/api/artifacts' 'MultiFetch' 'Id'
     New-ODUExportRestApiCall 'Channels' '/api/channels' 'MultiFetch' 'Id' -ExternalIdToResolvePropertyName @('LifecycleId', 'ProjectId')
     New-ODUExportRestApiCall 'CommunityActionTemplates' '/api/communityactiontemplates' 'MultiFetch' 'Name'
+    New-ODUExportRestApiCall 'Configuration' '/api/configuration' 'MultiFetch' 'Id'
     New-ODUExportRestApiCall 'Deployments' '/api/deployments' 'MultiFetch' 'Id'
     New-ODUExportRestApiCall 'Environments' '/api/environments' 'MultiFetch' 'Name'
     New-ODUExportRestApiCall 'Events' '/api/events' 'MultiFetch' 'Id'
