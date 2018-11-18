@@ -30,44 +30,27 @@ function Export-ODUJob {
     $ExportItems = Invoke-ODURestMethod -Url $ExportJobDetail.Url -ApiKey $ExportJobDetail.ApiKey
 
     [hashtable]$ItemIdOnlyReferenceValues = @{}
-    if (($null -ne $ExportItems) -and ($null -ne (Get-Member -InputObject $ExportItems -Name Items))) {
-      $ExportItems.Items | ForEach-Object {
-        $ExportItem = $_
+    if ($null -ne $ExportItems) {
 
-        # asdf refactor this
+      if ($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
+        # simple references have a single item which does not have ItemIdOnly references; just save it
+        $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((ConvertTo-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItems)) + '.json')
+        Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
+        Out-ODUFileJson -FilePath $FilePath -Data $ExportItems
 
-        # inspect exported item for ItemIdOnly id references
-        $ItemIdOnlyReferencePropertyNames | ForEach-Object {
-          $ItemIdOnlyReferencePropertyName = $_
-          if ($null -ne (Get-Member -InputObject $ExportItem -Name $ItemIdOnlyReferencePropertyName)) { 
-            Write-Verbose "$($MyInvocation.MyCommand) :: Property $ItemIdOnlyReferencePropertyName FOUND on $($ExportJobDetail.ApiCall.RestName) with id $($ExportItem.Id)"
-            # add array entry if first time
-            if (! $ItemIdOnlyReferenceValues.Contains($ItemIdOnlyReferencePropertyName)) {
-              $ItemIdOnlyReferenceValues.$ItemIdOnlyReferencePropertyName = @()
-            }
-            Write-Verbose "$($MyInvocation.MyCommand) :: ItemIdOnly reference value is: $($ExportItem.$ItemIdOnlyReferencePropertyName)"
-            $ItemIdOnlyReferenceValues.$ItemIdOnlyReferencePropertyName += $ExportItem.$ItemIdOnlyReferencePropertyName
-          } else {
-            Write-Verbose "$($MyInvocation.MyCommand) :: Property $ItemIdOnlyReferencePropertyName NOT found on $($ExportJobDetail.ApiCall.RestName) with id $($ExportItem.Id)"
-          }
+      } elseif ($null -ne (Get-Member -InputObject $ExportItems -Name Items)) {
+        $ExportItems.Items | ForEach-Object {
+          $ExportItem = $_
+
+          # inspect exported item for ItemIdOnly id references
+          $ItemIdOnlyReferenceValues = Get-ODUItemIdOnlyReferenceValues -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames -ExportItem $ExportItem
+
+          $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((ConvertTo-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItem)) + '.json')
+          Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
+          Out-ODUFileJson -FilePath $FilePath -Data $ExportItem
         }
-
-        # asdf get file name
-        $FileName = (ConvertTo-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItem)) + '.json'
-        Write-Verbose "$($MyInvocation.MyCommand) :: FileName is: $FileName"
-        $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath $FileName
-
-
-        # save contents to file
-        Out-ODUFileJson -FilePath $FilePath -Data $ExportItem
-
-
-
       }
     }
-
-
-
     $ItemIdOnlyReferenceValues
   }
 }
@@ -108,25 +91,40 @@ function Export-ODUOctopusDeployConfigPrivate {
     # for ItemIdOnly calls, create lookup with key of reference property names and value empty array (for capturing values)
     [hashtable]$ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
 
-
     # loop through non-ItemIdOnly calls
     [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | ForEach-Object {
       $ApiCall = $_
       New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
     }
 
+    # process only non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process
     $ExportJobDetails | ForEach-Object {
       $ExportJobDetail = $_
-      Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
+      $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
+      $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
     }
 
+    $ItemIdOnlyIdsLookup
 
-    # process ExportJobs:
-    #   determine file name - difference between Simple, etc.
-    #   save contents to file (filtering if necessary)
-    #  *return ItemIdOnly lookup info
+    # loop through ItemIdOnly calls
+    [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly } | ForEach-Object {
+      $ApiCall = $_
+      $ItemIdOnlyPropertyName = $ApiCall.ItemIdOnlyReferencePropertyName
+      if (($null -ne $ItemIdOnlyIdsLookup.$ItemIdOnlyPropertyName) -and ($ItemIdOnlyIdsLookup.$ItemIdOnlyPropertyName.Count -gt 0)) {
+        New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder -ItemIdOnlyIds $ItemIdOnlyIdsLookup.$ItemIdOnlyPropertyName
+      }
+    }
 
+    "`n`n`n"
 
+    $ExportJobDetails
+
+    "`n`n`n"
+
+    $ExportJobDetails | ForEach-Object {
+      $ExportJobDetail = $_
+      $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
+    }
 
     # for ItemIdOnly values:
     #   create New-ODUExportJobInfo, passing in Ids in ItemIdOnlyIds
@@ -187,6 +185,54 @@ function Get-ODUExportItemFileName {
 }
 #endregion
 
+
+
+
+
+#region Function: Get-ODUItemIdOnlyReferenceValues
+
+<#
+.SYNOPSIS
+Returns standard export rest api call info filtered based on user black / white list
+.DESCRIPTION
+Returns standard export rest api call info filtered based on user black / white list
+.EXAMPLE
+Get-ODUItemIdOnlyReferenceValues
+<returns subset of rest api call objects>
+#>
+function Get-ODUItemIdOnlyReferenceValues {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object]$ExportJobDetail,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string[]]$ItemIdOnlyReferencePropertyNames,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object]$ExportItem
+  )
+  process {
+    [hashtable]$ItemIdOnlyReferenceValues = @{}
+    $ItemIdOnlyReferencePropertyNames | ForEach-Object {
+      $ItemIdOnlyReferencePropertyName = $_
+      if ($null -ne (Get-Member -InputObject $ExportItem -Name $ItemIdOnlyReferencePropertyName)) { 
+        Write-Verbose "$($MyInvocation.MyCommand) :: Property $ItemIdOnlyReferencePropertyName FOUND on $($ExportJobDetail.ApiCall.RestName) with id $($ExportItem.Id)"
+        # add array entry if first time
+        if (! $ItemIdOnlyReferenceValues.Contains($ItemIdOnlyReferencePropertyName)) {
+          $ItemIdOnlyReferenceValues.$ItemIdOnlyReferencePropertyName = @()
+        }
+        Write-Verbose "$($MyInvocation.MyCommand) :: ItemIdOnly reference value is: $($ExportItem.$ItemIdOnlyReferencePropertyName)"
+        $ItemIdOnlyReferenceValues.$ItemIdOnlyReferencePropertyName += $ExportItem.$ItemIdOnlyReferencePropertyName
+      } else {
+        Write-Verbose "$($MyInvocation.MyCommand) :: Property $ItemIdOnlyReferencePropertyName NOT found on $($ExportJobDetail.ApiCall.RestName) with id $($ExportItem.Id)"
+      }
+    }
+    $ItemIdOnlyReferenceValues
+  }
+}
+#endregion
 
 
 
