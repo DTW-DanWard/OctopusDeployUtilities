@@ -23,6 +23,10 @@ function Export-ODUOctopusDeployConfigPrivate {
     Write-Verbose "$($MyInvocation.MyCommand) :: Create root folder: $CurrentExportRootFolder"
     New-Item -ItemType Directory -Path $CurrentExportRootFolder > $null
 
+    # get url and api key once now, pass into job creation
+    $ServerUrl = (Get-ODUConfigOctopusServer).Url
+    $ApiKey = Convert-ODUDecryptApiKey -ApiKey ((Get-ODUConfigOctopusServer).ApiKey)
+
     # get filtered list of api call details to process
     $ApiCalls = Get-ODUFilteredExportRestApiCalls
     # create folders for each api call
@@ -32,8 +36,6 @@ function Export-ODUOctopusDeployConfigPrivate {
     # for ItemIdOnly calls, get create lookup with key of reference property names and value empty array (for capturing values)
     [hashtable]$ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
 
-    $ServerUrl = (Get-ODUConfigOctopusServer).Url
-    $ApiKey = Convert-ODUDecryptApiKey -ApiKey ((Get-ODUConfigOctopusServer).ApiKey)
 
     # loop through non-ItemIdOnly calls
     [object[]]$ExportJobs = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | Select -first 1 | ForEach-Object {
@@ -44,33 +46,23 @@ function Export-ODUOctopusDeployConfigPrivate {
 
     $ExportJobs
 
-    # asdf capture objects created above
 
-    # get folder name
-    # generate export info object
-
-    # create array of export info:
-    #   simple calls, one object
-    #   multicall, lookup take 1 and return 0 or more objects
-
-    # export info:
-    #  full folder path
-    #  ApiCallInfo
-    #  full url
-
-    # in export process
+    # process ExportJobs:
     #   make rest call
     #   get ItemIdOnly lookup info from this item
-    #   determine file name
+    #   determine file name - difference between Simple, etc.
     #   save contents to file (filtering if necessary)
     #  *return ItemIdOnly lookup info
 
-    # loop through ItemIdCalls
-    # generate export info object
-    # run export process
 
 
+    # for ItemIdOnly values:
+    #   create New-ODUExportJobInfo, passing in Ids in ItemIdOnlyIds
+    #   loop through ItemIdCalls
+    #   generate export info object
+    #   run export process
 
+    
     # return path to this export
     $CurrentExportRootFolder
   }
@@ -137,6 +129,17 @@ function New-ODUExportJobInfo {
       # find out how many job objects to create - might be zero, might be a bunch
     } elseif ($ApiCall.ApiFetchType -eq $ApiFetchType_MultiFetch) {
 
+
+      # Continue here!
+      # do initial multiple call with Take=1
+      # Use TotalResults count, with Take=30 above
+      # to loop through, make sure handle 0 case
+      #   and div/mod correct
+
+    } elseif ($ApiCall.ApiFetchType -eq $ApiFetchType_ItemIdOnly) {
+
+      # asdf Use $ItemIdOnlyIds passed in to generate urls
+      # loop through id, create job with url/{id}
 
     }
 
