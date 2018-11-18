@@ -32,6 +32,6 @@ Export-ODUOctopusDeployConfigPrivate
 #    Write-Host "Performing data lookups"
 
     # asdf - return export read into memory?  parameter switch?
-    Write-Host "Updating `$global:ODU_Export" 
+    Write-Host "Updating `$global:ODU_Export"
   }
 }

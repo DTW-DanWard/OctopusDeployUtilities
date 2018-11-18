@@ -18,6 +18,7 @@ Export-ODUJob
 #>
 function Export-ODUJob {
   [CmdletBinding()]
+  [OutputType([hashtable])]
   param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
@@ -46,7 +47,7 @@ function Export-ODUJob {
           # inspect exported item for ItemIdOnly id references
           $ItemIdOnlyReferenceValuesOnItem = Get-ODUItemIdOnlyReferenceValues -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames -ExportItem $ExportItem
           # transfer values to main hash table
-          $ItemIdOnlyReferenceValuesOnItem.Keys | ForEach-Object { 
+          $ItemIdOnlyReferenceValuesOnItem.Keys | ForEach-Object {
             if (! $ItemIdOnlyReferenceValues.Contains($_)) { $ItemIdOnlyReferenceValues.$_ = @() }
             $ItemIdOnlyReferenceValues.$_ += $ItemIdOnlyReferenceValuesOnItem.$_
           }
@@ -123,7 +124,8 @@ function Export-ODUOctopusDeployConfigPrivate {
     # process only ItemIdOnly jobs
     $ExportJobDetails | ForEach-Object {
       $ExportJobDetail = $_
-      $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
+      # shouldn't be any values returned; even if there are, we ignore
+      Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys) > $null
     }
 
     # return path to this export
@@ -131,13 +133,6 @@ function Export-ODUOctopusDeployConfigPrivate {
   }
 }
 #endregion
-
-
-
-
-
-
-
 
 
 #region Function: Get-ODUExportItemFileName
@@ -158,7 +153,7 @@ function Get-ODUExportItemFileName {
   #endregion
   process {
     $FileName = $null
-    # for Simple calls, file name is rest method 
+    # for Simple calls, file name is rest method
     if ($ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
       Write-Verbose "$($MyInvocation.MyCommand) :: Simple rest call $($ApiCall.RestName) use RestName for file name"
       $FileName = $ApiCall.RestName
@@ -177,9 +172,6 @@ function Get-ODUExportItemFileName {
 #endregion
 
 
-
-
-
 #region Function: Get-ODUItemIdOnlyReferenceValues
 
 <#
@@ -193,6 +185,7 @@ Get-ODUItemIdOnlyReferenceValues
 #>
 function Get-ODUItemIdOnlyReferenceValues {
   [CmdletBinding()]
+  [OutputType([hashtable])]
   param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
@@ -208,7 +201,7 @@ function Get-ODUItemIdOnlyReferenceValues {
     [hashtable]$ItemIdOnlyReferenceValues = @{}
     $ItemIdOnlyReferencePropertyNames | ForEach-Object {
       $ItemIdOnlyReferencePropertyName = $_
-      if ($null -ne (Get-Member -InputObject $ExportItem -Name $ItemIdOnlyReferencePropertyName)) { 
+      if ($null -ne (Get-Member -InputObject $ExportItem -Name $ItemIdOnlyReferencePropertyName)) {
         Write-Verbose "$($MyInvocation.MyCommand) :: Property $ItemIdOnlyReferencePropertyName FOUND on $($ExportJobDetail.ApiCall.RestName) with id $($ExportItem.Id)"
         # add array entry if first time
         if (! $ItemIdOnlyReferenceValues.Contains($ItemIdOnlyReferencePropertyName)) {
@@ -224,8 +217,6 @@ function Get-ODUItemIdOnlyReferenceValues {
   }
 }
 #endregion
-
-
 
 
 #region Function: Get-ODUFilteredExportRestApiCalls
@@ -326,6 +317,7 @@ Initialize-ODUFetchTypeItemIdOnlyIdsLookup $ApiCalls
 function Initialize-ODUFetchTypeItemIdOnlyIdsLookup {
   #region Function parameters
   [CmdletBinding()]
+  [OutputType([hashtable])]
   param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
