@@ -60,31 +60,27 @@ function Get-ODUConfig {
 #endregion
 
 
-#region Function: Get-ODUConfigDecryptApiKey
+#region Function: Convert-ODUDecryptApiKey
 
 <#
 .SYNOPSIS
-Returns decrypted API key for Octopus user account
+Decrypts API key for Octopus user account
 .DESCRIPTION
-Returns decrypted API key for Octopus user account
+Decrypts API key for Octopus user account
 .EXAMPLE
-Get-ODUConfigDecryptApiKey
+Convert-ODUDecryptApiKey '....'
 API-........
 #>
-function Get-ODUConfigDecryptApiKey {
+function Convert-ODUDecryptApiKey {
   [CmdletBinding()]
   [OutputType([string])]
-  param()
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ApiKey
+  )
   process {
-    if ($false -eq (Confirm-ODUConfig)) { return }
-
-    # initial version supports only 1 server configuration so simply use that
-    # this function is not public, there should be no need to check if registered by this point
-    # should not have gotten this far if no server registered yet, just use first
-    $ServerConfig = Get-ODUConfigOctopusServer
-
     # Decrypt ONLY if this IsWindows; PS versions 5 and below are only Windows, 6 has explicit variable
-    $ApiKey = $ServerConfig.ApiKey
     if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
       Write-Verbose "$($MyInvocation.MyCommand) :: Decrypting ApiKey"
       $ApiKey = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR( ($ApiKey | ConvertTo-SecureString) ))

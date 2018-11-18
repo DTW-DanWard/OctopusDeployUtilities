@@ -32,11 +32,19 @@ function Export-ODUOctopusDeployConfigPrivate {
     # for ItemIdOnly calls, get create lookup with key of reference property names and value empty array (for capturing values)
     [hashtable]$ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
 
+    $ServerUrl = (Get-ODUConfigOctopusServer).Url
+    $ApiKey = Convert-ODUDecryptApiKey -ApiKey ((Get-ODUConfigOctopusServer).ApiKey)
+
     # loop through non-ItemIdOnly calls
-    $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | ForEach-Object {
-
-
+    [object[]]$ExportJobs = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | Select -first 1 | ForEach-Object {
+      $ApiCall = $_
+      New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
+      # pass in root folder
     }
+
+    $ExportJobs
+
+    # asdf capture objects created above
 
     # get folder name
     # generate export info object
@@ -68,6 +76,80 @@ function Export-ODUOctopusDeployConfigPrivate {
   }
 }
 #endregion
+
+
+
+
+
+
+
+#region Function: New-ODUExportJobInfo
+
+<#
+.SYNOPSIS
+Create PSObject with necessary info to export data from a single api call
+.DESCRIPTION
+Create PSObject with necessary info to export data from a single api call
+.EXAMPLE
+New-ODUExportJobInfo ...
+<asdf>
+#>
+function New-ODUExportJobInfo {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ServerBaseUrl,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ApiKey,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object]$ApiCall,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ParentFolder,
+    [string[]]$ItemIdOnlyIds
+
+    )
+  process {
+
+    # this appears to be the Octo desired default; I won't increase this least it beats up the servers
+    [int]$Take = 30
+
+    [object[]]$ExportJobs = $null
+    
+    
+    # get base info
+    $ExportFolder = Join-Path -Path $ParentFolder -ChildPath (Get-ODUFolderNameForApiCall -ApiCall $ApiCall)
+    $MainUrl = $ServerBaseUrl + $ApiCall.RestMethod 
+    
+    # if this is a Simple fetch, create a single job and return
+    if ($ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
+      Write-Verbose "$($MyInvocation.MyCommand) :: creating Simple fetch export job for $($ApiCall.RestName)"
+      $ExportJobs += [PSCustomObject]@{
+        Url          = $MainUrl
+        ApiKey       = $ApiKey
+        ExportFolder = $ExportFolder
+        ApiCall      = $ApiCall
+      }
+      # if this is a MultiFetch, we actually have to call the url first to
+      # find out how many job objects to create - might be zero, might be a bunch
+    } elseif ($ApiCall.ApiFetchType -eq $ApiFetchType_MultiFetch) {
+
+
+    }
+
+    $ExportJobs
+
+  }
+}
+#endregion
+
+
+
+
+
 
 
 #region Function: Get-ODUFilteredExportRestApiCalls
