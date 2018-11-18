@@ -517,10 +517,10 @@ function Remove-ODUFilterPropertiesFromExportItem {
     $PropertyBlackList = Get-ODUConfigPropertyBlackList
 
     # white and black lists should not both have values (that is confirmed in configuration)
-    if ($PropertyWhiteList -ne $null -and $PropertyWhiteList.Contains($RestName) -and $PropertyWhiteList.$RestName.Count -gt 0) {
+    if (($null -ne $PropertyWhiteList) -and $PropertyWhiteList.Contains($RestName) -and $PropertyWhiteList.$RestName.Count -gt 0) {
       [string[]]$WhiteList = $PropertyWhiteList.$RestName
     }
-    if ($PropertyBlackList -ne $null -and $PropertyBlackList.Contains($RestName) -and $PropertyBlackList.$RestName.Count -gt 0) {
+    if (($null -ne $PropertyBlackList) -and $PropertyBlackList.Contains($RestName) -and $PropertyBlackList.$RestName.Count -gt 0) {
       [string[]]$BlackList = $PropertyBlackList.$RestName
     }
 
