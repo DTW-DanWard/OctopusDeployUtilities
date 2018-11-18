@@ -10,7 +10,7 @@ Processes a single ExportJobDetail
 Processes a single ExportJobDetail
 .PARAMETER ExportJobDetail
 asdf
-.PARAMETER ItemIdOnlyReferencePropertyName
+.PARAMETER ItemIdOnlyReferencePropertyNames
 ItemIdOnly property names to look for; return values if found
 .EXAMPLE
 Export-ODUJob
@@ -137,8 +137,19 @@ function Export-ODUOctopusDeployConfigPrivate {
 
 #region Function: Get-ODUExportItemFileName
 
-# asdf need help
-
+<#
+.SYNOPSIS
+asdf Main function controlling export process
+.DESCRIPTION
+asdf Main function controlling export process
+.PARAMETER ApiCall
+PSObject with ApiCall information
+.PARAMETER ExportItem
+PSObject with data exported from Octopus
+.EXAMPLE
+Export-ODUOctopusDeployConfigPrivate
+<asdf lots of notes needed here>
+#>
 function Get-ODUExportItemFileName {
   #region Function parameters
   [CmdletBinding()]
@@ -179,6 +190,12 @@ function Get-ODUExportItemFileName {
 Returns standard export rest api call info filtered based on user black / white list
 .DESCRIPTION
 Returns standard export rest api call info filtered based on user black / white list
+.PARAMETER ExportJobDetail
+Details about export job
+.PARAMETER ItemIdOnlyReferencePropertyNames
+Property names to look for in exported item, find values for these properties and return
+.PARAMETER ExportItem
+Exported data item to review
 .EXAMPLE
 Get-ODUItemIdOnlyReferenceValues
 <returns subset of rest api call objects>
@@ -343,6 +360,17 @@ function Initialize-ODUFetchTypeItemIdOnlyIdsLookup {
 Create PSObject with necessary info to export data from a single api call
 .DESCRIPTION
 Create PSObject with necessary info to export data from a single api call
+.PARAMETER ServerBaseUrl
+Base of the url, typically http/s along with domain name but no trailing /
+.PARAMETER ApiKey
+ApiKey to use with export
+.PARAMETER ApiCall
+Api call information
+.PARAMETER ParentFolder
+Root export folder
+.PARAMETER ItemIdOnlyIds
+List of Ids to use when creating Url
+Used with creating jobs for types that can only be exported via Id
 .EXAMPLE
 New-ODUExportJobInfo ...
 <asdf>

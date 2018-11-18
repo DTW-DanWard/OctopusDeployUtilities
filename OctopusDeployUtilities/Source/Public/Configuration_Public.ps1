@@ -87,14 +87,14 @@ function Add-ODUConfigOctopusServer {
     if ($null -ne ($OctopusServer)) {
       Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings already exist"
       # if settings are the same as before just return without making any changes
-      if ($Url -eq $OctopusServer.Url -and $ApiKey -eq (Get-ODUConfigDecryptApiKey)) {
+      if ($Url -eq $OctopusServer.Url -and ($ApiKey -eq (Convert-ODUDecryptApiKey -ApiKey ($OctopusServer.ApiKey)))) {
         Write-Verbose "$($MyInvocation.MyCommand) :: Settings same as before"
         return
       }
       Write-Host "These settings already exist: " -NoNewline
       Write-Host $OctopusServer.Url -ForegroundColor Cyan -NoNewline
       Write-Host " :: " -NoNewline
-      Write-Host (Get-ODUConfigDecryptApiKey) -ForegroundColor Cyan
+      Write-Host "$((Convert-ODUDecryptApiKey -ApiKey ($OctopusServer.ApiKey)).Substring(0,7))" -ForegroundColor Cyan
       $Prompt = Read-Host -Prompt "Overwrite? (Yes/No)"
       if ($Prompt -ne 'yes') {
         Write-Verbose "$($MyInvocation.MyCommand) :: Do not overwrite settings"

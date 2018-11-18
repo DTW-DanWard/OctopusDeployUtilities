@@ -64,9 +64,11 @@ function Get-ODUConfig {
 
 <#
 .SYNOPSIS
-Decrypts API key for Octopus user account
+Decrypts an encrypted value
 .DESCRIPTION
-Decrypts API key for Octopus user account
+Decrypts an encrypted value
+.PARAMETER ApiKey
+Value to decrypt
 .EXAMPLE
 Convert-ODUDecryptApiKey '....'
 API-........

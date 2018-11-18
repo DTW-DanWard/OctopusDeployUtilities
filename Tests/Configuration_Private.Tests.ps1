@@ -30,8 +30,6 @@ Describe 'Configuration: not initialized' {
 
   It 'Get-ODUConfigOctopusServer throws error' { { Get-ODUConfigOctopusServer } | Should throw }
 
-  It 'Get-ODUConfigDecryptApiKey throws error' { { Get-ODUConfigDecryptApiKey } | Should throw }
-
   It 'Initialize-ODUConfig returns $null but behind the scenes Save-ODUConfig returns an initialize configuration' {
     Initialize-ODUConfig | Should BeNullOrEmpty
   }
@@ -93,8 +91,6 @@ ParallelJobsCount = 1
   It 'Get-ODUConfig returns value for ExportRootFolder' { (Get-ODUConfig).ExportRootFolder | Should Be $ExportRootFolder }
 
   It 'Get-ODUConfigOctopusServer returns null' { Get-ODUConfigOctopusServer | Should BeNullOrEmpty }
-
-  It 'Get-ODUConfigDecryptApiKey throws error' { { Get-ODUConfigDecryptApiKey } | Should throw }
 }
 #endregion
 
@@ -113,7 +109,7 @@ Describe 'Configuration: Octopus Server initialized' {
   $OctoServerName = 'test.com'
   $OctoServerUrl = 'https://test.com'
   $OctoServerApiKey = 'API-1234567890'
-  # encrypt key they test decrypt with Get-ODUConfigDecryptApiKey
+  # encrypt key they test decrypt with Convert-ODUDecryptApiKey
   $OctoServerApiKeyEncrypted = $OctoServerApiKey
   if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
     $OctoServerApiKeyEncrypted = ConvertTo-SecureString -String $OctoServerApiKey -AsPlainText -Force | ConvertFrom-SecureString
@@ -193,6 +189,6 @@ ParallelJobsCount = 1
 
   It 'Get-ODUConfigOctopusServer.Url returns correct value' { (Get-ODUConfigOctopusServer).Url | Should Be $OctoServerUrl }
 
-  It 'Get-ODUConfigDecryptApiKey returns correct value' { Get-ODUConfigDecryptApiKey | Should Be $OctoServerApiKey }
+  It 'Convert-ODUDecryptApiKey returns correct value' { Convert-ODUDecryptApiKey ((Get-ODUConfigOctopusServer).ApiKey)  | Should Be $OctoServerApiKey }
 }
 #endregion
