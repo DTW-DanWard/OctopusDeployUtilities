@@ -38,13 +38,13 @@ function Export-ODUOctopusDeployConfigPrivate {
 
 
     # loop through non-ItemIdOnly calls
-    [object[]]$ExportJobs = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | Select -first 1 | ForEach-Object {
+    [object[]]$ExportJobs = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | ForEach-Object {
       $ApiCall = $_
       New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
       # pass in root folder
     }
 
-    $ExportJobs
+    #    $ExportJobs
 
 
     # process ExportJobs:
@@ -103,11 +103,11 @@ function New-ODUExportJobInfo {
     [string]$ParentFolder,
     [string[]]$ItemIdOnlyIds
 
-    )
+  )
   process {
 
     # this appears to be the Octo desired default; I won't increase this least it beats up the servers
-    [int]$Take = 30
+    [int]$DefaultTake = 30
 
     [object[]]$ExportJobs = $null
     
@@ -125,26 +125,39 @@ function New-ODUExportJobInfo {
         ExportFolder = $ExportFolder
         ApiCall      = $ApiCall
       }
-      # if this is a MultiFetch, we actually have to call the url first to
-      # find out how many job objects to create - might be zero, might be a bunch
     } elseif ($ApiCall.ApiFetchType -eq $ApiFetchType_MultiFetch) {
-
-
-      # Continue here!
-      # do initial multiple call with Take=1
-      # Use TotalResults count, with Take=30 above
-      # to loop through, make sure handle 0 case
-      #   and div/mod correct
-
+      # it order to create the MultiFetch urls we actually need to call the API first
+      # with a Take of 1 (retrieve only 1 record, if it exists) then use the TotalResults
+      # to construct the urls
+      $RestResults = Invoke-ODURestMethod -Url $MainUrl -ApiKey $ApiKey
+      # results might be null if user doesn't have access to that api
+      if (($null -ne $RestResults) -and ($null -ne (Get-Member -InputObject $RestResults -Name TotalResults))) {
+        $TotalLoops = [math]::Floor($RestResults.TotalResults / $DefaultTake)
+        # might need to add extra loop
+        if (($RestResults.TotalResults % $DefaultTake) -ne 0) { $TotalLoops += 1 }
+        for ($LoopCount = 0; $LoopCount -le ($TotalLoops - 1); $LoopCount++) {
+          $Skip = $LoopCount * $DefaultTake
+          $ExportJobs += [PSCustomObject]@{
+            Url          = ($MainUrl + '?skip=' + $Skip + '&take=' + $DefaultTake)
+            ApiKey       = $ApiKey
+            ExportFolder = $ExportFolder
+            ApiCall      = $ApiCall
+          }
+        }
+      }
     } elseif ($ApiCall.ApiFetchType -eq $ApiFetchType_ItemIdOnly) {
+      $ItemIdOnlyIds | ForEach-Object {
+        $Id = $_
+        $ExportJobs += [PSCustomObject]@{
+          Url          = ($MainUrl + '/' + $Id)
+          ApiKey       = $ApiKey
+          ExportFolder = $ExportFolder
+          ApiCall      = $ApiCall
+        }
 
-      # asdf Use $ItemIdOnlyIds passed in to generate urls
-      # loop through id, create job with url/{id}
-
+      }
     }
-
     $ExportJobs
-
   }
 }
 #endregion

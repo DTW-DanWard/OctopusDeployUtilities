@@ -31,7 +31,25 @@ function Invoke-ODURestMethod {
   #endregion
   process {
     Write-Verbose "$($MyInvocation.MyCommand) :: Calling Url $Url with API Key (first 7 characters) $($ApiKey.Substring(0,7))"
-    Invoke-RestMethod -Method Get -Uri $Url -Headers @{ 'X-Octopus-ApiKey' = $ApiKey }
+    try {
+      Invoke-RestMethod -Method Get -Uri $Url -Headers @{ 'X-Octopus-ApiKey' = $ApiKey }
+    } catch {
+      $Err = $_
+      # a user may not have access to a particular api which is not the end of the world - it's
+      # not worth throwing an unhandled error so instead, if it appears to be a missing permission
+      # error, write to host (gasp!) with helpful info and return $null else re-throw error
+      if (($Err.ToString()) -match "You do not have permission to perform this action. Please contact your Octopus administrator") {
+        Write-Verbose "$($MyInvocation.MyCommand) :: Error calling $Url"
+        Write-Verbose "$($MyInvocation.MyCommand) :: Error was $Err"
+        Write-Host "`nError occurred calling: $Url" -ForegroundColor Cyan
+        Write-Host "It appears you don't have permission to access this API. You might want to exclude" -ForegroundColor Cyan
+        Write-Host "this type from exports by including it in a call to Set-ODUConfigTypeBlacklist" -ForegroundColor Cyan
+        Write-Host "Make sure that you don't lose any existing types by checking Get-ODUConfigTypeBlacklist first." -ForegroundColor Cyan
+        Write-Host "Error was: $Err" -ForegroundColor Cyan
+      } else {
+        throw $Err
+      }
+    }
   }
 }
 #endregion
