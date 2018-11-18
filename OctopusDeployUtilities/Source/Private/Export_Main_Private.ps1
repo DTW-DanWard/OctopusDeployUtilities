@@ -32,13 +32,14 @@ function Export-ODUJob {
     [hashtable]$ItemIdOnlyReferenceValues = @{}
     if ($null -ne $ExportItems) {
 
-      if ($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
-        # simple references have a single item which does not have ItemIdOnly references; just save it
+      # simple references have a single item which does not have ItemIdOnly references; just save it
+      # same is true of items fetched by IdOnly
+      if (($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) -or ($null -eq (Get-Member -InputObject $ExportItems -Name Items))) {
         $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((ConvertTo-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItems)) + '.json')
         Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
         Out-ODUFileJson -FilePath $FilePath -Data $ExportItems
 
-      } elseif ($null -ne (Get-Member -InputObject $ExportItems -Name Items)) {
+      } else {
         $ExportItems.Items | ForEach-Object {
           $ExportItem = $_
 
