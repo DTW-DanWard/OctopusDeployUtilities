@@ -52,7 +52,7 @@ function Export-ODUJob {
           }
         }
 
-        
+
       }
     }
 
@@ -164,26 +164,26 @@ function New-ODUExportJobInfo {
 
   )
   process {
-
     # this appears to be the Octo desired default; I won't increase this least it beats up the servers
     [int]$DefaultTake = 30
-
     [object[]]$ExportJobs = @()
-    
-    
-    # get base info
+
+    # create basic hash table now
     $ExportFolder = Join-Path -Path $ParentFolder -ChildPath (Get-ODUFolderNameForApiCall -ApiCall $ApiCall)
-    $MainUrl = $ServerBaseUrl + $ApiCall.RestMethod 
-    
+    $MainUrl = $ServerBaseUrl + $ApiCall.RestMethod
+    $ExportJobBaseSettings = @{
+      Url          = $MainUrl
+      ApiKey       = $ApiKey
+      ExportFolder = $ExportFolder
+      ApiCall      = $ApiCall
+    }
+
     # if this is a Simple fetch, create a single job and return
     if ($ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
       Write-Verbose "$($MyInvocation.MyCommand) :: creating Simple fetch export job for $($ApiCall.RestName)"
-      $ExportJobs += [PSCustomObject]@{
-        Url          = $MainUrl
-        ApiKey       = $ApiKey
-        ExportFolder = $ExportFolder
-        ApiCall      = $ApiCall
-      }
+      # only one value in Simple call, return base settings
+      $ExportJobs += [PSCustomObject]$ExportJobBaseSettings
+
     } elseif ($ApiCall.ApiFetchType -eq $ApiFetchType_MultiFetch) {
       # it order to create the MultiFetch urls we actually need to call the API first
       # with a Take of 1 (retrieve only 1 record, if it exists) then use the TotalResults
@@ -196,23 +196,19 @@ function New-ODUExportJobInfo {
         if (($RestResults.TotalResults % $DefaultTake) -ne 0) { $TotalLoops += 1 }
         for ($LoopCount = 0; $LoopCount -le ($TotalLoops - 1); $LoopCount++) {
           $Skip = $LoopCount * $DefaultTake
-          $ExportJobs += [PSCustomObject]@{
-            Url          = ($MainUrl + '?skip=' + $Skip + '&take=' + $DefaultTake)
-            ApiKey       = $ApiKey
-            ExportFolder = $ExportFolder
-            ApiCall      = $ApiCall
-          }
+          # clone base settings and update url
+          $Clone = $ExportJobBaseSettings.Clone()
+          $Clone.Url = $MainUrl + '?skip=' + $Skip + '&take=' + $DefaultTake
+          $ExportJobs += [PSCustomObject]$Clone
         }
       }
     } elseif ($ApiCall.ApiFetchType -eq $ApiFetchType_ItemIdOnly) {
       $ItemIdOnlyIds | ForEach-Object {
         $Id = $_
-        $ExportJobs += [PSCustomObject]@{
-          Url          = ($MainUrl + '/' + $Id)
-          ApiKey       = $ApiKey
-          ExportFolder = $ExportFolder
-          ApiCall      = $ApiCall
-        }
+        # clone base settings and update url
+        $Clone = $ExportJobBaseSettings.Clone()
+        $Clone.Url = $MainUrl + '/' + $Id
+        $ExportJobs += [PSCustomObject]$Clone
       }
     }
     $ExportJobs
