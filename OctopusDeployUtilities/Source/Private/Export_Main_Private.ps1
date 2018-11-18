@@ -38,7 +38,7 @@ function Export-ODUJob {
       if (($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) -or ($null -eq (Get-Member -InputObject $ExportItems -Name Items))) {
         $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((ConvertTo-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItems)) + '.json')
         Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
-        Out-ODUFileJson -FilePath $FilePath -Data $ExportItems
+        Out-ODUFileJson -FilePath $FilePath -Data (Remove-ODUFilterPropertiesFromExportItem -RestName ($ExportJobDetail.ApiCall.RestName) -ExportItem $ExportItems)
 
       } else {
         $ExportItems.Items | ForEach-Object {
@@ -54,7 +54,7 @@ function Export-ODUJob {
 
           $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((ConvertTo-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItem)) + '.json')
           Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
-          Out-ODUFileJson -FilePath $FilePath -Data $ExportItem
+          Out-ODUFileJson -FilePath $FilePath -Data (Remove-ODUFilterPropertiesFromExportItem -RestName ($ExportJobDetail.ApiCall.RestName) -ExportItem $ExportItem)
         }
       }
     }
@@ -479,3 +479,66 @@ function New-ODUFolderForEachApiCall {
 
 }
 #endregion
+
+
+#region Function: Remove-ODUFilterPropertiesFromExportItem
+
+<#
+.SYNOPSIS
+Filters properties on/off an exported item based in users property white/black list settings
+.DESCRIPTION
+Filters properties on/off an exported item based in users property white/black list settings
+.PARAMETER RestName
+Name of type being processed
+.PARAMETER ExportItem
+Exported item to process
+.EXAMPLE
+Remove-ODUFilterPropertiesFromExportItem ...asdf...
+#>
+
+function Remove-ODUFilterPropertiesFromExportItem {
+  #region Function parameters
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$RestName,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object]$ExportItem
+  )
+  #endregion
+  process {
+    [PSCustomObject]$FilteredExportItem = $null
+    [string[]]$BlackList = $null
+    [string[]]$WhiteList = $null
+
+    $PropertyWhiteList = Get-ODUConfigPropertyWhiteList
+    $PropertyBlackList = Get-ODUConfigPropertyBlackList
+
+    # white and black lists should not both have values (that is confirmed in configuration)
+    if ($PropertyWhiteList -ne $null -and $PropertyWhiteList.Contains($RestName) -and $PropertyWhiteList.$RestName.Count -gt 0) {
+      [string[]]$WhiteList = $PropertyWhiteList.$RestName
+    }
+    if ($PropertyBlackList -ne $null -and $PropertyBlackList.Contains($RestName) -and $PropertyBlackList.$RestName.Count -gt 0) {
+      [string[]]$BlackList = $PropertyBlackList.$RestName
+    }
+
+    $FilteredExportItem = $ExportItem
+    # white list and black list should not BOTH be set at same time so this should be safe
+    if ($null -ne $WhiteList -or $null -ne $BlackList) {
+      # has to use this way of creating PSCustomObject and adding members - not hashtable
+      # or else we lose the original order of the properties on ExportItem
+      $FilteredExportItem = New-Object -TypeName PSObject
+      # don't use Get-Member to get properties, which sorts property names and loses original order, use this
+      $ExportItem.PSObject.Properties.Name | ForEach-Object {
+        if ($WhiteList -contains $_ -or $BlackList -notcontains $_) {
+          Add-Member -InputObject $FilteredExportItem -MemberType NoteProperty -Name $_ -Value ($ExportItem.$_)
+        }
+      }
+    }
+    $FilteredExportItem
+  }
+}
+#endregion
+
