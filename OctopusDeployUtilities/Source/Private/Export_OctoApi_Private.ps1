@@ -7,7 +7,7 @@ These names are not pretty but they have been named so as to (hopefully) be not 
 RestName                          name of REST API call (Accounts, Projects, etc.), used in display and
                                   type/property white/black lists
 RestMethod                        relative api call to use (/api/accounts, /api/projects)
-ApiFetchType                      type of fetch: Simple, MultiFetch or ItemIdOnly (described below)
+ApiFetchType                      type of fetch: Simple, MultiFetch or ItemIdOnly
 FileNamePropertyName              when saving the item just fetched from server, this value is the name of
                                   a property on the item that will be unique and is best to use for the file name
                                      for Simple fetches, this will be 'NOT_USED" as the RestName is ultimately used
@@ -22,10 +22,6 @@ ItemIdOnlyReferencePropertyName   for items fetched by ItemIdOnly, this is the n
                                   items to refer to this item
                                   for example, Variables is fetched by ItemIdOnly and other items refer to it by
                                   a local property (in those other items) named VariableSetId
-
-
-# asdf describe: Simple MultiFetch ItemIdOnly
-
 #>
 #endregion
 

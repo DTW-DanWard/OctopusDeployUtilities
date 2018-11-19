@@ -5,16 +5,24 @@ Set-StrictMode -Version Latest
 
 <#
 .SYNOPSIS
-Processes a single ExportJobDetail
+Processes a single ExportJobDetail - i.e. data from a single Url
 .DESCRIPTION
-Processes a single ExportJobDetail
+Processes a single ExportJobDetail:
+ - fetches content for a single url;
+ - captures ItemIdOnly value references;
+ - filters propertes on the exported data;
+ - saves data to file.
+ Data might be 0, 1 or multiple items.
+ Returns hashtable of ItemIdOnly reference values.  That is: if a property listed in
+ ItemIdOnlyReferencePropertyNames is found on the object, the value for that property is
+ captured and returned at the end of the function call.
 .PARAMETER ExportJobDetail
-asdf
+Information about the export: ApiCall info, Url, ApiKey to use in call, folder to save to
 .PARAMETER ItemIdOnlyReferencePropertyNames
-ItemIdOnly property names to look for; return values if found
+ItemIdOnly property names to look for in data that is retrieved; return values for these if found
 .EXAMPLE
 Export-ODUJob
-<asdf lots of notes needed here>
+<...>
 #>
 function Export-ODUJob {
   [CmdletBinding()]
@@ -68,12 +76,13 @@ function Export-ODUJob {
 
 <#
 .SYNOPSIS
-asdf Main function controlling export process
+Main function controlling a standard export process
 .DESCRIPTION
-asdf Main function controlling export process
+Main function controlling a standard export process
+Create 
 .EXAMPLE
 Export-ODUOctopusDeployConfigPrivate
-<asdf lots of notes needed here>
+<...>
 #>
 function Export-ODUOctopusDeployConfigPrivate {
   [CmdletBinding()]
@@ -109,13 +118,13 @@ function Export-ODUOctopusDeployConfigPrivate {
     # for ItemIdOnly calls, create lookup with key of reference property names and value empty array (for capturing values)
     [hashtable]$ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
 
-    # loop through non-ItemIdOnly calls
+    # loop through non-ItemIdOnly calls creating zero, one more more jobs for exporting content from it
     [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | ForEach-Object {
       $ApiCall = $_
       New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
     }
 
-    # process only non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process later
+    # process (export/save) the non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process after
     $ExportJobDetails | ForEach-Object {
       $ExportJobDetail = $_
       $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
@@ -123,7 +132,7 @@ function Export-ODUOctopusDeployConfigPrivate {
       $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
     }
 
-    # loop through ItemIdOnly calls
+    # now loop through ItemIdOnly calls, creating jobs using captured ItemIdOnly Ids
     [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly } | ForEach-Object {
       $ApiCall = $_
       $ItemIdOnlyPropertyName = $ApiCall.ItemIdOnlyReferencePropertyName
@@ -132,7 +141,7 @@ function Export-ODUOctopusDeployConfigPrivate {
       }
     }
 
-    # process only ItemIdOnly jobs
+    # process (export/save) the ItemIdOnly jobs
     $ExportJobDetails | ForEach-Object {
       $ExportJobDetail = $_
       # shouldn't be any values returned; even if there are, we ignore
@@ -140,7 +149,7 @@ function Export-ODUOctopusDeployConfigPrivate {
     }
 
     # return path to this export
-    #    $CurrentExportRootFolder
+    $CurrentExportRootFolder
   }
 }
 #endregion
@@ -150,16 +159,19 @@ function Export-ODUOctopusDeployConfigPrivate {
 
 <#
 .SYNOPSIS
-asdf Main function controlling export process
+Gets raw file name (no extension) to be used when saving $ExportItem
 .DESCRIPTION
-asdf Main function controlling export process
+Gets raw file name (no extension) to be used when saving $ExportItem
+If item's ApiFetchType is Simple, file name will be the RestName value
+If not, get an actual value from the ExportItem itself (typically Id or Name)
+based on Property name found in $ApiCall.FileNamePropertyName
 .PARAMETER ApiCall
 PSObject with ApiCall information
 .PARAMETER ExportItem
 PSObject with data exported from Octopus
 .EXAMPLE
-Export-ODUOctopusDeployConfigPrivate
-<asdf lots of notes needed here>
+Get-ODUExportItemFileName
+<...>
 #>
 function Get-ODUExportItemFileName {
   #region Function parameters
@@ -302,8 +314,10 @@ Will be 'Miscellaneous' for Simple fetch types and the RestName for all others
 .PARAMETER ApiCall
 Object with api call information
 .EXAMPLE
-asdf update this
-asdf update this
+Get-ODUFolderNameForApiCall $ApiCall
+Miscellaneous     # this item is a Simple fetch type
+Get-ODUFolderNameForApiCall $ApiCall
+Projects          # Use Projects RestName as it is not a Simple fetch type
 #>
 function Get-ODUFolderNameForApiCall {
   #region Function parameters
@@ -383,8 +397,8 @@ Root export folder
 List of Ids to use when creating Url
 Used with creating jobs for types that can only be exported via Id
 .EXAMPLE
-New-ODUExportJobInfo ...
-<asdf>
+New-ODUExportJobInfo
+<...>
 #>
 function New-ODUExportJobInfo {
   [CmdletBinding()]
@@ -504,7 +518,8 @@ Name of type being processed
 .PARAMETER ExportItem
 Exported item to process
 .EXAMPLE
-Remove-ODUFilterPropertiesFromExportItem ...asdf...
+Remove-ODUFilterPropertiesFromExportItem
+<...>
 #>
 
 function Remove-ODUFilterPropertiesFromExportItem {

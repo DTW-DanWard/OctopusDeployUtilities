@@ -15,8 +15,8 @@ Find-ODUInvalidRestApiTypeName Projects
 <does nothing>
 Find-ODUInvalidRestApiTypeName Projects, Variables
 <does nothing>
-Find-ODUInvalidRestApiTypeName Projects, Variables, asdfasdfasdf
-<throws error 'asdfasdfasdf' not valid>
+Find-ODUInvalidRestApiTypeName Projects, Variables, blahblahblah
+<throws error 'blahblahblah' not valid>
 #>
 function Find-ODUInvalidRestApiTypeName {
   [CmdletBinding()]
@@ -81,7 +81,7 @@ Test-ODUValidateRestApiTypeName Projects
 $true
 Test-ODUValidateRestApiTypeName Projects, Variables
 $true
-Test-ODUValidateRestApiTypeName Projects, Variables, asdfasdfasdf
+Test-ODUValidateRestApiTypeName Projects, Variables, blahblahblah
 $false
 #>
 function Test-ODUValidateRestApiTypeName {

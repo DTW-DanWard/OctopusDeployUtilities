@@ -5,13 +5,13 @@ Set-StrictMode -Version Latest
 
 <#
 .SYNOPSIS
-Exports Octopus Deploy configuration, performs data lookups... asdf
+Exports Octopus Deploy configuration from a server to a unique datetimestamp folder
 .DESCRIPTION
-Exports Octopus Deploy configuration
-asdf lots of notes needed here
+Exports Octopus Deploy configuration from a server to a unique datetimestamp folder.
+Fetches from server and saves to folder based on settings entered by user via the
+Set-ODUConfig* functions.
 .EXAMPLE
 Export-ODUOctopusDeployConfig
-<asdf lots of notes needed here>
 #>
 function Export-ODUOctopusDeployConfig {
   [CmdletBinding()]
