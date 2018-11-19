@@ -85,7 +85,7 @@ function Export-ODUJob {
 Main function controlling a standard export process
 .DESCRIPTION
 Main function controlling a standard export process
-Create 
+Create.... asdf fill in here
 .EXAMPLE
 Export-ODUOctopusDeployConfigPrivate
 <...>
@@ -101,19 +101,8 @@ function Export-ODUOctopusDeployConfigPrivate {
     $ServerUrl = $OctopusServer.Url
     $ApiKey = Convert-ODUDecryptApiKey -ApiKey ($OctopusServer.ApiKey)
 
-    #region Create export root folder
-    # build up path to current export
-    # first get utility root folder
-    # root folder was tested/created when initially set so no need to test if it exists
-    [string]$CurrentExportRootFolder = Get-ODUConfigExportRootFolder
-    # add on Server-specific name
-    $CurrentExportRootFolder = Join-Path -Path $CurrentExportRootFolder -ChildPath $ServerName
-    # Server-specific folder may not exist, so create if necessary
-    if ($false -eq (Test-Path -Path $CurrentExportRootFolder)) { New-Item -ItemType Directory -Path $CurrentExportRootFolder > $null }
-    [string]$CurrentExportRootFolder = Join-Path -Path $CurrentExportRootFolder -ChildPath ('{0:yyyyMMdd-HHmmss}' -f (Get-Date))
-    Write-Verbose "$($MyInvocation.MyCommand) :: Create export root folder: $CurrentExportRootFolder"
-    New-Item -ItemType Directory -Path $CurrentExportRootFolder > $null
-    #endregion
+    # create root folder for this export instance
+    $CurrentExportRootFolder = New-ODURootExportFolder -MainExportRoot (Get-ODUConfigExportRootFolder) -ServerName $ServerName -DateTime (Get-Date)
 
     # get filtered list of api call details to process
     $ApiCalls = Get-ODUFilteredExportRestApiCalls
@@ -132,8 +121,7 @@ function Export-ODUOctopusDeployConfigPrivate {
 
     # process (export/save) the non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process after
     $ExportJobDetails | ForEach-Object {
-      $ExportJobDetail = $_
-      $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
+      $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
       # transfer values to main hash table
       $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
     }
@@ -149,9 +137,8 @@ function Export-ODUOctopusDeployConfigPrivate {
 
     # process (export/save) the ItemIdOnly jobs
     $ExportJobDetails | ForEach-Object {
-      $ExportJobDetail = $_
       # shouldn't be any values returned; even if there are, we ignore
-      Export-ODUJob -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys) > $null
+      Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys) > $null
     }
 
     # return path to this export
@@ -511,7 +498,7 @@ function New-ODUFolderForEachApiCall {
   process {
     Write-Verbose "$($MyInvocation.MyCommand) :: Parent folder is: $ParentFolder"
     $ApiCalls | ForEach-Object {
-      New-ODUIExportItemFolder -FolderPath (Join-Path -Path $ParentFolder -ChildPath (Get-ODUFolderNameForApiCall -ApiCall $_))
+      New-ODUExportItemFolder -FolderPath (Join-Path -Path $ParentFolder -ChildPath (Get-ODUFolderNameForApiCall -ApiCall $_))
     }
   }
 

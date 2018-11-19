@@ -38,8 +38,56 @@ function Format-ODUSanitizedFileName {
 #endregion
 
 
+#region Function: New-ODURootExportFolder
 
-#region Function: New-ODUIExportItemFolder
+<#
+.SYNOPSIS
+Creates datetime stamp folder for current export under main export folder \ <ServerName> and returns path
+.DESCRIPTION
+Creates datetime stamp folder for current export under main export folder \ <ServerName> and returns path
+.PARAMETER MainExportRoot
+Root export folder for all exports
+.PARAMETER ServerName
+Name of Octopus Deploy server instance
+.PARAMETER DateTime
+DateTime to use for actual export-instance folder name
+.EXAMPLE
+New-ODURootExportFolder -FolderPath c:\temp\MyNewFolder
+<Creates c:\temp\MyNewFolder if doesn't exist>
+#>
+function New-ODURootExportFolder {
+  #region Function parameters
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$MainExportRoot,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ServerName,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [datetime]$DateTime
+
+    )
+  #endregion
+  process {
+    # root folder was tested/created when initially set so no need to test if $MainExportRoot exists or create it
+    # add $ServerName to path and check if exists
+    $Folder = Join-Path -Path $MainExportRoot -ChildPath $ServerName
+    # Server-specific folder may not exist, so create if necessary
+    if ($false -eq (Test-Path -Path $Folder)) { New-Item -ItemType Directory -Path $Folder > $null }
+    # add datetime stamp folder name, this better be unique, don't check if exists
+    $Folder = Join-Path -Path $Folder -ChildPath ('{0:yyyyMMdd-HHmmss}' -f $DateTime)
+    Write-Verbose "$($MyInvocation.MyCommand) :: Create export root folder: $Folder"
+    New-Item -ItemType Directory -Path $Folder > $null
+    $Folder
+  }
+}
+#endregion
+
+
+#region Function: New-ODUExportItemFolder
 
 <#
 .SYNOPSIS
@@ -49,10 +97,10 @@ Creates folder if doesn't already exist
 .PARAMETER FolderPath
 Full path to new folder
 .EXAMPLE
-New-ODUIExportItemFolder -FolderPath c:\temp\MyNewFolder
+New-ODUExportItemFolder -FolderPath c:\temp\MyNewFolder
 <Creates c:\temp\MyNewFolder if doesn't exist>
 #>
-function New-ODUIExportItemFolder {
+function New-ODUExportItemFolder {
   #region Function parameters
   [CmdletBinding()]
   param(
