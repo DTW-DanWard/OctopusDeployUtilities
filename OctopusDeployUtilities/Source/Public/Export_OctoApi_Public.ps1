@@ -1,14 +1,27 @@
 
 Set-StrictMode -Version Latest
 
+#region Function: Get-ODURestApiTypeNames
+
 <#
 .SYNOPSIS
-asdf delete this
+Returns list of Type names used with Octopus Deploy REST API
 .DESCRIPTION
-asdf delete this
+Returns list of Type names used with Octopus Deploy REST API
+These are the available Type names that can be used with Type and Property
+blacklist and whitelist
 .EXAMPLE
-asdf delete this
-asdf delete this
+Get-ODURestApiTypeNames
+Authentication
+BuiltInRepository
+ExternalSecurityGroups
+FeaturesConfiguration
+...
 #>
-# function Test { Get-ODUStandardExportRestApiCalls }
-
+function Get-ODURestApiTypeNames {
+  [CmdletBinding()]
+  param()
+  process {
+    (Get-ODUStandardExportRestApiCalls).RestName | Sort-Object
+  }
+}
