@@ -447,7 +447,9 @@ function Set-ODUConfigPropertyBlacklist {
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
-    # asdf need to validate types
+    # validate type name values
+    Find-ODUInvalidRestApiTypeName -TypeName ($TypePropertyListLookup.Keys)
+
 
     Write-Verbose "$($MyInvocation.MyCommand) :: Getting Octopus server configuration"
     $OctopusServer = Get-ODUConfigOctopusServer
@@ -490,7 +492,8 @@ function Set-ODUConfigPropertyWhitelist {
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
-    # asdf need to validate types
+    # validate type name values
+    Find-ODUInvalidRestApiTypeName -TypeName ($TypePropertyListLookup.Keys)
 
     Write-Verbose "$($MyInvocation.MyCommand) :: Getting Octopus server configuration"
     $OctopusServer = Get-ODUConfigOctopusServer
