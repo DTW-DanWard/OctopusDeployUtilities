@@ -152,7 +152,7 @@ function Get-ODUStandardExportRestApiCalls {
     New-ODUExportRestApiCall 'Tasks' '/api/tasks' 'MultiFetch' 'Id'
     New-ODUExportRestApiCall 'Teams' '/api/teams' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('EnvironmentIds', 'MemberUserIds', 'ProjectGroupIds', 'ProjectIds', 'TenantIds', 'UserRoleIds')
     New-ODUExportRestApiCall 'Tenants' '/api/tenants' 'MultiFetch' 'Name'
-    New-ODUExportRestApiCall 'TenantVariables' '/api/tenantvariables/all' 'MultiFetch' 'TenantName'
+    New-ODUExportRestApiCall 'TenantVariables' '/api/tenantvariables/all' 'MultiFetch' 'TenantId'
     New-ODUExportRestApiCall 'UserRoles' '/api/userroles' 'MultiFetch' 'Name'
     New-ODUExportRestApiCall 'Users' '/api/users' 'MultiFetch' 'Username' -IdToNamePropertyName 'Username'
 

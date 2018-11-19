@@ -43,15 +43,21 @@ function Export-ODUJob {
 
       # simple references have a single item which does not have ItemIdOnly references; just save it
       # same is true of items fetched by IdOnly
-      if (($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) -or ($null -eq (Get-Member -InputObject $ExportItems -Name Items))) {
+      if (($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) ) { # -or ($null -eq (Get-Member -InputObject $ExportItems -Name Items))) {
         $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((Format-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItems)) + '.json')
         Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
         Out-ODUFileJson -FilePath $FilePath -Data (Remove-ODUFilterPropertiesFromExportItem -RestName ($ExportJobDetail.ApiCall.RestName) -ExportItem $ExportItems)
 
       } else {
-        $ExportItems.Items | ForEach-Object {
+        # this is for TenantVariables, which returns multiple values that should be stored in multiple files
+        # BUT, for whatever really dumb reason, Octo API does not provide this info in the standard TotalResults / .Items format
+        # so we have this dumb workaround here - try to get the items as-is without the .Items property
+        [object[]]$ExportItemsToProcess = $ExportItems
+        if ($null -ne (Get-Member -InputObject $ExportItems -Name Items)) {
+          $ExportItemsToProcess = $ExportItems.Items
+        }
+        $ExportItemsToProcess | ForEach-Object {
           $ExportItem = $_
-
           # inspect exported item for ItemIdOnly id references
           $ItemIdOnlyReferenceValuesOnItem = Get-ODUItemIdOnlyReferenceValues -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames -ExportItem $ExportItem
           # transfer values to main hash table
@@ -250,7 +256,7 @@ function Get-ODUItemIdOnlyReferenceValues {
         Write-Verbose "$($MyInvocation.MyCommand) :: ItemIdOnly reference value is: $($ExportItem.$ItemIdOnlyReferencePropertyName)"
         $ItemIdOnlyReferenceValues.$ItemIdOnlyReferencePropertyName += $ExportItem.$ItemIdOnlyReferencePropertyName
       } else {
-        Write-Verbose "$($MyInvocation.MyCommand) :: Property $ItemIdOnlyReferencePropertyName NOT found on $($ExportJobDetail.ApiCall.RestName) with id $($ExportItem.Id)"
+        Write-Verbose "$($MyInvocation.MyCommand) :: Property $ItemIdOnlyReferencePropertyName NOT found on $($ExportJobDetail.ApiCall.RestName)"
       }
     }
     $ItemIdOnlyReferenceValues
@@ -443,6 +449,7 @@ function New-ODUExportJobInfo {
       # with a Take of 1 (retrieve only 1 record, if it exists) then use the TotalResults
       # to construct the urls
       $RestResults = Invoke-ODURestMethod -Url $MainUrl -ApiKey $ApiKey
+
       # results might be null if user doesn't have access to that api
       if (($null -ne $RestResults) -and ($null -ne (Get-Member -InputObject $RestResults -Name TotalResults))) {
         $TotalLoops = [math]::Floor($RestResults.TotalResults / $DefaultTake)
@@ -455,6 +462,12 @@ function New-ODUExportJobInfo {
           $Clone.Url = $MainUrl + '?skip=' + $Skip + '&take=' + $DefaultTake
           $ExportJobs += [PSCustomObject]$Clone
         }
+      } else {
+        # this is for TenantVariables, which returns multiple values that should be stored in multiple files
+        # BUT, for whatever really dumb reason, Octo API does not provide this info in the standard TotalResults / .Items format
+        # so we have this dumb workaround here and in the job processing code
+        # add with url as-is; processing code will handle it
+        $ExportJobs += [PSCustomObject]$ExportJobBaseSettings
       }
     } elseif ($ApiCall.ApiFetchType -eq $ApiFetchType_ItemIdOnly) {
       $ItemIdOnlyIds | ForEach-Object {
@@ -521,7 +534,6 @@ Exported item to process
 Remove-ODUFilterPropertiesFromExportItem
 <...>
 #>
-
 function Remove-ODUFilterPropertiesFromExportItem {
   #region Function parameters
   [CmdletBinding()]
