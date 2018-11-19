@@ -433,16 +433,16 @@ function Set-ODUConfigExportRootFolder {
 Sets value for property black list
 .DESCRIPTION
 Sets value for property black list
-.PARAMETER Hashtable
+.PARAMETER TypePropertyListLookup
 Hashtable of types|prperty names to not export
 .EXAMPLE
-Set-ODUConfigPropertyBlacklist -Hashtable @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
+Set-ODUConfigPropertyBlacklist -TypePropertyListLookup @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
 <sets property black list - don't export those particular properties on those types>
 #>
 function Set-ODUConfigPropertyBlacklist {
   [CmdletBinding()]
   param(
-    [hashtable]$Hashtable
+    [hashtable]$TypePropertyListLookup
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
@@ -461,7 +461,7 @@ function Set-ODUConfigPropertyBlacklist {
     # reset property whitelist - can't have blacklist and whitelist at same time
     Write-Verbose "$($MyInvocation.MyCommand) :: Reset whitelist and set blacklist"
     $Config.OctopusServers[0].PropertyWhitelist = @{}
-    $Config.OctopusServers[0].PropertyBlacklist = $Hashtable
+    $Config.OctopusServers[0].PropertyBlacklist = $TypePropertyListLookup
     Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }
@@ -476,16 +476,16 @@ function Set-ODUConfigPropertyBlacklist {
 Sets value for property white list
 .DESCRIPTION
 Sets value for property white list
-.PARAMETER Hashtable
+.PARAMETER TypePropertyListLookup
 Hashtable of types|prperty names to not export
 .EXAMPLE
-Set-ODUConfigPropertyBlacklist -Hashtable @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
+Set-ODUConfigPropertyBlacklist -TypePropertyListLookup @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
 <sets property black list - ONLY export those particular properties on those types>
 #>
 function Set-ODUConfigPropertyWhitelist {
   [CmdletBinding()]
   param(
-    [hashtable]$Hashtable
+    [hashtable]$TypePropertyListLookup
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
@@ -504,7 +504,7 @@ function Set-ODUConfigPropertyWhitelist {
     # reset property blacklist - can't have blacklist and whitelist at same time
     Write-Verbose "$($MyInvocation.MyCommand) :: Reset blacklist and set whitelist"
     $Config.OctopusServers[0].PropertyBlacklist = @{}
-    $Config.OctopusServers[0].PropertyWhitelist = $Hashtable
+    $Config.OctopusServers[0].PropertyWhitelist = $TypePropertyListLookup
     Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }
