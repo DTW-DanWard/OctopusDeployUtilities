@@ -1,6 +1,41 @@
 
 Set-StrictMode -Version Latest
 
+#region Function: Find-ODUInvalidRestApiTypeName
+
+<#
+.SYNOPSIS
+For list of Type names, throws error if finds invalid entry, else does nothing
+.DESCRIPTION
+For list of Type names, throws error if finds invalid entry, else does nothing
+.EXAMPLE
+Find-ODUInvalidRestApiTypeName Projects
+<does nothing>
+Find-ODUInvalidRestApiTypeName Projects, Variables
+<does nothing>
+Find-ODUInvalidRestApiTypeName Projects, Variables, asdfasdfasdf
+<throws error 'asdfasdfasdf' not valid>
+#>
+function Find-ODUInvalidRestApiTypeName {
+  [CmdletBinding()]
+  [OutputType([bool])]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string[]]$TypeName
+  )
+  process {
+    $ValidTypeNames = Get-ODURestApiTypeNames
+    $TypeName | ForEach-Object {
+      if ($_ -notin $ValidTypeNames) {
+        throw "Not a valid REST API Type name: $_"
+      }
+    }
+  }
+}
+#endregion
+
+
 #region Function: Get-ODURestApiTypeNames
 
 <#
