@@ -553,10 +553,10 @@ function Set-ODUConfigTextEditor {
 
 <#
 .SYNOPSIS
-Sets value for type black list
+Sets value for type name blacklist
 .DESCRIPTION
-Sets value for type black list
-.PARAMETER List
+Sets value for type name blacklist
+.PARAMETER TypeName
 List of names of types to not export
 .EXAMPLE
 Set-ODUConfigTypeBlacklist -List @('Deployments', 'Events', 'Interruptions')
@@ -565,12 +565,13 @@ Set-ODUConfigTypeBlacklist -List @('Deployments', 'Events', 'Interruptions')
 function Set-ODUConfigTypeBlacklist {
   [CmdletBinding()]
   param(
-    [string[]]$List
+    [string[]]$TypeName
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
-    # asdf need to validate types
+    # validate type name values
+    Find-ODUInvalidRestApiTypeName -TypeName $TypeName
 
     Write-Verbose "$($MyInvocation.MyCommand) :: Getting Octopus server configuration"
     $OctopusServer = Get-ODUConfigOctopusServer
@@ -584,7 +585,7 @@ function Set-ODUConfigTypeBlacklist {
     # reset type whitelist - can't have blacklist and whitelist at same time
     Write-Verbose "$($MyInvocation.MyCommand) :: Reset whitelist and set blacklist"
     $Config.OctopusServers[0].TypeWhitelist = @()
-    $Config.OctopusServers[0].TypeBlacklist = $List
+    $Config.OctopusServers[0].TypeBlacklist = $TypeName
     Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }
@@ -596,11 +597,11 @@ function Set-ODUConfigTypeBlacklist {
 
 <#
 .SYNOPSIS
-Sets value for type white list
+Sets value for type name whitelist
 .DESCRIPTION
-Sets value for type white list
-.PARAMETER List
-List of names of types to not export
+Sets value for type name whitelist
+.PARAMETER TypeName
+List of names of types to ONLY export
 .EXAMPLE
 Set-ODUConfigTypeWhitelist -List @('Deployments', 'Events', 'Interruptions')
 <sets type white list to those values>
@@ -608,12 +609,13 @@ Set-ODUConfigTypeWhitelist -List @('Deployments', 'Events', 'Interruptions')
 function Set-ODUConfigTypeWhitelist {
   [CmdletBinding()]
   param(
-    [string[]]$List
+    [string[]]$TypeName
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
-    # asdf need to validate types
+    # validate type name values
+    Find-ODUInvalidRestApiTypeName -TypeName $TypeName
 
     Write-Verbose "$($MyInvocation.MyCommand) :: Getting Octopus server configuration"
     $OctopusServer = Get-ODUConfigOctopusServer
@@ -627,7 +629,7 @@ function Set-ODUConfigTypeWhitelist {
     # reset type blacklist - can't have blacklist and whitelist at same time
     Write-Verbose "$($MyInvocation.MyCommand) :: Reset blacklist and set whitelist"
     $Config.OctopusServers[0].TypeBlacklist = @()
-    $Config.OctopusServers[0].TypeWhitelist = $List
+    $Config.OctopusServers[0].TypeWhitelist = $TypeName
     Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }

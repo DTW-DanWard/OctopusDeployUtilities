@@ -8,6 +8,8 @@ Set-StrictMode -Version Latest
 For list of Type names, throws error if finds invalid entry, else does nothing
 .DESCRIPTION
 For list of Type names, throws error if finds invalid entry, else does nothing
+.PARAMETER TypeName
+Type name to validate
 .EXAMPLE
 Find-ODUInvalidRestApiTypeName Projects
 <does nothing>
@@ -72,6 +74,8 @@ Validates list of values against Type names used with Octopus Deploy REST API
 .DESCRIPTION
 Validates list of values against Type names used with Octopus Deploy REST API
 If all passed values are valid, returns $true, if any one is invalid, returns $false
+.PARAMETER TypeName
+Type name to validate
 .EXAMPLE
 Test-ODUValidateRestApiTypeName Projects
 $true
@@ -90,13 +94,7 @@ function Test-ODUValidateRestApiTypeName {
   )
   process {
     $ValidTypeNames = Get-ODURestApiTypeNames
-    $Valid = $true
-    $TypeName | ForEach-Object {
-      if ($_ -notin $ValidTypeNames) {
-        $Valid = $false
-      }
-    }
-    $Valid
+    $null -eq ($TypeName | Where-Object { $_ -notin $ValidTypeNames })
   }
 }
 #endregion

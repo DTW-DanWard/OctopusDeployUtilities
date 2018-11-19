@@ -108,12 +108,9 @@ $SourceScripts | Where-Object { ($null -ne (Get-Content $_)) -and ((Get-Content 
     It 'confirms Example field(s) have content' {
       $Functions | Where-Object { ($null -ne $_.GetHelpContent()) -and ($_.GetHelpContent().Examples.Count -gt 0) } | ForEach-Object {
         $Function = $_
-        $EmptyContentFound = $false
-        $Function.GetHelpContent().Examples | ForEach-Object {
-          # making EmptyContentFound script scope to avoid stupid PSScriptAnalyzer error
-          if ($_ -eq '') { $script:EmptyContentFound = $true }
-        }
-        if ($EmptyContentFound -eq $true) { $_.Name }
+        # this probably should check across entire array but fallback notation not working in script, weird
+        # just assume a single example and check that
+        if ($Function.GetHelpContent().Examples.Trim() -eq '') { $_.Name }
       } | Should BeNullOrEmpty
     }
   }
