@@ -80,14 +80,25 @@ function Export-ODUOctopusDeployConfigPrivate {
   [OutputType([string])]
   param()
   process {
-    # root folder was tested/created when initially set; unless user manually modified the config these will always work
-    [string]$CurrentExportRootFolder = Join-Path -Path (Get-ODUConfigExportRootFolder) -ChildPath ('{0:yyyyMMdd-HHmmss}' -f (Get-Date))
-    Write-Verbose "$($MyInvocation.MyCommand) :: Create root folder: $CurrentExportRootFolder"
+    # get Octopus Server details now, pass into job creation
+    $OctopusServer = Get-ODUConfigOctopusServer
+    $ServerName = $OctopusServer.Name
+    $ServerUrl = $OctopusServer.Url
+    $ApiKey = Convert-ODUDecryptApiKey -ApiKey ($OctopusServer.ApiKey)
+    
+    #region Create export root folder
+    # build up path to current export
+    # first get utility root folder
+    # root folder was tested/created when initially set so no need to test if it exists
+    [string]$CurrentExportRootFolder = Get-ODUConfigExportRootFolder
+    # add on Server-specific name
+    $CurrentExportRootFolder = Join-Path -Path $CurrentExportRootFolder -ChildPath $ServerName
+    # Server-specific folder may not exist, so create if necessary
+    if ($false -eq (Test-Path -Path $CurrentExportRootFolder)) { New-Item -ItemType Directory -Path $CurrentExportRootFolder > $null }
+    [string]$CurrentExportRootFolder = Join-Path -Path $CurrentExportRootFolder -ChildPath ('{0:yyyyMMdd-HHmmss}' -f (Get-Date))
+    Write-Verbose "$($MyInvocation.MyCommand) :: Create export root folder: $CurrentExportRootFolder"
     New-Item -ItemType Directory -Path $CurrentExportRootFolder > $null
-
-    # get url and api key once now, pass into job creation
-    $ServerUrl = (Get-ODUConfigOctopusServer).Url
-    $ApiKey = Convert-ODUDecryptApiKey -ApiKey ((Get-ODUConfigOctopusServer).ApiKey)
+    #endregion
 
     # get filtered list of api call details to process
     $ApiCalls = Get-ODUFilteredExportRestApiCalls
