@@ -1,7 +1,7 @@
 
 Set-StrictMode -Version Latest
 
-#region Function: ConvertTo-ODUSanitizedFileName
+#region Function: Format-ODUSanitizedFileName
 
 <#
 .SYNOPSIS
@@ -13,10 +13,10 @@ Trims as well
 .PARAMETER FileName
 File name to review and clean
 .EXAMPLE
-ConvertTo-ODUSanitizedFileName -FileName " Test#File  /4QQ "
+Format-ODUSanitizedFileName -FileName " Test#File  /4QQ "
 <returns (no quotes): "TestFile 4QQ"
 #>
-function ConvertTo-ODUSanitizedFileName {
+function Format-ODUSanitizedFileName {
   #region Function parameters
   [CmdletBinding()]
   [OutputType([string])]
