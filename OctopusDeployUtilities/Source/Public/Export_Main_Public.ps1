@@ -23,7 +23,7 @@ function Export-ODUOctopusDeployConfig {
     # export data and capture export folder instance
     [string]$CurrentExportRootFolder = Export-ODUOctopusDeployConfigMain
 
-    Write-Host "Performing data lookups"
+    Write-Host "Performing data lookups in $CurrentExportRootFolder"
 
     # asdf - return export read into memory?  parameter switch?
     Write-Host "Updating `$global:ODU_Export"

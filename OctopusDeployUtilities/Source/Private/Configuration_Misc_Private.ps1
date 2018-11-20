@@ -34,3 +34,26 @@ function Convert-ODUDecryptApiKey {
 #endregion
 
 
+#region Function: Test-ODUConfigFilePath
+
+<#
+.SYNOPSIS
+Tests if configuration file exists (returns $true or $false)
+.DESCRIPTION
+Tests if configuration file exists; returns $true if it does, $false otherwise.
+Use this to test if configuration initialized without throwing exception like
+Confirm-ODUConfig does.
+.EXAMPLE
+Test-ODUConfigFilePath
+$true
+(already existed)
+#>
+function Test-ODUConfigFilePath {
+  [CmdletBinding()]
+  [OutputType([bool])]
+  param()
+  process {
+    Test-Path -Path (Get-ODUConfigFilePath)
+  }
+}
+#endregion
