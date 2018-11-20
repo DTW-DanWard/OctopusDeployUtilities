@@ -17,33 +17,34 @@ function Export-ODUOctopusDeployConfig {
   [CmdletBinding()]
   param()
   process {
-
-    Write-Host "Exporting data"
-
     # export data and capture export folder instance
+    Write-Output "Exporting data"
     [string]$CurrentExportRootFolder = Export-ODUOctopusDeployConfigMain
+    Write-Verbose "$($MyInvocation.MyCommand) :: Export folder: $CurrentExportRootFolder"
 
-    Write-Host "Performing data lookups in $CurrentExportRootFolder"
-    # asdf refactor into single function?
     # create lookup object in root of export with every Id and name for every exported item
+    Write-Output "Creating Id to name lookup"
     New-ODUIdToNameLookup $CurrentExportRootFolder
 
     # for each exported item, look for external Id values in it, lookup the external name for the external id and add to exported item
+    Write-Output "Adding external names for ids in exported data"
     Update-ODUExportAddExternalNamesForIds $CurrentExportRootFolder
 
+    # for exported variables, add scope names and breadth
+    Update-ODUExportAddScopeNamesToVariables $CurrentExportRootFolder
 
     # asdf - return export read into memory?  parameter switch?
-    Write-Host "Updating `$global:ODU_Export"
+    Write-Output "Updating `$global:ODU_Export"
   }
 }
 
 
 function Test {
 
-  $Path = 'C:\temp\Temp\dtw-test1.octopus.app\20181120-103152'
+  $Path = 'C:\temp\Temp\dtw-test1.octopus.app\zzz'
   
   New-ODUIdToNameLookup $Path
   Update-ODUExportAddExternalNamesForIds $Path
-
+  Update-ODUExportAddScopeNamesToVariables $Path
 
 }
