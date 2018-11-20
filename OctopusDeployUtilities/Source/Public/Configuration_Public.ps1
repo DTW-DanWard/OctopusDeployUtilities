@@ -30,8 +30,8 @@ function Add-ODUConfigOctopusServer {
     [ValidateNotNullOrEmpty()]
     [ValidatePattern("^API\-[a-z0-9]{10}[a-z0-9]+$")]
     [string]$ApiKey
-    # my key is "API-" plus 27 alphanumeric characters - but I don't know if all are and it's not published
-    # so assume at least 10 characters
+    # my API key is "API-" plus 27 alphanumeric characters - but I don't know if all are and it's not published
+    # so let's just validate that it's at least 10 characters
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
