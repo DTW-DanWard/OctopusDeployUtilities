@@ -30,7 +30,7 @@ function Invoke-ODURestMethod {
   )
   #endregion
   process {
-    Write-Verbose "$($MyInvocation.MyCommand) :: Calling Url $Url with API Key (first 7 characters) $($ApiKey.Substring(0,7))"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Calling Url $Url with API Key (first 7 characters) $($ApiKey.Substring(0,8))..."
     try {
       Invoke-RestMethod -Method Get -Uri $Url -Headers @{ 'X-Octopus-ApiKey' = $ApiKey }
     } catch {
@@ -50,6 +50,42 @@ function Invoke-ODURestMethod {
         throw $Err
       }
     }
+  }
+}
+#endregion
+
+
+#region Function: Invoke-ODURestMethod
+
+<#
+.SYNOPSIS
+Calls url with API key in header and returns results
+.DESCRIPTION
+Calls url with API key in header and returns results
+.PARAMETER Url
+Full url of REST API to call
+.PARAMETER ApiKey
+Unencrypted ApiKey to pass in REST API call headers
+.EXAMPLE
+Invoke-ODURestMethod -Url https://MyOctoServer.octopus.app -ApiKey 'API-123456789012345678901234567'
+<calls Url passing in ApiKey and returns results>
+#>
+function Test-ODUOctopusServerCredentials {
+  #region Function parameters
+  [CmdletBinding()]
+  [OutputType([string])]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ServerDomainName,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ApiKey
+  )
+  #endregion
+  process {
+    # use machines roles api to test (simple and fast)
+    Invoke-RestMethod -Method Get -Uri ($ServerDomainName + "/api/machineroles/all") -Headers @{ 'X-Octopus-ApiKey' = $ApiKey } > $null
   }
 }
 #endregion

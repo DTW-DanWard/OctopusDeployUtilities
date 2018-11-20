@@ -39,75 +39,54 @@ function Add-ODUConfigOctopusServer {
     # if $Url ends with trailing /, remove it
     if ($Url.EndsWith('/')) { $Url = $Url.Substring(0, $Url.Length - 1) }
 
-    # quick validation of Url / API key - refactor this
-    try {
-      # use machine roles api to test - should be fast, simple call
-      Invoke-WebRequest -Uri ($Url + "/api/machineroles/all") -Headers @{ 'X-Octopus-ApiKey' = $ApiKey } > $null
-    } catch {
-      throw "Error occurred testing Octopus Deploy credentials with $Url and $ApiKey - are these correct?  Error was: $_"
-    }
+    # quick validation of Url / API key; use machines roles api to test (simple and fast)
+    try { Test-ODUOctopusServerCredentials -ServerDomainName $Url -ApiKey $ApiKey } catch { throw $_ }
 
     #region Get default Name from Url - with explanation
     # future versions will support multiple Octopus Server configurations, at that time having a
     # specific name for the configuration will be important; for now, only one is supported so
     # we will hide the Name parameter from this/all functions and just use the url domain name by default
-    # first, remove http:// or https:// protocol
-    $Name = $Url.Substring($Url.IndexOf('//') + 2)
-    # next, get domain name (content) before first / (if it even exists)
-    $Name = ($Name -split '/')[0]
+    # get domain name by splitting on /, will be 3rd element of array
+    $Name = ($Url -split '/')[2]
     #endregion
 
-    # Encrypt ONLY if this IsWindows; PS versions 5 and below are only Windows, 6 has explicit variable
-    $ApiKeySecure = $ApiKey
-    if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
-      $ApiKeySecure = ConvertTo-SecureString -String $ApiKey -AsPlainText -Force | ConvertFrom-SecureString
-    }
+    $ApiKeySecure = Convert-ODUEncryptApiKey -ApiKey $ApiKey
 
-    #region Creating Octopus Server configuration section
-    # this should be refactored
-    Write-Verbose "$($MyInvocation.MyCommand) :: Creating Octopus Server configuration section"
-    $OctoServer = @{ }
-    Write-Verbose "$($MyInvocation.MyCommand) :: Octopus server Name: $Name"
-    $OctoServer.Name = $Name
-    Write-Verbose "$($MyInvocation.MyCommand) :: Octopus server Url: $Url"
-    $OctoServer.Url = $Url
-    Write-Verbose "$($MyInvocation.MyCommand) :: Octopus API Key - first 7 characters: $($ApiKey.Substring(0,7))..."
-    $OctoServer.ApiKey = $ApiKeySecure
-    $OctoServer.TypeBlacklist = Get-ODUConfigDefaultTypeBlacklist
-    $OctoServer.TypeWhitelist = Get-ODUConfigDefaultTypeWhitelist
-    $OctoServer.PropertyBlacklist = Get-ODUConfigDefaultPropertyBlacklist
-    $OctoServer.PropertyWhitelist = Get-ODUConfigDefaultPropertyWhitelist
-    $OctoServer.LastPurgeCompareFolder = $Undefined
-    $OctoServer.Search = @{
-      CodeRootPaths     = $Undefined
-      CodeSearchPattern = $Undefined
-    }
-    #endregion
+    # get newly created Octopus Server configuration using name, url and apikey
+    $NewOctopusServer = Get-ODUConfigOctopusServerSection -Name $Name -Url $Url -ApiKey $ApiKeySecure
 
     # check if config settings already exist, ask to overwrite
-    $OctopusServer = Get-ODUConfigOctopusServer
-    if ($null -ne ($OctopusServer)) {
+    $CurrentOctopusServer = Get-ODUConfigOctopusServer
+    if ($null -ne ($CurrentOctopusServer)) {
       Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings already exist"
       # if settings are the same as before just return without making any changes
-      if ($Url -eq $OctopusServer.Url -and ($ApiKey -eq (Convert-ODUDecryptApiKey -ApiKey ($OctopusServer.ApiKey)))) {
+      if ($Url -eq $CurrentOctopusServer.Url -and ($ApiKey -eq (Convert-ODUDecryptApiKey -ApiKey ($CurrentOctopusServer.ApiKey)))) {
         Write-Verbose "$($MyInvocation.MyCommand) :: Settings same as before"
         return
       }
-      Write-Host "These settings already exist: " -NoNewline
-      Write-Host $OctopusServer.Url -ForegroundColor Cyan -NoNewline
+      Write-Host "These are your current settings: " -NoNewline
+      Write-Host $CurrentOctopusServer.Url -ForegroundColor Cyan -NoNewline
       Write-Host " :: " -NoNewline
-      Write-Host "$((Convert-ODUDecryptApiKey -ApiKey ($OctopusServer.ApiKey)).Substring(0,7))" -ForegroundColor Cyan
-      $Prompt = Read-Host -Prompt "Overwrite? (Yes/No)"
+      Write-Host "$((Convert-ODUDecryptApiKey -ApiKey ($CurrentOctopusServer.ApiKey)).Substring(0,8))..." -ForegroundColor Cyan
+      $Prompt = Read-Host -Prompt "Overwrite these? (Yes/No)"
       if ($Prompt -ne 'yes') {
         Write-Verbose "$($MyInvocation.MyCommand) :: Do not overwrite settings"
         return
+      } else {
+        # update the other settings so not lost
+        $NewOctopusServer.TypeBlacklist = $CurrentOctopusServer.TypeBlacklist
+        $NewOctopusServer.TypeWhitelist = $CurrentOctopusServer.TypeWhitelist
+        $NewOctopusServer.PropertyBlacklist = $CurrentOctopusServer.PropertyBlacklist
+        $NewOctopusServer.PropertyWhitelist = $CurrentOctopusServer.PropertyWhitelist
+        $NewOctopusServer.LastPurgeCompareFolder = $CurrentOctopusServer.LastPurgeCompareFolder
+        $NewOctopusServer.Search = $CurrentOctopusServer.Search
       }
     }
 
-    Write-Verbose "$($MyInvocation.MyCommand) :: Adding Octopus Server settings to configuration"
+    Write-Verbose "$($MyInvocation.MyCommand) :: Adding/updating Octopus Server settings in configuration"
     $Config = Get-ODUConfig
     # add as an array, overwrite existing array
-    $Config.OctopusServers = , $OctoServer
+    $Config.OctopusServers = , $NewOctopusServer
     Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration"
     Save-ODUConfig -Config $Config
   }
