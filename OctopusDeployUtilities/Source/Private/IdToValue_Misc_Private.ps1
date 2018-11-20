@@ -1,4 +1,5 @@
 
+Set-StrictMode -Version Latest
 
 function Add-ODUOrUpdateMember {
   #region Function parameters

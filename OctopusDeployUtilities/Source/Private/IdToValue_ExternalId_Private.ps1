@@ -1,7 +1,6 @@
 
 Set-StrictMode -Version Latest
 
-
 #region Function: Get-ODUIdToNameLookupValue
 
 <#
@@ -113,7 +112,7 @@ function Update-ODUExportAddExternalNamesForIds {
               # if there are values, sort before adding - only sort if values else sort changes empty array to null
               if ($ExternalDisplayNames.Count -gt 0) { $ExternalDisplayNames = $ExternalDisplayNames | Sort-Object }
               # see note above about why there are two separate Add-Member calls
-              Add-ODUOrUpdateMember -InputObject $ExportItem -PropertyName $ExternalNamePropertyName -Value $ExternalDisplayName
+              Add-ODUOrUpdateMember -InputObject $ExportItem -PropertyName $ExternalNamePropertyName -Value $ExternalDisplayNames
             }
           }
           Out-ODUFileJson -FilePath $ExportFilePath -Data $ExportItem
