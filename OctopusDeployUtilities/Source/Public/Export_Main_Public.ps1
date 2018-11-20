@@ -31,7 +31,12 @@ function Export-ODUOctopusDeployConfig {
     Update-ODUExportAddExternalNamesForIds $CurrentExportRootFolder
 
     # for exported variables, add scope names and breadth
+    Write-Output "Adding scope names to variables"
     Update-ODUExportAddScopeNamesToVariables $CurrentExportRootFolder
+
+    # add machines listing to environments
+    Write-Output "Adding machine information to environments"
+    Update-ODUExportAddMachinesToEnvironments
 
     # asdf - return export read into memory?  parameter switch?
     Write-Output "Updating `$global:ODU_Export"
@@ -46,5 +51,5 @@ function Test {
   New-ODUIdToNameLookup $Path
   Update-ODUExportAddExternalNamesForIds $Path
   Update-ODUExportAddScopeNamesToVariables $Path
-
+  Update-ODUExportAddMachinesToEnvironments $Path
 }
