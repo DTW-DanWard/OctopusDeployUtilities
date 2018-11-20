@@ -1,7 +1,6 @@
 
 Set-StrictMode -Version Latest
 
-
 #region Function: Get-ODUIdToNameLookup
 
 <#
@@ -56,9 +55,9 @@ function Get-ODUIdToNameLookup {
 
 <#
 .SYNOPSIS
-Creates IdToNameLookup.json file containing Id to Name lookup values for files under Path
+Creates Id to name lookup file containing Id to Name lookup values for files under Path
 .DESCRIPTION
-Creates IdToNameLookup.json file in export instance root containing all Id to Name lookup values
+Creates Id to name lookup file in export instance root containing all Id to Name lookup values
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
@@ -86,6 +85,6 @@ function New-ODUIdToNameLookup {
     }
 
     # save lookup info in root of export instance folder
-    Out-ODUFileJson -FilePath (Join-Path -Path $Path -ChildPath 'IdToNameLookup.json') -Data (Get-ODUIdToNameLookup -Path $Path)
+    Out-ODUFileJson -FilePath (Join-Path -Path $Path -ChildPath $IdToNameLookupFileName) -Data (Get-ODUIdToNameLookup -Path $Path)
   }
 }

@@ -25,7 +25,11 @@ function Export-ODUOctopusDeployConfig {
 
     Write-Host "Performing data lookups in $CurrentExportRootFolder"
     # asdf refactor into single function?
+    # create lookup object in root of export with every Id and name for every exported item
     New-ODUIdToNameLookup $CurrentExportRootFolder
+
+    # for each exported item, look for external Id values in it, lookup the external name for the external id and add to exported item
+    Update-ODUExportAddExternalNamesForIds $CurrentExportRootFolder
 
 
     # asdf - return export read into memory?  parameter switch?
@@ -36,7 +40,10 @@ function Export-ODUOctopusDeployConfig {
 
 function Test {
 
+  $Path = 'C:\temp\Temp\dtw-test1.octopus.app\20181120-103152'
   
+  New-ODUIdToNameLookup $Path
+  Update-ODUExportAddExternalNamesForIds $Path
 
 
 }
