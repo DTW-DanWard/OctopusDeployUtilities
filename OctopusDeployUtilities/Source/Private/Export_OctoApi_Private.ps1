@@ -26,62 +26,45 @@ ItemIdOnlyReferencePropertyName   for items fetched by ItemIdOnly, this is the n
 #endregion
 
 
-#region Function: New-ODUExportRestApiCall
+#region Function: Get-ODUFilteredExportRestApiCalls
 
 <#
 .SYNOPSIS
-Creates single PSObject with Octopus Deploy REST API call information
+Returns standard export rest api call info filtered based on user black / white list
 .DESCRIPTION
-Creates single PSObject with Octopus Deploy REST API call information
-Helper function for Get-ODUStandardExportRestApiCalls
-.PARAMETER RestName
-Proper name of REST method
-.PARAMETER RestMethod
-REST API call
-.PARAMETER ApiFetchType
-Item fetch type
-.PARAMETER FileNamePropertyName
-Property name to use when saving file
-.PARAMETER IdToNamePropertyName
-Property name to use for Name value in Id -> Name lookup
-.PARAMETER ExternalIdToResolvePropertyName
-Property name containing external item references
-.PARAMETER ItemIdOnlyReferencePropertyName
-For items referenced/fetched by ItemIdOnly, the name of the property
+Returns standard export rest api call info filtered based on user black / white list
 .EXAMPLE
-New-ODUExportRestApiCall 'Artifacts' '/api/artifacts' 'MultiFetch' 'Id'
-<creates and returns PSObject with Artifacts info>
+Get-ODUFilteredExportRestApiCalls
+<returns subset of rest api call objects>
 #>
-function New-ODUExportRestApiCall {
+function Get-ODUFilteredExportRestApiCalls {
   [CmdletBinding()]
-  param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [string]$RestName,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [string]$RestMethod,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [ValidateScript( { $_ -in $ApiFetchTypeList})]
-    [string]$ApiFetchType,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [string]$FileNamePropertyName,
-    [string]$IdToNamePropertyName = 'Name',
-    [string[]]$ExternalIdToResolvePropertyName,
-    [string]$ItemIdOnlyReferencePropertyName
-  )
+  param()
   process {
-    [PSCustomObject]@{
-      RestName                        = $RestName
-      RestMethod                      = $RestMethod
-      ApiFetchType                    = $ApiFetchType
-      FileNamePropertyName            = $FileNamePropertyName
-      IdToNamePropertyName            = $IdToNamePropertyName
-      ExternalIdToResolvePropertyName = $ExternalIdToResolvePropertyName
-      ItemIdOnlyReferencePropertyName = $ItemIdOnlyReferencePropertyName
+
+    # get users black / white lists
+    [object[]]$TypeBlackList = Get-ODUConfigTypeBlacklist
+    [object[]]$TypeWhiteList = Get-ODUConfigTypeWhitelist
+
+    # either type whitelist or blacklist should be set - but not both!
+    # this shouldn't be possible unless user hand-edit config file
+    if (($null -ne $TypeBlackList) -and ($null -ne $TypeWhiteList)) {
+      Write-Verbose "$($MyInvocation.MyCommand) :: Both Type blacklist and whitelist defined; that's a no no"
+      throw 'Type blacklist and type whitelist both have values; this cannot be processed. Check your config values using Get-ODUConfigTypeBlacklist (or ...WhiteList) then set with Set-ODUConfigTypeBlackWhitelist (or ...WhiteList)'
     }
+
+    # get all call info
+    [object[]]$ApiCallInfo = Get-ODUStandardExportRestApiCalls
+    # filter as necessary
+    if ($null -ne $TypeWhiteList -and $TypeWhiteList.Count -gt 0) {
+      Write-Verbose "$($MyInvocation.MyCommand) :: Filtering RestApiCalls based on Type whitelist: $TypeWhiteList"
+      $ApiCallInfo = $ApiCallInfo | Where-Object { $TypeWhiteList -contains $_.RestName }
+    } elseif ($null -ne $TypeBlackList -and $TypeBlackList.Count -gt 0) {
+      Write-Verbose "$($MyInvocation.MyCommand) :: Filtering RestApiCalls based on Type blacklist: $TypeBlackList"
+      $ApiCallInfo = $ApiCallInfo | Where-Object { $TypeBlackList -notcontains $_.RestName }
+    }
+
+    $ApiCallInfo
   }
 }
 #endregion
@@ -159,6 +142,67 @@ function Get-ODUStandardExportRestApiCalls {
     # ItemIdOnly REST API calls
     New-ODUExportRestApiCall 'DeploymentProcesses' '/api/deploymentprocesses' 'ItemIdOnly' 'Id' -ExternalIdToResolvePropertyName @('LastSnapshotId', 'ProjectId') -ItemIdOnlyReferencePropertyName 'DeploymentProcessId'
     New-ODUExportRestApiCall 'Variables' '/api/variables' 'ItemIdOnly' 'Id' -ExternalIdToResolvePropertyName @('OwnerId') -ItemIdOnlyReferencePropertyName 'VariableSetId'
+  }
+}
+#endregion
+
+
+#region Function: New-ODUExportRestApiCall
+
+<#
+.SYNOPSIS
+Creates single PSObject with Octopus Deploy REST API call information
+.DESCRIPTION
+Creates single PSObject with Octopus Deploy REST API call information
+Helper function for Get-ODUStandardExportRestApiCalls
+.PARAMETER RestName
+Proper name of REST method
+.PARAMETER RestMethod
+REST API call
+.PARAMETER ApiFetchType
+Item fetch type
+.PARAMETER FileNamePropertyName
+Property name to use when saving file
+.PARAMETER IdToNamePropertyName
+Property name to use for Name value in Id -> Name lookup
+.PARAMETER ExternalIdToResolvePropertyName
+Property name containing external item references
+.PARAMETER ItemIdOnlyReferencePropertyName
+For items referenced/fetched by ItemIdOnly, the name of the property
+.EXAMPLE
+New-ODUExportRestApiCall 'Artifacts' '/api/artifacts' 'MultiFetch' 'Id'
+<creates and returns PSObject with Artifacts info>
+#>
+function New-ODUExportRestApiCall {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$RestName,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$RestMethod,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [ValidateScript( { $_ -in $ApiFetchTypeList})]
+    [string]$ApiFetchType,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$FileNamePropertyName,
+    [string]$IdToNamePropertyName = 'Name',
+    [string[]]$ExternalIdToResolvePropertyName,
+    [string]$ItemIdOnlyReferencePropertyName
+  )
+  process {
+    [PSCustomObject]@{
+      RestName                        = $RestName
+      RestMethod                      = $RestMethod
+      ApiFetchType                    = $ApiFetchType
+      FileNamePropertyName            = $FileNamePropertyName
+      IdToNamePropertyName            = $IdToNamePropertyName
+      ExternalIdToResolvePropertyName = $ExternalIdToResolvePropertyName
+      ItemIdOnlyReferencePropertyName = $ItemIdOnlyReferencePropertyName
+    }
   }
 }
 #endregion

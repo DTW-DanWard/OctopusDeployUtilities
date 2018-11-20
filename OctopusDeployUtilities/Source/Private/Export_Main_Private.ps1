@@ -78,7 +78,7 @@ function Export-ODUJob {
 #endregion
 
 
-#region Function: Export-ODUOctopusDeployConfigPrivate
+#region Function: Export-ODUOctopusDeployConfigMain
 
 <#
 .SYNOPSIS
@@ -87,10 +87,10 @@ Main function controlling a standard export process
 Main function controlling a standard export process
 Create.... asdf fill in here
 .EXAMPLE
-Export-ODUOctopusDeployConfigPrivate
+Export-ODUOctopusDeployConfigMain
 <...>
 #>
-function Export-ODUOctopusDeployConfigPrivate {
+function Export-ODUOctopusDeployConfigMain {
   [CmdletBinding()]
   [OutputType([string])]
   param()
@@ -148,57 +148,6 @@ function Export-ODUOctopusDeployConfigPrivate {
 #endregion
 
 
-#region Function: Get-ODUExportItemFileName
-
-<#
-.SYNOPSIS
-Gets raw file name (no extension) to be used when saving $ExportItem
-.DESCRIPTION
-Gets raw file name (no extension) to be used when saving $ExportItem
-If item's ApiFetchType is Simple, file name will be the RestName value
-If not, get an actual value from the ExportItem itself (typically Id or Name)
-based on Property name found in $ApiCall.FileNamePropertyName
-.PARAMETER ApiCall
-PSObject with ApiCall information
-.PARAMETER ExportItem
-PSObject with data exported from Octopus
-.EXAMPLE
-Get-ODUExportItemFileName
-<...>
-#>
-function Get-ODUExportItemFileName {
-  #region Function parameters
-  [CmdletBinding()]
-  param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [object]$ApiCall,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [object]$ExportItem
-  )
-  #endregion
-  process {
-    $FileName = $null
-    # for Simple calls, file name is rest method
-    if ($ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
-      Write-Verbose "$($MyInvocation.MyCommand) :: Simple rest call $($ApiCall.RestName) use RestName for file name"
-      $FileName = $ApiCall.RestName
-    } else {
-      Write-Verbose "$($MyInvocation.MyCommand) :: Rest call $($ApiCall.RestName) uses property $($ApiCall.FileNamePropertyName)"
-      $FileNamePropertyName = $ApiCall.FileNamePropertyName
-      if ($null -eq (Get-Member -InputObject $ExportItem -Name $FileNamePropertyName)) {
-        throw "FileNamePropertyName $FileNamePropertyName not found on rest type $($ApiCall.RestName) on item with Id $($ExportItem.Id)"
-      }
-      $FileName = $ExportItem.$FileNamePropertyName
-      Write-Verbose "$($MyInvocation.MyCommand) :: File name for this item: $FileName"
-    }
-    $FileName
-  }
-}
-#endregion
-
-
 #region Function: Get-ODUItemIdOnlyReferenceValues
 
 <#
@@ -247,125 +196,6 @@ function Get-ODUItemIdOnlyReferenceValues {
       }
     }
     $ItemIdOnlyReferenceValues
-  }
-}
-#endregion
-
-
-#region Function: Get-ODUFilteredExportRestApiCalls
-
-<#
-.SYNOPSIS
-Returns standard export rest api call info filtered based on user black / white list
-.DESCRIPTION
-Returns standard export rest api call info filtered based on user black / white list
-.EXAMPLE
-Get-ODUFilteredExportRestApiCalls
-<returns subset of rest api call objects>
-#>
-function Get-ODUFilteredExportRestApiCalls {
-  [CmdletBinding()]
-  param()
-  process {
-
-    # get users black / white lists
-    [object[]]$TypeBlackList = Get-ODUConfigTypeBlacklist
-    [object[]]$TypeWhiteList = Get-ODUConfigTypeWhitelist
-
-    # either type whitelist or blacklist should be set - but not both!
-    # this shouldn't be possible unless user hand-edit config file
-    if (($null -ne $TypeBlackList) -and ($null -ne $TypeWhiteList)) {
-      Write-Verbose "$($MyInvocation.MyCommand) :: Both Type blacklist and whitelist defined; that's a no no"
-      throw 'Type blacklist and type whitelist both have values; this cannot be processed. Check your config values using Get-ODUConfigTypeBlacklist (or ...WhiteList) then set with Set-ODUConfigTypeBlackWhitelist (or ...WhiteList)'
-    }
-
-    # get all call info
-    [object[]]$ApiCallInfo = Get-ODUStandardExportRestApiCalls
-    # filter as necessary
-    if ($null -ne $TypeWhiteList -and $TypeWhiteList.Count -gt 0) {
-      Write-Verbose "$($MyInvocation.MyCommand) :: Filtering RestApiCalls based on Type whitelist: $TypeWhiteList"
-      $ApiCallInfo = $ApiCallInfo | Where-Object { $TypeWhiteList -contains $_.RestName }
-    } elseif ($null -ne $TypeBlackList -and $TypeBlackList.Count -gt 0) {
-      Write-Verbose "$($MyInvocation.MyCommand) :: Filtering RestApiCalls based on Type blacklist: $TypeBlackList"
-      $ApiCallInfo = $ApiCallInfo | Where-Object { $TypeBlackList -notcontains $_.RestName }
-    }
-
-    $ApiCallInfo
-  }
-}
-#endregion
-
-
-#region Function: Get-ODUFolderNameForApiCall
-
-<#
-.SYNOPSIS
-Gets folder name to use for storing api call results
-.DESCRIPTION
-Gets folder name to use for storing api call results
-Will be 'Miscellaneous' for Simple fetch types and the RestName for all others
-.PARAMETER ApiCall
-Object with api call information
-.EXAMPLE
-Get-ODUFolderNameForApiCall $ApiCall
-Miscellaneous     # this item is a Simple fetch type
-Get-ODUFolderNameForApiCall $ApiCall
-Projects          # Use Projects RestName as it is not a Simple fetch type
-#>
-function Get-ODUFolderNameForApiCall {
-  #region Function parameters
-  [CmdletBinding()]
-  param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [object]$ApiCall
-  )
-  #endregion
-  process {
-
-    $FolderName = $null
-    if ($ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
-      $FolderName = 'Miscellaneous'
-    } else {
-      $FolderName = $ApiCall.RestName
-    }
-    $FolderName
-  }
-}
-#endregion
-
-
-#region Function: Initialize-ODUFetchTypeItemIdOnlyIdsLookup
-
-<#
-.SYNOPSIS
-Creates hashtable initialized for storing ItemIdOnly Id values
-.DESCRIPTION
-Creates hashtable initialized for storing ItemIdOnly Id values
-Key is property name to look for on objects, value is empty array (to be filled later)
-.PARAMETER ApiCalls
-Object array with api call information
-.EXAMPLE
-Initialize-ODUFetchTypeItemIdOnlyIdsLookup $ApiCalls
-<returns initialized hashtable>
-#>
-function Initialize-ODUFetchTypeItemIdOnlyIdsLookup {
-  #region Function parameters
-  [CmdletBinding()]
-  [OutputType([hashtable])]
-  param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [object[]]$ApiCalls
-  )
-  #endregion
-  process {
-    [hashtable]$ItemIdOnlyIdsLookup = @{ }
-    $ApiCalls | ForEach-Object {
-      $ItemIdOnlyReferencePropertyName = $_.ItemIdOnlyReferencePropertyName
-      $ItemIdOnlyIdsLookup.$ItemIdOnlyReferencePropertyName = @()
-    }
-    $ItemIdOnlyIdsLookup
   }
 }
 #endregion
@@ -469,101 +299,3 @@ function New-ODUExportJobInfo {
   }
 }
 #endregion
-
-
-#region Function: New-ODUFolderForEachApiCall
-
-<#
-.SYNOPSIS
-Creates a folder for each rest api call in ApiCallInfo under ParentFolder
-.DESCRIPTION
-Creates a folder for each rest api call in ApiCallInfo under ParentFolder
-.PARAMETER ParentFolder
-Folder under which to create the new folders
-.PARAMETER ApiCalls
-Object array of api calls
-.EXAMPLE
-New-ODUFolderForEachApiCall -ParentFolder c:\Temp -ApiCallInfo <PSObjects with api call info>
-#>
-function New-ODUFolderForEachApiCall {
-  [CmdletBinding()]
-  param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [string]$ParentFolder,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [object[]]$ApiCalls
-  )
-  process {
-    Write-Verbose "$($MyInvocation.MyCommand) :: Parent folder is: $ParentFolder"
-    $ApiCalls | ForEach-Object {
-      New-ODUExportItemFolder -FolderPath (Join-Path -Path $ParentFolder -ChildPath (Get-ODUFolderNameForApiCall -ApiCall $_))
-    }
-  }
-
-}
-#endregion
-
-
-#region Function: Remove-ODUFilterPropertiesFromExportItem
-
-<#
-.SYNOPSIS
-Filters properties on/off an exported item based in users property white/black list settings
-.DESCRIPTION
-Filters properties on/off an exported item based in users property white/black list settings
-.PARAMETER RestName
-Name of type being processed
-.PARAMETER ExportItem
-Exported item to process
-.EXAMPLE
-Remove-ODUFilterPropertiesFromExportItem
-<...>
-#>
-function Remove-ODUFilterPropertiesFromExportItem {
-  #region Function parameters
-  [CmdletBinding()]
-  param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [string]$RestName,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [object]$ExportItem
-  )
-  #endregion
-  process {
-    [PSCustomObject]$FilteredExportItem = $null
-    [string[]]$BlackList = $null
-    [string[]]$WhiteList = $null
-
-    $PropertyWhiteList = Get-ODUConfigPropertyWhiteList
-    $PropertyBlackList = Get-ODUConfigPropertyBlackList
-
-    # white and black lists should not both have values (that is confirmed in configuration)
-    if (($null -ne $PropertyWhiteList) -and $PropertyWhiteList.Contains($RestName) -and $PropertyWhiteList.$RestName.Count -gt 0) {
-      [string[]]$WhiteList = $PropertyWhiteList.$RestName
-    }
-    if (($null -ne $PropertyBlackList) -and $PropertyBlackList.Contains($RestName) -and $PropertyBlackList.$RestName.Count -gt 0) {
-      [string[]]$BlackList = $PropertyBlackList.$RestName
-    }
-
-    $FilteredExportItem = $ExportItem
-    # white list and black list should not BOTH be set at same time so this should be safe
-    if ($null -ne $WhiteList -or $null -ne $BlackList) {
-      # has to use this way of creating PSCustomObject and adding members - not hashtable
-      # or else we lose the original order of the properties on ExportItem
-      $FilteredExportItem = New-Object -TypeName PSObject
-      # don't use Get-Member to get properties, which sorts property names and loses original order, use this
-      $ExportItem.PSObject.Properties.Name | ForEach-Object {
-        if ($WhiteList -contains $_ -or $BlackList -notcontains $_) {
-          Add-Member -InputObject $FilteredExportItem -MemberType NoteProperty -Name $_ -Value ($ExportItem.$_)
-        }
-      }
-    }
-    $FilteredExportItem
-  }
-}
-#endregion
-

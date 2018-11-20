@@ -38,6 +38,72 @@ function Format-ODUSanitizedFileName {
 #endregion
 
 
+#region Function: New-ODUExportItemFolder
+
+<#
+.SYNOPSIS
+Creates folder if doesn't already exist
+.DESCRIPTION
+Creates folder if doesn't already exist
+.PARAMETER FolderPath
+Full path to new folder
+.EXAMPLE
+New-ODUExportItemFolder -FolderPath c:\temp\MyNewFolder
+<Creates c:\temp\MyNewFolder if doesn't exist>
+#>
+function New-ODUExportItemFolder {
+  #region Function parameters
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$FolderPath
+  )
+  #endregion
+  process {
+    if ($false -eq (Test-Path -Path $FolderPath)) {
+      New-Item -ItemType Directory -Path $FolderPath > $null
+    }
+  }
+}
+#endregion
+
+
+#region Function: New-ODUFolderForEachApiCall
+
+<#
+.SYNOPSIS
+Creates a folder for each rest api call in ApiCallInfo under ParentFolder
+.DESCRIPTION
+Creates a folder for each rest api call in ApiCallInfo under ParentFolder
+.PARAMETER ParentFolder
+Folder under which to create the new folders
+.PARAMETER ApiCalls
+Object array of api calls
+.EXAMPLE
+New-ODUFolderForEachApiCall -ParentFolder c:\Temp -ApiCallInfo <PSObjects with api call info>
+#>
+function New-ODUFolderForEachApiCall {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ParentFolder,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [object[]]$ApiCalls
+  )
+  process {
+    Write-Verbose "$($MyInvocation.MyCommand) :: Parent folder is: $ParentFolder"
+    $ApiCalls | ForEach-Object {
+      New-ODUExportItemFolder -FolderPath (Join-Path -Path $ParentFolder -ChildPath (Get-ODUFolderNameForApiCall -ApiCall $_))
+    }
+  }
+
+}
+#endregion
+
+
 #region Function: New-ODURootExportFolder
 
 <#
@@ -82,37 +148,6 @@ function New-ODURootExportFolder {
     Write-Verbose "$($MyInvocation.MyCommand) :: Create export root folder: $Folder"
     New-Item -ItemType Directory -Path $Folder > $null
     $Folder
-  }
-}
-#endregion
-
-
-#region Function: New-ODUExportItemFolder
-
-<#
-.SYNOPSIS
-Creates folder if doesn't already exist
-.DESCRIPTION
-Creates folder if doesn't already exist
-.PARAMETER FolderPath
-Full path to new folder
-.EXAMPLE
-New-ODUExportItemFolder -FolderPath c:\temp\MyNewFolder
-<Creates c:\temp\MyNewFolder if doesn't exist>
-#>
-function New-ODUExportItemFolder {
-  #region Function parameters
-  [CmdletBinding()]
-  param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [string]$FolderPath
-  )
-  #endregion
-  process {
-    if ($false -eq (Test-Path -Path $FolderPath)) {
-      New-Item -ItemType Directory -Path $FolderPath > $null
-    }
   }
 }
 #endregion

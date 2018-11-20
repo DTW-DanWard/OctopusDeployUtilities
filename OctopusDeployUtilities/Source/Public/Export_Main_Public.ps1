@@ -20,16 +20,10 @@ function Export-ODUOctopusDeployConfig {
 
     Write-Host "Exporting data"
 
-    # asdf this is what is should be, just output results for now
-#     [string]$CurrentExportRootFolder = Export-ODUOctopusDeployConfigPrivate
+    # export data and capture export folder instance
+    [string]$CurrentExportRootFolder = Export-ODUOctopusDeployConfigMain
 
-# asdf remove - should be captured above
-Export-ODUOctopusDeployConfigPrivate
-
-
-#    Write-Host "Export root: $CurrentExportRootFolder"
-
-#    Write-Host "Performing data lookups"
+    Write-Host "Performing data lookups"
 
     # asdf - return export read into memory?  parameter switch?
     Write-Host "Updating `$global:ODU_Export"
