@@ -54,4 +54,5 @@ function Test {
   Update-ODUExportAddMachinesToEnvironments $Path
   Update-ODUExportProjectAddDeploymentProcess $Path
   Update-ODUExportProjectAddVariableSet $Path
+  Update-ODUExportProjectAddIncludedLibraryVariableSets $Path
 }
