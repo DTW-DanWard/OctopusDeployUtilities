@@ -62,10 +62,10 @@ function Invoke-ODURestMethod {
 Calls url with API key in header and returns results
 .DESCRIPTION
 Calls url with API key in header and returns results
-.PARAMETER Url
-Full url of REST API to call
+.PARAMETER ServerDomainName
+Protocol and domain name
 .PARAMETER ApiKey
-Unencrypted ApiKey to pass in REST API call headers
+Unencrypted ApiKey to pass with REST API call
 .EXAMPLE
 Invoke-ODURestMethod -Url https://MyOctoServer.octopus.app -ApiKey 'API-123456789012345678901234567'
 <calls Url passing in ApiKey and returns results>

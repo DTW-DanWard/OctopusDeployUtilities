@@ -76,15 +76,19 @@ function Convert-ODUEncryptApiKey {
 Returns a filled-in Octopus Server portion of the configuration
 .DESCRIPTION
 Returns a filled-in Octopus Server portion of the configuration
-.PARAMETER ApiKey
-Text to encrypt
+.PARAMETER Name
+Name of Octopus server
+.PARAMETER Url
+Url of Octopus server
+.PARAMETER ApiKeySecure
+Encrypted API Key
 .EXAMPLE
 Get-ODUConfigOctopusServerSection 'API-....'
 API-........
 #>
 function Get-ODUConfigOctopusServerSection {
   [CmdletBinding()]
-  [OutputType([string])]
+  [OutputType([hashtable])]
   param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
@@ -95,7 +99,6 @@ function Get-ODUConfigOctopusServerSection {
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [string]$ApiKeySecure
-
     )
   process {
     Write-Verbose "$($MyInvocation.MyCommand) :: Creating Octopus Server configuration section"

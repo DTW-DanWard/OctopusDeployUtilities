@@ -45,7 +45,7 @@ function Update-ODUExportAddScopeNamesToVariables {
           $Variable = $_
 
           [string[]]$Breadth = @()
-          # if re-running this on files that have already been processed then *-Name properties will already exist 
+          # if re-running this on files that have already been processed then *-Name properties will already exist
           # along with Breadth property so filter them out from this list
           (Get-Member -InputObject $Variable.Scope -Type NoteProperty).Name | Where-Object { $_ -notmatch '.*Name$' -and $_ -ne 'Breadth' } | ForEach-Object {
             $ScopePropertyName = $_

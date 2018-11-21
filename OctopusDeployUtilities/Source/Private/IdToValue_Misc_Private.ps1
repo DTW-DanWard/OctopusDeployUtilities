@@ -1,6 +1,25 @@
 
 Set-StrictMode -Version Latest
 
+
+#region Function: Add-ODUOrUpdateMember
+
+<#
+.SYNOPSIS
+Adds or updates a property & value to a PsObject
+.DESCRIPTION
+Adds or updates a property & value to a PsObject
+If property doesn't already exists, adds it with value; if does, updates value
+.PARAMETER InputObject
+PSObject to update
+.PARAMETER PropertyName
+Name of property to add or update
+.PARAMETER Value
+New value
+.EXAMPLE
+Add-ODUOrUpdateMember ...
+<...>
+#>
 function Add-ODUOrUpdateMember {
   #region Function parameters
   [CmdletBinding()]
@@ -22,3 +41,4 @@ function Add-ODUOrUpdateMember {
     }
   }
 }
+#endregion

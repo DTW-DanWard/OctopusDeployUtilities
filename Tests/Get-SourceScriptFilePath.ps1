@@ -38,7 +38,7 @@ function Get-SourceScriptFilePath {
 
   # now find $SourceScriptName under Source; make sure exactly one found
   [object[]]$SourceFile = Get-ChildItem -Path $SourceFolderPath -Include $SourceScriptName -Recurse
-  if ($SourceFile.Count -eq 0) {
+  if ($null -eq $SourceFile -or $SourceFile.Count -eq 0) {
     throw "No corresponding source file $SourceScriptName found found for $TestScriptName"
   } elseif ($SourceFile.Count -gt 1) {
     throw -Message "Multiple source files named $SourceScriptName found found for $TestScriptName"

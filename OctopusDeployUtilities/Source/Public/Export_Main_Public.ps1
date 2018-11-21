@@ -47,7 +47,7 @@ function Export-ODUOctopusDeployConfig {
 function Test {
 
   $Path = 'C:\temp\Temp\dtw-test1.octopus.app\zzz'
-  
+
   New-ODUIdToNameLookup $Path
   Update-ODUExportAddExternalNamesForIds $Path
   Update-ODUExportAddScopeNamesToVariables $Path

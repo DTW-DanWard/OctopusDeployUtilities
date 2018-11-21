@@ -77,7 +77,7 @@ function Update-ODUExportProjectAddIncludedLibraryVariableSets {
     Get-ChildItem -Path $ProjectExportFolder -Recurse | ForEach-Object {
       $ExportFileProject = $_.FullName
       $ExportItemProject = Get-Content -Path $ExportFileProject | ConvertFrom-Json
-    
+
       # loop through all IncludedLibraryVariableSetIds, for each, get the IncludedLibraryVariableSet, for that, get it's VariableSet
       #   add the VariableSet to the IncludedLibraryVariableSet and add the whole array to the project
       [object[]]$IncludedLibraryVariableSets = @()

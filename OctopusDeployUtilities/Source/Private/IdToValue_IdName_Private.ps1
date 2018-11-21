@@ -17,7 +17,7 @@ Get-ODUIdToNameLookup -Path c:\Exports\MyOctoServer.com\20181120-103152
 function Get-ODUIdToNameLookup {
   #region Function parameters
   [CmdletBinding()]
-  [OutputType([string])]
+  [OutputType([hashtable])]
   param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
