@@ -52,4 +52,5 @@ function Test {
   Update-ODUExportAddExternalNamesForIds $Path
   Update-ODUExportAddScopeNamesToVariables $Path
   Update-ODUExportAddMachinesToEnvironments $Path
+  Update-ODUExportProjectAddDeploymentProcess $Path
 }

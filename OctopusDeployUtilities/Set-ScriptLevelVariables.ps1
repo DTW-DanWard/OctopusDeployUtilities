@@ -32,5 +32,7 @@ $script:ConfigVersion = '1.0.0'
 # default text for settings still having placeholders - not configured by user yet
 Set-Variable Undefined -Value 'UNDEFINED' -Option ReadOnly -Scope Script
 
+Set-Variable JsonExtension -Value '.json' -Option ReadOnly -Scope Script
+
 # name of file in root of export that contains Id to name lookup values
-Set-Variable IdToNameLookupFileName -Value 'IdToNameLookup.json' -Option ReadOnly -Scope Script
+Set-Variable IdToNameLookupFileName -Value ('IdToNameLookup' + $JsonExtension) -Option ReadOnly -Scope Script
