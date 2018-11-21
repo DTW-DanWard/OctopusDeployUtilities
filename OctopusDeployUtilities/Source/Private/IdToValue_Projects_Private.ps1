@@ -40,3 +40,46 @@ function Update-ODUExportProjectAddDeploymentProcess {
     }
   }
 }
+#endregion
+
+
+#region Function: Update-ODUExportProjectAddVariableSet
+
+<#
+.SYNOPSIS
+Adds variable set to projects
+.DESCRIPTION
+Adds variable set to projects
+.PARAMETER Path
+Path to export folder that contains folders exported values
+.EXAMPLE
+Update-ODUExportProjectAddVariableSet -Path c:\Exports\MyOctoServer.com\20181120-103152
+<adds variable set to projects>
+#>
+function Update-ODUExportProjectAddVariableSet {
+  #region Function parameters
+  [CmdletBinding()]
+  [OutputType([string])]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$Path
+  )
+  #endregion
+  process {
+    if ($false -eq (Test-Path -Path $Path)) { throw "No export found at: $Path" }
+
+    # get project and variable set folders
+    $ProjectExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Projects' }).RestName)
+    $VariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Variables' }).RestName)
+
+    Get-ChildItem -Path $ProjectExportFolder -Recurse | ForEach-Object {
+      $ExportFileProject = $_.FullName
+      $ExportItemProject = Get-Content -Path $ExportFileProject | ConvertFrom-Json
+      $ExportItemVariableSet = Get-Content -Path (Join-Path -Path $VariableSetExportFolder -ChildPath ($ExportItemProject.VariableSetId + $JsonExtension)) | ConvertFrom-Json
+      Add-ODUOrUpdateMember -InputObject $ExportItemProject -PropertyName 'VariableSet' -Value $ExportItemVariableSet
+      Out-ODUFileJson -FilePath $ExportFileProject -Data $ExportItemProject
+    }
+  }
+}
+#endregion

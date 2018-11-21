@@ -42,7 +42,7 @@ function Export-ODUOctopusDeployConfig {
     Write-Output "Updating `$global:ODU_Export"
   }
 }
-
+#endregion
 
 function Test {
 
@@ -53,4 +53,5 @@ function Test {
   Update-ODUExportAddScopeNamesToVariables $Path
   Update-ODUExportAddMachinesToEnvironments $Path
   Update-ODUExportProjectAddDeploymentProcess $Path
+  Update-ODUExportProjectAddVariableSet $Path
 }
