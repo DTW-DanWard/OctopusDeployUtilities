@@ -36,10 +36,20 @@ function Export-ODUOctopusDeployConfig {
 
     # add machines listing to environments
     Write-Output "Adding machine information to environments"
-    Update-ODUExportAddMachinesToEnvironments
+    Update-ODUExportAddMachinesToEnvironments $CurrentExportRootFolder
 
-    # asdf - return export read into memory?  parameter switch?
-    Write-Output "Updating `$global:ODU_Export"
+    # add deployment processes to projects
+    Write-Output "Adding deployment processes to projects"
+    Update-ODUExportProjectAddDeploymentProcess $CurrentExportRootFolder
+
+    # add variable sets to projects
+    Write-Output "Adding variable sets to projects"
+    Update-ODUExportProjectAddVariableSet $CurrentExportRootFolder
+
+    # add included library variable sets to projects
+    Write-Output "Adding included library variable sets to projects"
+    Update-ODUExportProjectAddIncludedLibraryVariableSets $CurrentExportRootFolder
+
   }
 }
 #endregion
