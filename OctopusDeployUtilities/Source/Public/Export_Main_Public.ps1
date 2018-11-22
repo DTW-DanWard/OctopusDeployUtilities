@@ -18,9 +18,9 @@ function Export-ODUOctopusDeployConfig {
   param()
   process {
     # export data and capture export folder instance
-    Write-Output "Exporting data"
+    Write-Output "Exporting data..."
     [string]$CurrentExportRootFolder = Export-ODUOctopusDeployConfigMain
-    Write-Verbose "$($MyInvocation.MyCommand) :: Export folder: $CurrentExportRootFolder"
+    Write-Output "Data exported to: $CurrentExportRootFolder"
 
     # create lookup object in root of export with every Id and name for every exported item
     Write-Output "Creating Id to name lookup"

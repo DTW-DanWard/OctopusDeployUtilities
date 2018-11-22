@@ -24,7 +24,9 @@ $ScriptLevelVariables = Join-Path -Path $PSScriptRoot -ChildPath 'Set-ScriptLeve
 # export public function names and aliases
 # first create aliases
 $OfficialAliasExports.Keys | ForEach-Object {
-  New-Alias -Name $_ -Value $OfficialAliasExports.$_
+  Write-Verbose "Creating alias: $_  ->  $($OfficialAliasExports.$_)"
+  New-Alias -Name $_ -Value ($OfficialAliasExports.$_)
 }
-# export Public functions and aliases
-Export-ModuleMember -Function $PublicFunctionNames -Alias ($OfficialAliasExports.Keys)
+
+# export Public functions and aliases; need to cast as string array
+Export-ModuleMember -Function $PublicFunctionNames -Alias (([string[]]$OfficialAliasExports.Keys))

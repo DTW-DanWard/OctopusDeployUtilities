@@ -25,7 +25,7 @@ function Get-ODUExportLatestPath {
     if ($false -eq (Test-Path -Path $OctoServerRootFolderPath)) { throw "Root server path not found, bad configuration: $OctoServerRootFolderPath" }
 
     # get latest that matches format YYYYMMDD-HHMMSS
-    $Folder = Get-ChildItem -Path $OctoServerRootFolderPath | Where-Object { $_.Name -match '^\d{8}-\d{6}$' } | Select-Object -First 1
+    $Folder = Get-ChildItem -Path $OctoServerRootFolderPath | Where-Object { $_.Name -match '^\d{8}-\d{6}$' } | Select-Object -Last 1
     if ($null -eq $Folder) { throw "No export folders matching pattern ^\d{8}-\d{6}$ (i.e. YYYYMMDD-HHMMSS) found under Server instance path: $OctoServerRootFolderPath" }
 
     $Folder.FullName
