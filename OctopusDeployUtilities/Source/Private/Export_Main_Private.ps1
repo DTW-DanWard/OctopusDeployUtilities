@@ -31,8 +31,6 @@ function Export-ODUJob {
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [object]$ExportJobDetail,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
     [string[]]$ItemIdOnlyReferencePropertyNames
   )
   process {
@@ -43,11 +41,10 @@ function Export-ODUJob {
 
       # simple references have a single item which does not have ItemIdOnly references; just save it
       # same is true of items fetched by IdOnly
-      if (($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) ) { # -or ($null -eq (Get-Member -InputObject $ExportItems -Name Items))) {
+      if (($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) ) {
         $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((Format-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItems)) + $JsonExtension)
         Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
         Out-ODUFileJson -FilePath $FilePath -Data (Remove-ODUFilterPropertiesFromExportItem -RestName ($ExportJobDetail.ApiCall.RestName) -ExportItem $ExportItems)
-
       } else {
         # this is for TenantVariables, which returns multiple values that should be stored in multiple files
         # BUT, for whatever really dumb reason, Octo API does not provide this info in the standard TotalResults / .Items format
@@ -59,7 +56,7 @@ function Export-ODUJob {
         $ExportItemsToProcess | ForEach-Object {
           $ExportItem = $_
           # inspect exported item for ItemIdOnly id references
-          $ItemIdOnlyReferenceValuesOnItem = Get-ODUItemIdOnlyReferenceValues -ExportJobDetail $ExportJobDetail -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames -ExportItem $ExportItem
+          $ItemIdOnlyReferenceValuesOnItem = Get-ODUItemIdOnlyReferenceValues -ExportJobDetail $ExportJobDetail -ExportItem $ExportItem -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames
           # transfer values to main hash table
           $ItemIdOnlyReferenceValuesOnItem.Keys | ForEach-Object {
             if (! $ItemIdOnlyReferenceValues.Contains($_)) { $ItemIdOnlyReferenceValues.$_ = @() }
@@ -105,13 +102,17 @@ function Export-ODUOctopusDeployConfigMain {
     $CurrentExportRootFolder = New-ODURootExportFolder -MainExportRoot (Get-ODUConfigExportRootFolder) -ServerName $ServerName -DateTime (Get-Date)
 
     # get filtered list of api call details to process
-    $ApiCalls = Get-ODUFilteredExportRestApiCalls
+    [object[]]$ApiCalls = Get-ODUFilteredExportRestApiCalls
     # create folders for each api call
     Write-Verbose "$($MyInvocation.MyCommand) :: Creating folder for api calls"
     New-ODUFolderForEachApiCall -ParentFolder $CurrentExportRootFolder -ApiCalls $ApiCalls
 
     # for ItemIdOnly calls, create lookup with key of reference property names and value empty array (for capturing values)
-    [hashtable]$ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
+    [hashtable]$ItemIdOnlyIdsLookup = @{}
+    # only attempt create lookup if items to get
+    if (($null -ne $ApiCalls) -and ($ApiCalls.Count -gt 0) -and ($null -ne ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly }))) {
+      $ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
+    }
 
     # loop through non-ItemIdOnly calls creating zero, one more more jobs for exporting content from it
     [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | ForEach-Object {
@@ -120,10 +121,12 @@ function Export-ODUOctopusDeployConfigMain {
     }
 
     # process (export/save) the non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process after
-    $ExportJobDetails | ForEach-Object {
-      $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
-      # transfer values to main hash table
-      $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
+    if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
+      $ExportJobDetails | ForEach-Object {
+        $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
+        # transfer values to main hash table
+        $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
+      }
     }
 
     # now loop through ItemIdOnly calls, creating jobs using captured ItemIdOnly Ids
@@ -136,9 +139,11 @@ function Export-ODUOctopusDeployConfigMain {
     }
 
     # process (export/save) the ItemIdOnly jobs
-    $ExportJobDetails | ForEach-Object {
-      # shouldn't be any values returned; even if there are, we ignore
-      Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys) > $null
+    if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
+      $ExportJobDetails | ForEach-Object {
+        # shouldn't be any values returned; even if there are, we ignore
+        Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys) > $null
+      }
     }
 
     # return path to this export
@@ -174,10 +179,8 @@ function Get-ODUItemIdOnlyReferenceValues {
     [object]$ExportJobDetail,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string[]]$ItemIdOnlyReferencePropertyNames,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [object]$ExportItem
+    [object]$ExportItem,
+    [string[]]$ItemIdOnlyReferencePropertyNames
   )
   process {
     [hashtable]$ItemIdOnlyReferenceValues = @{}
