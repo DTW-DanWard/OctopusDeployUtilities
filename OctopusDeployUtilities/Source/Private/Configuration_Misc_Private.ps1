@@ -108,7 +108,7 @@ function Get-ODUConfigOctopusServerSection {
     Write-Verbose "$($MyInvocation.MyCommand) :: Octopus server Url: $Url"
     $OctoServer.Url = $Url
 
-    Write-Verbose "$($MyInvocation.MyCommand) :: Octopus API Key - first 7 characters: $((Convert-ODUDecryptApiKey -ApiKey $ApiKey).Substring(0,8))..."
+    Write-Verbose "$($MyInvocation.MyCommand) :: Octopus API Key - first 7 characters: $((Convert-ODUDecryptApiKey -ApiKey $ApiKeySecure).Substring(0,8))..."
     $OctoServer.ApiKey = $ApiKeySecure
     $OctoServer.TypeBlacklist = Get-ODUConfigDefaultTypeBlacklist
     $OctoServer.TypeWhitelist = Get-ODUConfigDefaultTypeWhitelist
