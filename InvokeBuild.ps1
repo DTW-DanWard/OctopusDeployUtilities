@@ -61,6 +61,9 @@ task Test Init, {
     $Params.ExcludeTag = @('DevMachine')
   }
 
+  # make sure module is NOT loaded - may affect unit tests, mocked functions, etc.
+  Get-Module -Name $env:BHProjectName | Remove-Module -Force
+
   # Gather test results. Store them in a variable and file
   $TestResults = Invoke-Pester @Params
 

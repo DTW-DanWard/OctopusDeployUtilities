@@ -21,10 +21,10 @@ Describe 'Configuration: not initialized' {
 
   # ensure config file does not exist
   Mock -CommandName 'Save-ODUConfig' -MockWith { }
-
+  function Test-ODUConfigFilePath { $false }
   function Get-ODUConfigFilePath { 'Test:\No\File\Found.txt' }
 
-  It 'Confirm-ODUConfig throws error' { { Confirm-ODUConfig } | Should throw  }
+  It 'Confirm-ODUConfig throws error' { { Confirm-ODUConfig } | Should throw }
 
   It 'Get-ODUConfig returns $null' { Get-ODUConfig | Should BeNullOrEmpty }
 
@@ -53,7 +53,7 @@ Describe 'Configuration: export root folder initialized' {
 
   $ConfigString = @"
 @{
-ExportRootFolder = $ExportRootFolder
+ExportRootFolder = '$ExportRootFolder'
 OctopusServers = @()
 ExternalTools = @{
   DiffViewerPath = 'UNDEFINED'
@@ -64,19 +64,11 @@ ParallelJobsCount = 1
 "@
   Set-Content -Path $ConfigFilePath -Value $ConfigString
 
-  $Config = @{
-    ExportRootFolder  = $ExportRootFolder
-    OctopusServers    = @()
-    ExternalTools     = @{
-      DiffViewerPath = 'UNDEFINED'
-      TextEditorPath = 'UNDEFINED'
-    }
-    ParallelJobsCount = 1
-  }
+  $Config = Invoke-Expression -Command $ConfigString
 
   Mock -CommandName 'Save-ODUConfig' -MockWith { }
-
   Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
+  function Test-ODUConfigFilePath { $true }
 
   function Get-ODUConfigFilePath { $ConfigFilePath }
 
@@ -117,12 +109,12 @@ Describe 'Configuration: Octopus Server initialized' {
 
   $ConfigString = @"
 @{
-ExportRootFolder = $ExportRootFolder
+ExportRootFolder = '$ExportRootFolder'
 OctopusServers = @(
   @{
-    Name = $OctoServerName
-    Url = $OctoServerUrl
-    ApiKey = $OctoServerApiKeyEncrypted
+    Name = '$OctoServerName'
+    Url = '$OctoServerUrl'
+    ApiKey = '$OctoServerApiKeyEncrypted'
     TypeBlacklist = @('CommunityActionTemplates','Deployments','Events','Interruptions','Releases','Reporting','Tasks','Packages')
     TypeWhitelist = @()
     PropertyBlacklist = @{ }
@@ -143,35 +135,14 @@ ParallelJobsCount = 1
 "@
   Set-Content -Path $ConfigFilePath -Value $ConfigString
 
-
-  $Config = @{
-    ExportRootFolder  = $ExportRootFolder
-    OctopusServers    = @(
-      @{
-        Name                   = $OctoServerName
-        Url                    = $OctoServerUrl
-        ApiKey                 = $OctoServerApiKeyEncrypted
-        TypeBlacklist          = @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'Releases', 'Reporting', 'Tasks', 'Packages')
-        TypeWhitelist          = @()
-        PropertyBlacklist      = @{ }
-        PropertyWhitelist      = @{ }
-        LastPurgeCompareFolder = 'UNDEFINED'
-        Search                 = @{
-          CodeSearchPattern = 'UNDEFINED'
-          CodeRootPaths     = 'UNDEFINED'
-        }
-      }
-    )
-    ExternalTools     = @{
-      DiffViewerPath = 'UNDEFINED'
-      TextEditorPath = 'UNDEFINED'
-    }
-    ParallelJobsCount = 1
-  }
+  $Config = Invoke-Expression -Command $ConfigString
 
   Mock -CommandName 'Save-ODUConfig' -MockWith { }
-
   Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
+  # simple mock for now
+  function Convert-ODUDecryptApiKey { $OctoServerApiKey }
+
+  function Test-ODUConfigFilePath { $true }
 
   function Get-ODUConfigFilePath { $ConfigFilePath }
 
@@ -189,6 +160,6 @@ ParallelJobsCount = 1
 
   It 'Get-ODUConfigOctopusServer.Url returns correct value' { (Get-ODUConfigOctopusServer).Url | Should Be $OctoServerUrl }
 
-  It 'Convert-ODUDecryptApiKey returns correct value' { Convert-ODUDecryptApiKey ((Get-ODUConfigOctopusServer).ApiKey)  | Should Be $OctoServerApiKey }
+  It 'Convert-ODUDecryptApiKey returns correct value' { Convert-ODUDecryptApiKey ((Get-ODUConfigOctopusServer).ApiKey) | Should Be $OctoServerApiKey }
 }
 #endregion

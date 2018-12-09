@@ -121,7 +121,9 @@ $SourceScripts | Where-Object { ($null -ne (Get-Content $_)) -and ((Get-Content 
 #region Confirm which functions/aliases are exported
 Describe 'Confirm module public information is correct' {
   Get-Module -Name $env:BHProjectName | Remove-Module -Force
-  $Module = Import-Module $env:BHPSModuleManifest -Force -PassThru
+  # note: we -Force import here to overwrite (it shouldn't be in memory, but just in case) then remove it after
+  # must remove after so it does not accidentally affect unit testing of individual files, mocked functions, etc.
+  $Module = Import-Module -Name $env:BHPSModuleManifest -Force -PassThru
   $PublicSourceRootPath = Join-Path -Path (Join-Path -Path $env:BHModulePath -ChildPath 'Source') -ChildPath 'Public'
   [string[]]$OfficialPublicFunctions = $null
   Get-ChildItem -Path $PublicSourceRootPath -Filter *.ps1 -Recurse | Where-Object { ($null -ne (Get-Content $_.FullName)) -and ((Get-Content $_.FullName).Trim() -ne '') } | ForEach-Object {
@@ -156,5 +158,7 @@ Describe 'Confirm module public information is correct' {
       ([object[]](Get-Command -Module $env:BHProjectName -Type Alias)).Name | Where-Object { $_ -notin ($OfficialAliasExports.Keys)} | Should BeNullOrEmpty
     }
   }
+
+  Get-Module -Name $env:BHProjectName | Remove-Module -Force
 }
 #endregion

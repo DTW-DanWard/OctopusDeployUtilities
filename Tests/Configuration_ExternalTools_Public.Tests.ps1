@@ -16,8 +16,8 @@ Describe "Re/loading: $SourceScript" { }
 #endregion
 
 
-#region Configuration export root folder accessible
-Describe 'Configuration: export root folder initialized' {
+#region Configuration external tools initialized
+Describe 'Configuration: external tools initialized' {
 
   # ensure config file DOES exist
   $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
@@ -27,33 +27,30 @@ Describe 'Configuration: export root folder initialized' {
   New-Item -Path $ExportRootFolder -ItemType Directory > $null
   New-Item -Path $ConfigFolderPath -ItemType Directory > $null
 
+  $DiffViewerPath = Join-Path -Path $TestDrive 'ADiffViewer.exe'
+  $TextEditorPath = Join-Path -Path $TestDrive 'ATextEditor.exe'
+
   $ConfigString = @"
 @{
-ExportRootFolder = $ExportRootFolder
+ExportRootFolder = '$ExportRootFolder'
 OctopusServers = @()
 ExternalTools = @{
-  DiffViewerPath = 'UNDEFINED'
-  TextEditorPath = 'UNDEFINED'
+  DiffViewerPath = '$DiffViewerPath'
+  TextEditorPath = '$TextEditorPath'
 }
 ParallelJobsCount = 1
 }
 "@
   Set-Content -Path $ConfigFilePath -Value $ConfigString
-  Mock -CommandName 'Get-ODUConfigFilePath' -MockWith { $ConfigFilePath }
 
-  $Config = @{
-    ExportRootFolder  = $ExportRootFolder
-    OctopusServers    = @()
-    ExternalTools     = @{
-      DiffViewerPath = 'UNDEFINED'
-      TextEditorPath = 'UNDEFINED'
-    }
-    ParallelJobsCount = 1
-  }
+  $Config = Invoke-Expression -Command $ConfigString
 
+  function Get-ODUConfigFilePath { $ConfigFilePath }
   function Confirm-ODUConfig { $true }
   function Get-ODUConfig { $Config }
 
-  It 'Get-ODUConfigExportRootFolder returns correct value' { Get-ODUConfigExportRootFolder | Should Be $ExportRootFolder }
+  It 'Get-ODUConfigDiffViewer returns value' { Get-ODUConfigDiffViewer | Should Be $DiffViewerPath }
+
+  It 'Get-ODUConfigTextEditor returns value' { Get-ODUConfigTextEditor | Should Be $TextEditorPath }
 }
 #endregion

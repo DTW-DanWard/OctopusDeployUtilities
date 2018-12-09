@@ -43,7 +43,7 @@ Given a specific export instance folder path returns PSObject with all values of
 Given a specific export instance folder path returns PSObject with all values of export contained as properties
 PSObject type layout matches folder names
 If FolderPath not passed, uses value from Get-ODUExportLatestPath
-.PARAMETER FolderPath
+.PARAMETER Path
 Path for export
 .EXAMPLE
 Read-ODUExportFromFiles c:\OctoExports\MyOctoServer.com\20181107-185919
