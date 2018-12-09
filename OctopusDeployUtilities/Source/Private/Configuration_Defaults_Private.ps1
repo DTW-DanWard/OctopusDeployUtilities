@@ -46,7 +46,9 @@ function Get-ODUConfigDefaultTypeWhitelist {
   [OutputType([System.Array])]
   param()
   process {
-    @()
+    # need to prepend with comma to ensure returns an array as PowerShell changes empty arrays to null when returning from function
+    # https://stackoverflow.com/questions/18476634/powershell-doesnt-return-an-empty-array-as-an-array
+    ,@()
   }
 }
 #endregion

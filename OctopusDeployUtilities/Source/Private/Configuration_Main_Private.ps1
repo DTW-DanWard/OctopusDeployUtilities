@@ -53,7 +53,7 @@ function Get-ODUConfig {
   process {
     if ($true -eq (Test-ODUConfigFilePath)) {
       Write-Verbose "$($MyInvocation.MyCommand) :: Calling Import-Configuration with Version $ConfigVersion"
-      Import-Configuration -Version ([version]$ConfigVersion)
+      Import-Configuration -Version ([version]$ConfigVersion) -Ordered
     }
   }
 }
