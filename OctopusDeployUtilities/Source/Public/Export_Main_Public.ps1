@@ -12,6 +12,8 @@ Fetches from server and saves to folder based on settings entered by user via th
 Set-ODUConfig* functions.
 .PARAMETER Quiet
 Suppress status output
+.PARAMETER SkipJoinData
+Skip running join data process (id->name lookup, add deploy process to projects, etc.)
 .PARAMETER PassThru
 Returns string path to export; also suppresses status output (sets Quiet = $true)
 .EXAMPLE
@@ -22,6 +24,7 @@ function Export-ODUOctopusDeployConfig {
   [CmdletBinding()]
   param(
     [switch]$Quiet,
+    [switch]$SkipJoinData,
     [switch]$PassThru
   )
   process {
@@ -33,7 +36,7 @@ function Export-ODUOctopusDeployConfig {
     [string]$CurrentExportRootFolder = Export-ODUOctopusDeployConfigMain
     if (! $Quiet) { Write-Output "  Data exported to: $CurrentExportRootFolder" }
 
-    Update-ODUExportJoinData -Path $CurrentExportRootFolder -Quiet:$Quiet
+    if (! $SkipJoinData) { Update-ODUExportJoinData -Path $CurrentExportRootFolder -Quiet:$Quiet }
 
     if ($PassThru) { Write-Output $CurrentExportRootFolder }
   }
