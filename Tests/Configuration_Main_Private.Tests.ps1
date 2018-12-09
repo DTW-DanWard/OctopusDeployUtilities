@@ -51,20 +51,16 @@ Describe 'Configuration: export root folder initialized' {
   New-Item -Path $ExportRootFolder -ItemType Directory > $null
   New-Item -Path $ConfigFolderPath -ItemType Directory > $null
 
-  $ConfigString = @"
-@{
-ExportRootFolder = '$ExportRootFolder'
-OctopusServers = @()
-ExternalTools = @{
-  DiffViewerPath = 'UNDEFINED'
-  TextEditorPath = 'UNDEFINED'
-}
-ParallelJobsCount = 1
-}
-"@
-  Set-Content -Path $ConfigFilePath -Value $ConfigString
-
-  $Config = Invoke-Expression -Command $ConfigString
+  $Config = @{
+    ExportRootFolder = $ExportRootFolder
+    OctopusServers = @()
+    ExternalTools = @{
+      DiffViewerPath = 'UNDEFINED'
+      TextEditorPath = 'UNDEFINED'
+    }
+    ParallelJobsCount = 1
+  }
+  Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
 
   Mock -CommandName 'Save-ODUConfig' -MockWith { }
   Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
@@ -107,35 +103,31 @@ Describe 'Configuration: Octopus Server initialized' {
     $OctoServerApiKeyEncrypted = ConvertTo-SecureString -String $OctoServerApiKey -AsPlainText -Force | ConvertFrom-SecureString
   }
 
-  $ConfigString = @"
-@{
-ExportRootFolder = '$ExportRootFolder'
-OctopusServers = @(
-  @{
-    Name = '$OctoServerName'
-    Url = '$OctoServerUrl'
-    ApiKey = '$OctoServerApiKeyEncrypted'
-    TypeBlacklist = @('CommunityActionTemplates','Deployments','Events','Interruptions','Releases','Reporting','Tasks','Packages')
-    TypeWhitelist = @()
-    PropertyBlacklist = @{ }
-    PropertyWhitelist = @{ }
-    LastPurgeCompareFolder = 'UNDEFINED'
-    Search = @{
-      CodeSearchPattern = 'UNDEFINED'
-      CodeRootPaths = 'UNDEFINED'
+  $Config = @{
+    ExportRootFolder = $ExportRootFolder
+    OctopusServers = @(
+      @{
+        Name = $OctoServerName
+        Url = $OctoServerUrl
+        ApiKey = $OctoServerApiKeyEncrypted
+        TypeBlacklist = @('CommunityActionTemplates','Deployments','Events','Interruptions','Releases','Reporting','Tasks','Packages')
+        TypeWhitelist = @()
+        PropertyBlacklist = @{ }
+        PropertyWhitelist = @{ }
+        LastPurgeCompareFolder = 'UNDEFINED'
+        Search = @{
+          CodeSearchPattern = 'UNDEFINED'
+          CodeRootPaths = 'UNDEFINED'
+        }
+      }
+    )
+    ExternalTools = @{
+      DiffViewerPath = 'UNDEFINED'
+      TextEditorPath = 'UNDEFINED'
     }
+    ParallelJobsCount = 1
   }
-)
-ExternalTools = @{
-  DiffViewerPath = 'UNDEFINED'
-  TextEditorPath = 'UNDEFINED'
-}
-ParallelJobsCount = 1
-}
-"@
-  Set-Content -Path $ConfigFilePath -Value $ConfigString
-
-  $Config = Invoke-Expression -Command $ConfigString
+  Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
 
   Mock -CommandName 'Save-ODUConfig' -MockWith { }
   Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }

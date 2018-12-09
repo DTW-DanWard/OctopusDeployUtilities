@@ -30,27 +30,23 @@ Describe 'Configuration: external tools initialized' {
   $DiffViewerPath = Join-Path -Path $TestDrive 'ADiffViewer.exe'
   $TextEditorPath = Join-Path -Path $TestDrive 'ATextEditor.exe'
 
-  $ConfigString = @"
-@{
-ExportRootFolder = '$ExportRootFolder'
-OctopusServers = @()
-ExternalTools = @{
-  DiffViewerPath = '$DiffViewerPath'
-  TextEditorPath = '$TextEditorPath'
-}
-ParallelJobsCount = 1
-}
-"@
-  Set-Content -Path $ConfigFilePath -Value $ConfigString
-
-  $Config = Invoke-Expression -Command $ConfigString
+  $Config = @{
+    ExportRootFolder = $ExportRootFolder
+    OctopusServers = @()
+    ExternalTools = @{
+      DiffViewerPath = $DiffViewerPath
+      TextEditorPath = $TextEditorPath
+    }
+    ParallelJobsCount = 1
+  }
+  Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
 
   function Get-ODUConfigFilePath { $ConfigFilePath }
   function Confirm-ODUConfig { $true }
   function Get-ODUConfig { $Config }
 
-  It 'Get-ODUConfigDiffViewer returns value' { Get-ODUConfigDiffViewer | Should Be $DiffViewerPath }
+  It 'Get-ODUConfigDiffViewer returns correct value' { Get-ODUConfigDiffViewer | Should Be $DiffViewerPath }
 
-  It 'Get-ODUConfigTextEditor returns value' { Get-ODUConfigTextEditor | Should Be $TextEditorPath }
+  It 'Get-ODUConfigTextEditor returns correct value' { Get-ODUConfigTextEditor | Should Be $TextEditorPath }
 }
 #endregion
