@@ -5,51 +5,37 @@ Set-StrictMode -Version Latest
 
 <#
 .SYNOPSIS
-Exports Octopus Deploy configuration from a server to a unique datetimestamp folder
+Exports Octopus Deploy configuration from a server and saves in local JSON files.
 .DESCRIPTION
 Exports Octopus Deploy configuration from a server to a unique datetimestamp folder.
 Fetches from server and saves to folder based on settings entered by user via the
 Set-ODUConfig* functions.
+.PARAMETER Quiet
+Suppress status output
+.PARAMETER PassThru
+Returns string path to export; also suppresses status output (sets Quiet = $true)
 .EXAMPLE
 Export-ODUOctopusDeployConfig
+asdf
 #>
 function Export-ODUOctopusDeployConfig {
   [CmdletBinding()]
-  param()
+  param(
+    [switch]$Quiet,
+    [switch]$PassThru
+  )
   process {
+    # if user specified PassThru, disable output (enable Quiet) so only path returned
+    if ($PassThru) { $Quiet = $true }
+
     # export data and capture export folder instance
-    Write-Output "Exporting data..."
+    if (! $Quiet) { Write-Output "Exporting data..." }
     [string]$CurrentExportRootFolder = Export-ODUOctopusDeployConfigMain
-    Write-Output "Data exported to: $CurrentExportRootFolder"
+    if (! $Quiet) { Write-Output "  Data exported to: $CurrentExportRootFolder" }
 
-    # create lookup object in root of export with every Id and name for every exported item
-    Write-Output "Creating Id to name lookup"
-    New-ODUIdToNameLookup $CurrentExportRootFolder
+    Update-ODUExportJoinData -Path $CurrentExportRootFolder -Quiet:$Quiet
 
-    # for each exported item, look for external Id values in it, lookup the external name for the external id and add to exported item
-    Write-Output "Adding external names for ids in exported data"
-    Update-ODUExportAddExternalNamesForIds $CurrentExportRootFolder
-
-    # for exported variables, add scope names and breadth
-    Write-Output "Adding scope names to variables"
-    Update-ODUExportAddScopeNamesToVariables $CurrentExportRootFolder
-
-    # add machines listing to environments
-    Write-Output "Adding machine information to environments"
-    Update-ODUExportAddMachinesToEnvironments $CurrentExportRootFolder
-
-    # add deployment processes to projects
-    Write-Output "Adding deployment processes to projects"
-    Update-ODUExportProjectAddDeploymentProcess $CurrentExportRootFolder
-
-    # add variable sets to projects
-    Write-Output "Adding variable sets to projects"
-    Update-ODUExportProjectAddVariableSet $CurrentExportRootFolder
-
-    # add included library variable sets to projects
-    Write-Output "Adding included library variable sets to projects"
-    Update-ODUExportProjectAddIncludedLibraryVariableSets $CurrentExportRootFolder
-
+    if ($PassThru) { Write-Output $CurrentExportRootFolder }
   }
 }
 #endregion
