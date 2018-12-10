@@ -97,9 +97,13 @@ Describe 'Configuration: Octopus Server initialized' {
   $OctoServerName = 'test.com'
   $OctoServerUrl = 'https://test.com'
   $OctoServerApiKey = 'API-1234567890'
+  
+  # encryption tests only run on Windows
+  $Windows = $false
   # encrypt key they test decrypt with Convert-ODUDecryptApiKey
   $OctoServerApiKeyEncrypted = $OctoServerApiKey
   if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
+    $Windows = $true
     $OctoServerApiKeyEncrypted = ConvertTo-SecureString -String $OctoServerApiKey -AsPlainText -Force | ConvertFrom-SecureString
   }
 
@@ -152,6 +156,7 @@ Describe 'Configuration: Octopus Server initialized' {
 
   It 'Get-ODUConfigOctopusServer.Url returns correct value' { (Get-ODUConfigOctopusServer).Url | Should Be $OctoServerUrl }
 
-  It 'Convert-ODUDecryptApiKey returns correct value' { Convert-ODUDecryptApiKey ((Get-ODUConfigOctopusServer).ApiKey) | Should Be $OctoServerApiKey }
+  $ItParams = @{ Skip = $(! $Windows) }
+  It @ItParams 'Convert-ODUDecryptApiKey returns correct value' { Convert-ODUDecryptApiKey ((Get-ODUConfigOctopusServer).ApiKey) | Should Be $OctoServerApiKey }
 }
 #endregion
