@@ -3,9 +3,10 @@
 
 Utilities to help you export, search, compare and unit test your Octopus Deploy configuration.
 
+
 ## Why Export Your Data?
 
-Octopus Deploy is a great product but it has a one limitation: it hides your configuration behind many screens.  This makes it time-consuming to search your configuration, review it for quality and consistency... and this manual work does not scale if you have many projects.  How many clicks are required to check your IIS conditional bindings in one project?  What if you have 20 and you want to make sure they are all configured the same?  What if you have 80 projects and you want to make sure all your project-level password variables are stored encrypted (Sensitive)?  Have fun clicking the next hour... but shouldn't you double-check the settings *again* next week?
+Octopus Deploy is a great product but it has a one limitation: it hides your configuration behind many screens.  This makes it time-consuming to search your configuration, review it for quality and consistency... and this manual work does not scale if you have many projects.  How many clicks are required to check your IIS conditional bindings in one project?  What if you have 20 projects and you want to make sure they are all configured the same?  What if you have 80 projects and you want to make sure all your project-level password variables are stored encrypted (Sensitive)?  Have fun clicking the next hour... but shouldn't you double-check the settings *again* next week?
 
 Fortunately Octopus Deploy provides a great REST API that can be used for exporting your configuration data.  And once you can export the data, you can do all sorts of awesome stuff:
 * *Easily* see all changes to the entire system over time.
