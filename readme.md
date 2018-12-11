@@ -12,8 +12,8 @@ Fortunately Octopus Deploy provides a great REST API that can be used for export
 * *Easily* see all changes to the entire system over time.
 * *Easily* search across your entire configuration.
 * *Easily* get details on anything you can think of: How many projects do you have?  Which ones are Windows Services? How many variables do you have; how many are encrypted?  Which projects are using a particular Library Variable Set?
-* **Implement standards/best pracices in your Octopus Deploy setup and then automatically confirm these standards by unit testing your configuration export.**  You will save countless hours and ensure quality by automating it.
-* **Compare releases** (coming soon - on roadmap).
+* **Implement standards/best practices in your Octopus Deploy setup and then automatically confirm these standards by unit testing your configuration export.**  You will save countless hours and ensure quality by automating it.
+* **Compare releases** (coming soon - on road map).
 
 There is a lot you can do with an export; [read here for greater detail/more examples](docs/WhatCanYouDo.md).  You might want to read the [full rationale here](docs/Rationale.md) for exporting your data.  But trust me: once you've started exporting your configuration data you'll wonder how you've been living without it.
 
@@ -24,7 +24,7 @@ Octopus Deploy does not provide an out-of-the-box solution for getting all your 
 * It post-processes your export data to simplify and improve usage.  For example it automatically adds id -> name lookup information so you can view/work with something like ```EnvironmentName = 'Production-West'``` instead of ```Environment = 'Environments-37'```.  It also adds deploy process and variable configuration directly to each project file.  And more!
 * It's written in [PowerShell Core](https://github.com/PowerShell/PowerShell) so it runs on any OS - but also runs great in Windows PowerShell 5.
 * It stores all data in JSON files so you can work on it with any language.
-* It comes with helper tools written in PowerShell.  One tool aggregates all the data in an export into a single object for easy parsing.  Other tools help you test/filter your projects based on type.  Other tools allow you to search your Octopus Deploy configuration and your application code configuration files (web.config, etc.) to see where Octopus Deploy variables are actually being used (coming soon - on roadmap).
+* It comes with helper tools written in PowerShell.  One tool aggregates all the data in an export into a single object for easy parsing.  Other tools help you test/filter your projects based on type.  Other tools allow you to search your Octopus Deploy configuration and your application code configuration files (web.config, etc.) to see where Octopus Deploy variables are actually being used (coming soon - on road map).
 
 
 ## OK, Let's Get Going Already!
@@ -39,7 +39,7 @@ Octopus Deploy does not provide an out-of-the-box solution for getting all your 
 ## More Info
 
 * [Octopus Deploy best practices and testing rules](docs/BestPracticesTestingRules.md)
-* [Octopus Deploy Utilities roadmap](docs/OctopusDeployUtilitiesRoadmap.md)
+* [Octopus Deploy Utilities road map](docs/OctopusDeployUtilitiesRoadmap.md)
 * [Rationale for exporting](docs/Rationale.md)
 * [Stuff you can do with exports](docs/WhatCanYouDo.md)
 * [License - it's MIT, don't worry](LICENSE)

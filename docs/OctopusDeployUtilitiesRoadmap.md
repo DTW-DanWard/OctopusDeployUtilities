@@ -1,6 +1,6 @@
-# Octopus Deploy Utilities Roadmap
+# Octopus Deploy Utilities Road Map
 
-A Brief Roadmap of Upcoming Enhancements
+A Brief Road Map of Upcoming Enhancements
 
 
 ## Search Variable Utility
@@ -28,8 +28,9 @@ Run export process requests in parallel.  Will save significant time downloading
 Current config system only supports one server configuration.  Supporting multiple configurations allows you to exports from multiple servers and/or have different configurations for a single instance (export different sets of types - full export vs. partial export).
 
 
-## PowerShell Commandline Type Output
-PowerShell PS1XML type outputing at the command line.
+## PowerShell Command Line Type Output
+
+PowerShell PS1XML type output at the command line.
 
 
 ## Container
