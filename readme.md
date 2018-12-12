@@ -29,11 +29,12 @@ Octopus Deploy does not provide a good out-of-the-box solution for getting all y
 * It comes with helper tools written in PowerShell.  One tool aggregates all the data in an export into a single object for easy parsing.  Other tools help you test/filter your projects based on type.  Other tools allow you to search your Octopus Deploy configuration and your application code configuration files (web.config, etc.) to see where Octopus Deploy variables are actually being used (coming soon - on [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
 
 
-## You are Getting Curious
+## You are Getting Curious...?
 
 So, just what does an [export look like](docs/SampleExport.md) anyway?
 
 I have a [bunch of questions](docs/FAQ.md).
+
 
 ## OK, Let's Get Going Already!
 
