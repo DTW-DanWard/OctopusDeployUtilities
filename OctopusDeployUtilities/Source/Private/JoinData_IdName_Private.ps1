@@ -11,7 +11,7 @@ Creates hashtable of containing all Id to Name lookup values for files under $Pa
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Get-ODUIdToNameLookup -Path c:\Exports\MyOctoServer.com\20181120-103152
+Get-ODUIdToNameLookup -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <hash table of lookup values>
 #>
 function Get-ODUIdToNameLookup {
@@ -61,8 +61,8 @@ Creates Id to name lookup file in export instance root containing all Id to Name
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-New-ODUIdToNameLookup -Path c:\Exports\MyOctoServer.com\20181120-103152
-<creates c:\Exports\MyOctoServer.com\20181120-103152\IdToNameLookup.json with Id to name lookup data>
+New-ODUIdToNameLookup -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
+<creates c:\Exports\MyOctoServer.octopus.app\20181120-103152\IdToNameLookup.json with Id to name lookup data>
 #>
 function New-ODUIdToNameLookup {
   #region Function parameters

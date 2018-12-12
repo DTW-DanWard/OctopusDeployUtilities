@@ -67,7 +67,7 @@ Protocol and domain name
 .PARAMETER ApiKey
 Unencrypted ApiKey to pass with REST API call
 .EXAMPLE
-Invoke-ODURestMethod -Url https://MyOctoServer.octopus.app -ApiKey 'API-123456789012345678901234567'
+Invoke-ODURestMethod -Url https://MyOctoServer.octopus.app -ApiKey 'API-ABCDEFGH01234567890ABCDEFGH'
 <calls Url passing in ApiKey and returns results>
 #>
 function Test-ODUOctopusServerCredentials {

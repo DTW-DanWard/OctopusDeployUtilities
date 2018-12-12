@@ -11,8 +11,8 @@ Decrypts an encrypted value - Windows machines only
 .PARAMETER ApiKey
 Value to decrypt
 .EXAMPLE
-Convert-ODUDecryptApiKey '....'
-API-........
+Convert-ODUDecryptApiKey <encrypted value>
+API-ABCDEFGH01234567890ABCDEFGH
 #>
 function Convert-ODUDecryptApiKey {
   [CmdletBinding()]
@@ -45,8 +45,8 @@ The API used only works on Windows machines (as of PowerShell 6.1)
 .PARAMETER ApiKey
 Text to encrypt
 .EXAMPLE
-Convert-ODUEncryptApiKey 'API-....'
-API-........
+Convert-ODUEncryptApiKey 'API-ABCDEFGH01234567890ABCDEFGH'
+<encrypted value>
 #>
 function Convert-ODUEncryptApiKey {
   [CmdletBinding()]
@@ -73,9 +73,10 @@ function Convert-ODUEncryptApiKey {
 
 <#
 .SYNOPSIS
-Returns a filled-in Octopus Server portion of the configuration
+Creates Octopus Server-specific section of the configuration
 .DESCRIPTION
-Returns a filled-in Octopus Server portion of the configuration
+Creates Octopus Server-specific section of the configuration, uses values from user
+along with default values for type/property black/white lists.
 .PARAMETER Name
 Name of Octopus server
 .PARAMETER Url
@@ -83,8 +84,8 @@ Url of Octopus server
 .PARAMETER ApiKeySecure
 Encrypted API Key
 .EXAMPLE
-Get-ODUConfigOctopusServerSection 'API-....'
-API-........
+Get-ODUConfigOctopusServerSection -Name 'MyOctoServer.octopus.app' -Url 'https://MyOctoServer.octopus.app' -ApiKeySecure <encrypted value>
+<hashtable with these values and default black/white list values>
 #>
 function Get-ODUConfigOctopusServerSection {
   [CmdletBinding()]

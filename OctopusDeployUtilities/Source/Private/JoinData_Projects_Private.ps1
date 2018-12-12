@@ -11,7 +11,7 @@ Adds deploy process info to projects
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportProjectAddDeploymentProcess -Path c:\Exports\MyOctoServer.com\20181120-103152
+Update-ODUExportProjectAddDeploymentProcess -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds deploy process info to projects>
 #>
 function Update-ODUExportProjectAddDeploymentProcess {
@@ -53,7 +53,7 @@ Adds included variable set(s) to projects
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportProjectAddIncludedLibraryVariableSets -Path c:\Exports\MyOctoServer.com\20181120-103152
+Update-ODUExportProjectAddIncludedLibraryVariableSets -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds variable set to projects>
 #>
 function Update-ODUExportProjectAddIncludedLibraryVariableSets {
@@ -112,7 +112,7 @@ Adds main variable set to projects
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportProjectAddVariableSet -Path c:\Exports\MyOctoServer.com\20181120-103152
+Update-ODUExportProjectAddVariableSet -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds main variable set to projects>
 #>
 function Update-ODUExportProjectAddVariableSet {

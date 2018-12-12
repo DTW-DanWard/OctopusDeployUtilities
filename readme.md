@@ -38,7 +38,7 @@ I have a [bunch of questions](docs/FAQ.md).
 
 ## OK, Let's Get Going Already!
 
-* [Installation & Setup](docs/InstallationSetup.md)
+* [Installation, setup & basic usage](docs/InstallationSetup.md)
   * [Type whitelist & blacklist configuration](docs/TypeWhiteListBlackListConfig.md)
     * [Type description](docs/TypeDescription.md)
   * [Property whitelist & blacklist configuration](docs/PropertyWhiteListBlackListConfig.md)

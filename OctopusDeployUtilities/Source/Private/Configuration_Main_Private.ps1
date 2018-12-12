@@ -72,7 +72,7 @@ Get-ODUConfigOctopusServer
 Name                           Value
 ----                           -----
 Name                           Main
-Url                            https://my.octoserver.com
+Url                            https://MyOctoServer.octopus.app
 ApiKey                         010dfdf30ddf011423425365d1118c7a00c.....
 TypeBlacklist                  {CommunityActionTemplates, Deployments, Events, Interruptions...}
 TypeWhitelist                  {}

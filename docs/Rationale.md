@@ -41,7 +41,7 @@ By exporting an Octopus Deploy configuration you get that x-ray vision!  What's 
 
 ## If Automation is the Future, Configuration Validation is Required
 
-As we speed up the overall code/infrastructure deployment process - via automated builds & code testing, automated deployments, infrastructure as code, etc. - automating the configuration *and validation* of your deployment system becomes another critical task.  This is **especially** true considering most if not all of your configuration was probably entered by hand via the GUI.  Manually reviewing your whole configuration every now and then just isn't sufficient.  And you don't want to wait to discover the problem *after* a project has been deployed to production.
+As we speed up the overall code/infrastructure deployment process - via automated builds & code testing, automated deployments, infrastructure as code, etc. - automating the configuration *and validation* of your deployment system becomes another critical task.  This is **especially** true considering most if not all of your configuration was probably entered by hand via the GUI.  Manually reviewing your whole configuration every now and then just isn't sufficient.  And you don't want to wait to discover a problem *after* a project has been deployed to production.
 
 
 ## Changes Over Time
@@ -50,11 +50,18 @@ What changes have been made to your Octopus Deploy setup over the past week?
 * What projects has been added?
 * What variables modified?
 * Have any new deployment targets been added?
-* **Has an account you don't recognize been recently added to the Administrators team?**  (I bet that got your attention).
+* **Has an account you don't recognize been recently added to the Administrators team?**  (That got your attention).
 
 Wouldn't you like to be able to easily tell what's changed recently?  With Octopus Deploy's web interface, it's impossible to easily see these changes.  But if you can export the data, it's easy: just occasionally manually run an export (or schedule an export to run automatically) and then diff the two export folders with any diff tool.  Done!
 
 
-## Need More?
+## Use Your Imagination
+With the data in easily usable JSON files, you can do anything:
+* Search across all the projects using just a text editor like VS Code, Atom or Sublime.  Or write your own search tool.
+* Compare similar projects to see where they are different.
+* Get data/reporting on anything you can think of.  What's the average number of variables per project?  Sure, that's easy to find out.
+* Programmatically comparing two exports instead of manually comparing with a diff tool.
 
-Need more convincing?  See some detailed examples in [what can you do with exports](WhatCanYouDo.md).  And maybe review [best practices and testing rules](BestPracticesTestingRules.md) to get a feel for the benefits of automated testing.
+Still need more convincing?  See some detailed examples in [what can you do with exports](WhatCanYouDo.md).  And maybe review [best practices and testing rules](BestPracticesTestingRules.md) to get a feel for the benefits of automated testing.
+
+If you are ready to start, check out [Installation, setup & basic usage](InstallationSetup.md).

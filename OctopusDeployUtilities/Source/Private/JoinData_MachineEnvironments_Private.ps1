@@ -11,7 +11,7 @@ Adds machine names to environments
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportAddMachinesToEnvironments -Path c:\Exports\MyOctoServer.com\20181120-103152
+Update-ODUExportAddMachinesToEnvironments -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds machine names to environments>
 #>
 function Update-ODUExportAddMachinesToEnvironments {

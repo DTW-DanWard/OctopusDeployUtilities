@@ -13,7 +13,7 @@ but has format name: YYYYMMDD-HHMMSS  or, more specifically: ^\d{8}-\d{6}$
 If you copies/renames folder it won't get returned unless it matches that format
 .EXAMPLE
 Get-ODUExportLatestPath
-c:\OctoExports\MyOctoServer.com\20181107-185919
+c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
 #>
 function Get-ODUExportLatestPath {
   [CmdletBinding()]
@@ -46,10 +46,10 @@ If FolderPath not passed, uses value from Get-ODUExportLatestPath
 .PARAMETER Path
 Path for export
 .EXAMPLE
-Read-ODUExportFromFiles c:\OctoExports\MyOctoServer.com\20181107-185919
+Read-ODUExportFromFiles c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
 <returns PSObject with all exported data under that folder
 .EXAMPLE
-Read-ODUExportFromFiles c:\OctoExports\MyOctoServer.com\20181107-185919
+Read-ODUExportFromFiles c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
 <returns PSObject with all exported data for latest export
 #>
 function Read-ODUExportFromFiles {

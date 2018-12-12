@@ -8,7 +8,7 @@ OR Clone and Import-Module .\OctopusDeployUtilities\OctopusDeployUtilities.psd1
 
 2. Add your Octo server
 Set-ODUConfigExportRootFolder C:\Temp\Temp
-Add-ODUConfigOctopusServer 'https://MyOctoServerUrl.com/'  'API-ABCDEFGH01234567890ABCDEFGH'
+Add-ODUConfigOctopusServer 'https://MyOctoServer.octopus.app'  'API-ABCDEFGH01234567890ABCDEFGH'
 
 3. Configure external tools
 Set-ODUConfigTextEditor -Path ((Get-Command code.cmd).Source)

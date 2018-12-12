@@ -54,7 +54,7 @@ Scans each exported item, finds external Id references and adds property to item
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportAddExternalNamesForIds -Path c:\Exports\MyOctoServer.com\20181120-103152
+Update-ODUExportAddExternalNamesForIds -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds properties to exported items>
 #>
 function Update-ODUExportAddExternalNamesForIds {

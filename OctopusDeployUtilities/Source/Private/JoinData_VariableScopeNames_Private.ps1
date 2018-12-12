@@ -11,7 +11,7 @@ Adds scope names to variables
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportAddScopeNamesToVariables -Path c:\Exports\MyOctoServer.com\20181120-103152
+Update-ODUExportAddScopeNamesToVariables -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds scope names to variables>
 #>
 function Update-ODUExportAddScopeNamesToVariables {
