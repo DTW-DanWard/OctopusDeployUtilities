@@ -8,11 +8,11 @@ Here's the basic flow: when the Octopus Deploy Utilities (hereafter ODU) export 
 * for each API call:
   * creates a folder with the name matching the API name;
   * make 1 or more API calls to the server to fetch data;
-  * based on your configured [property blacklist or whitelist](TypeWhiteListBlackListConfig.md) it might remove unwanted properties;
+  * based on your configured [property blacklist or whitelist](PropertyWhiteListBlackListConfig.md) it might remove unwanted properties;
   * stores result data in that folder;
 * after export is complete it [post-processes the data](PostProcessing.md), adding names where only ids used to exist, adding variables and deployment processes directly to projects, etc.
 
-If you'd like more detail about the export process please review the source code (it's well commented).
+If you'd like more detail about the export process please review the source code (it's well-commented).
 
 You can learn more about the Octopus Deploy REST API by reviewing the [Swagger on their demo server](https://demo.octopus.com/swaggerui/index.html).
 
@@ -32,7 +32,7 @@ Yes, but only if you are running on Windows.  ODU uses the standard PowerShell s
 
 
 ## Are encrypted (Sensitive) values like passwords exported and stored in clear text?
-No, don't worry, Sensitive values are not exported at all; the Octopus REST API doesn't support that (good!).  Instead, the variable value will be null and the IsSensitive value will be true.
+No, don't worry, Sensitive values are not exported at all.  The Octopus REST API doesn't support that - good!  Instead, the variable value will be null and the IsSensitive value will be true.
 
 The JSON for an exported Sensitive variable will look something like:
 ```JSON
@@ -62,13 +62,14 @@ If you configured your [text editor path with Set-ODUConfigTextEditor](Installat
 ## How do I quickly run a fresh export?
 Run: ```oduexport```
 
-
-## When I compare exports over time there are fields getting exported that are different in each export - but these fields are kinda useless and are affecting the diff.  How do I fix this?
-For example, you might not care about a Machine's HasLatestCalamari value as it might be different over time but you are mostly interested in project / variable data.
-To fix this, use the [property blacklist](TypeWhiteListBlackListConfig.md) and specify the type and field(s) you want to filter out (in this case Machine : HasLatestCalamari).
+Make sure you review the [usage info](InstallationSetup.md) for more tips.
 
 
-## What is the post-processing that it does?
+## When I compare separate exports over time there are fields getting exported that are different in each export - but these fields are kinda useless and are affecting the diff.  How do I fix this?
+For example, you might not care about a Machine's HasLatestCalamari value as it might be different over time.  However you are mostly interested in project / variable data changes over time and these HasLatestCalamari changes are false positives.  To fix this, use the [property blacklist](PropertyWhiteListBlackListConfig.md) and specify the type and field(s) you want to filter out (in this case Machine : HasLatestCalamari).
+
+
+## What is the post-processing that the export process does?
 Read this to learn all about [post-processing the data](PostProcessing.md).  If you are curious to see exactly what the post-processing does, you can:
 * run an export without the post-processing;
 * make a copy of that export folder;
