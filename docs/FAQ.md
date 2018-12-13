@@ -56,13 +56,13 @@ If you want to see the help for a cmdlet type: ```Get-Help <cmdlet name> -Full``
 ## How do I get the latest full export path?  How can I view it in a text editor?
 To get the latest export folder path, run: ```Get-ODUExportLatestPath```.
 
-If you configured your [text editor path with Set-ODUConfigTextEditor](InstallationSetup.md), you can quickly open this folder with ```odutext```.
+If you configured your [text editor path with Set-ODUConfigTextEditor](SetupUsage.md), you can quickly open this folder with ```odutext```.
 
 
 ## How do I quickly run a fresh export?
 Run: ```oduexport```
 
-Make sure you review the [usage info](InstallationSetup.md) for more tips.
+Make sure you review the [usage info](SetupUsage.md) for more tips.
 
 
 ## When I compare separate exports over time there are fields getting exported that are different in each export - but these fields are kinda useless and are affecting the diff.  How do I fix this?

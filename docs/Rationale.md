@@ -64,4 +64,4 @@ With the data in easily usable JSON files, you can do anything:
 
 Still need more convincing?  See some detailed examples in [what can you do with exports](WhatCanYouDo.md).  And maybe review [best practices and testing rules](BestPracticesTestingRules.md) to get a feel for the benefits of automated testing.
 
-If you are ready to start, check out [setup & usage](InstallationSetup.md).
+If you are ready to start, check out [setup & usage](SetupUsage.md).
