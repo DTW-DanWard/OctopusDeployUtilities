@@ -14,7 +14,7 @@ For example, let's say you like to install your Windows Service projects to a sp
 
 Now imagine you need to confirm this setting for all 40 projects you have - that's a lot of clicking.  But **now** imagine you haven't checked it in a few weeks and you want to make sure no one has changed it for any preexisting projects **AND** it's been done correctly for all newly added projects... ugh!
 
-If you had x-ray vision and could look directly inside the project configuration settings on the server, you'd see these (and more) in the project deploy process settings:
+If you had x-ray vision and could look directly inside the project configuration settings on the Octopus Deploy server itself, you'd see these (and more) in the project deploy process settings:
 ```JSON
 "DeploymentProcess" {
   ...
@@ -60,7 +60,7 @@ With the data in easily usable JSON files, you can do anything:
 * Search across all the projects using just a text editor like VS Code, Atom or Sublime.  Or write your own search tool.
 * Compare similar projects to see where they are different.
 * Get data/reporting on anything you can think of.  What's the average number of variables per project?  Sure, that's easy to find out.
-* Programmatically comparing two exports instead of manually comparing with a diff tool.
+* Programmatically compare two exports instead of manually comparing with a diff tool.
 
 Still need more convincing?  See some detailed examples in [what can you do with exports](WhatCanYouDo.md).  And maybe review [best practices and testing rules](BestPracticesTestingRules.md) to get a feel for the benefits of automated testing.
 
