@@ -15,7 +15,7 @@ Fortunately Octopus Deploy provides a great REST API that can be used for export
 * **Implement standards/best practices in your Octopus Deploy setup and then automatically confirm these standards by unit testing your configuration export.**  You will save countless hours and ensure quality by automating it.
 * Compare releases (coming soon - on [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
 
-There is a lot you can do with an export; [read here for greater detail/more examples](docs/WhatCanYouDo.md).  You might want to read the [full rationale here](docs/Rationale.md) for exporting your data.  But trust me: once you've started exporting your configuration data you'll wonder how you've been living without it.
+There is a lot you can do with an export; you might want to read the [full rationale here](docs/Rationale.md) for exporting your data.  But trust me: once you've started exporting your configuration data you'll wonder how you've been living without it.
 
 
 ## Why Use *This* Set Of Tools?
@@ -52,7 +52,6 @@ I have a [bunch of questions](docs/FAQ.md).
 
 * [What does the post processing step do?](docs/PostProcessing.md)
 * [Road map for Octopus Deploy Utilities](docs/OctopusDeployUtilitiesRoadmap.md)
-* [Stuff you can do with exports](docs/WhatCanYouDo.md)
 * [Rationale for exporting](docs/Rationale.md)
 * [License - it's MIT, don't worry](LICENSE)
 

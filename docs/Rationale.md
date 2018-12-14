@@ -57,11 +57,11 @@ Wouldn't you like to be able to easily tell what's changed recently?  With Octop
 
 ## Use Your Imagination
 With the data in easily usable JSON files, you can do anything:
-* Search across all the projects using just a text editor like VS Code, Atom or Sublime.  Or write your own search tool.
+* Search across all the projects using just a text editor like VS Code, Atom or Sublime.  Or use the [ODU search tool](SearchingVariables.md).
 * Compare similar projects to see where they are different.
 * Get data/reporting on anything you can think of.  What's the average number of variables per project?  Sure, that's easy to find out.
 * Programmatically compare two exports instead of manually comparing with a diff tool.
 
-Still need more convincing?  See some detailed examples in [what can you do with exports](WhatCanYouDo.md).  And maybe review [best practices and testing rules](BestPracticesTestingRules.md) to get a feel for the benefits of automated testing.
+Still need more convincing?  Check out the [best practices and testing rules](BestPracticesTestingRules.md) to get a feel for the benefits of automated testing.
 
 If you are ready to start, check out [setup & usage](SetupUsage.md).
