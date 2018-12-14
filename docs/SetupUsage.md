@@ -12,7 +12,6 @@ Setup and usage notes for Octopus Deploy Utilities.
 * [Property blacklist and whitelist settings](#property-blacklist-and-whitelist-settings)
 * [External tools settings](#external-tools-settings)
 * [Schedule exports](#schedule-exports)
-* [Open latest export in text editor](#open-latest-export-in-text-editor)
 * [Search for variables](#search-for-variables)
 
 
@@ -58,17 +57,36 @@ At this point you can run an export without needing to change anything else.  Ru
 C:\> oduexport
 Exporting data...
   Data exported to: C:\OctoExports\MyOctoServer.octopus.app\20181213-183336
-Creating Id to name lookup
-Adding external names for ids in exported data
-Adding scope names to variables
-Adding machine information to environments
-Adding deployment processes to projects
-Adding variable sets to projects
-Adding included library variable sets to projects
+Post-processing data...
+  Creating Id to name lookup
+  Adding external names for ids in exported data
+  Adding scope names to variables
+  Adding machine information to environments
+  Adding deployment processes to projects
+  Adding variable sets to projects
+  Adding included library variable sets to projects
+  Post-processing complete
+
 C:\>
 ```
 
 You can now check out the export folder (in this case: C:\OctoExports\MyOctoServer.octopus.app\20181213-183336).  I recommend opening that folder in a modern text editor like VS Code, Atom or Sublime Text (not notepad).  Using a good text editor will allow you to browse and search more easily.
+
+
+## External Tools Settings
+
+ODU has some shortcuts that can save you time.  For example if want to open the latest export in a text editor, you can type: ```odutext```
+
+However, in order for this to work you need to tell ODU the full path to your text editor using Get-ODUConfigTextEditor.  For example:
+
+```
+# this is a sample path for VS Code
+Set-ODUConfigTextEditor "C:\Users\yourusername\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"
+# however if you really are using VS Code you can use PowerShell to give you the path dynamically
+Set-ODUConfigTextEditor ((Get-Command code.cmd).Source)
+```
+
+Once you've configured this you can type: ```odutext``` to automatically open the latest export.
 
 
 ## Type Blacklist And Whitelist Settings
@@ -79,31 +97,28 @@ You can now check out the export folder (in this case: C:\OctoExports\MyOctoServ
 
 
 
-## External Tools Settings
 
 
 
 ## Schedule Exports
+To schedule exports: on Windows, use Task Scheduler; on Unix, use cron.
 
+For Windows:
+* Open Taask Scheduler
+* Create a new Task
+* Add a new Action
+* Program/script value:
+    pwsh.exe                (if using PowerShell Core)
+    powershell.exe          (if using Windows PowerShell)
+-c { Import-Module C:\code\GitHub\OctopusDeployUtilities\OctopusDeployUtilities\OctopusDeployUtilities.psd1 -force; oduexport }
 
-
-## Open Latest Export in Text Editor
-
+asdf - not complete/tested
 
 
 ## Search for Variables
 
 
 ---------------
-
-
-
-
-3. Configure external tools
-Set-ODUConfigTextEditor -Path ((Get-Command code.cmd).Source)
-
-Set-ODUConfigDiffViewer -Path 'C:\Program Files\ExamDiff Pro\ExamDiff.exe'
-Set-ODUConfigDiffViewer -Path 'C:\Program Files (x86)\KDiff3\kdiff3.exe'
 
 How to review these settings?
 
@@ -114,21 +129,4 @@ link to more info about types
 
 5. Filter properties black white
 
-
-6. Run export manually
-
-
-7. Schedule export
-Windows:
-Non-Windows: use cron
-
-
-
-Usage
-
-run export
-
-open latest export in a text editor
-
-search for variables
 

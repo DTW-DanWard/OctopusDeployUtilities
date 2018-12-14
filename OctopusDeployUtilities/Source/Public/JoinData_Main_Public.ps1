@@ -33,33 +33,37 @@ function Update-ODUExportJoinData {
   process {
     if ($false -eq (Test-Path -Path $Path)) { throw "No export found at: $Path" }
 
+    if (! $Quiet) { Write-Output "Post-processing data..." }
+
     # create lookup object in root of export with every Id and name for every exported item
-    if (! $Quiet) { Write-Output "Creating Id to name lookup" }
+    if (! $Quiet) { Write-Output "  Creating Id to name lookup" }
     New-ODUIdToNameLookup $Path
 
     # for each exported item, look for external Id values in it, lookup the external name for the external id and add to exported item
-    if (! $Quiet) { Write-Output "Adding external names for ids in exported data" }
+    if (! $Quiet) { Write-Output "  Adding external names for ids in exported data" }
     Update-ODUExportAddExternalNamesForIds $Path
 
     # for exported variables, add scope names and breadth
-    if (! $Quiet) { Write-Output "Adding scope names to variables" }
+    if (! $Quiet) { Write-Output "  Adding scope names to variables" }
     Update-ODUExportAddScopeNamesToVariables $Path
 
     # add machines listing to environments
-    if (! $Quiet) { Write-Output "Adding machine information to environments" }
+    if (! $Quiet) { Write-Output "  Adding machine information to environments" }
     Update-ODUExportAddMachinesToEnvironments $Path
 
     # add deployment processes to projects
-    if (! $Quiet) { Write-Output "Adding deployment processes to projects" }
+    if (! $Quiet) { Write-Output "  Adding deployment processes to projects" }
     Update-ODUExportProjectAddDeploymentProcess $Path
 
     # add variable sets to projects
-    if (! $Quiet) { Write-Output "Adding variable sets to projects" }
+    if (! $Quiet) { Write-Output "  Adding variable sets to projects" }
     Update-ODUExportProjectAddVariableSet $Path
 
     # add included library variable sets to projects
-    if (! $Quiet) { Write-Output "Adding included library variable sets to projects" }
+    if (! $Quiet) { Write-Output "  Adding included library variable sets to projects" }
     Update-ODUExportProjectAddIncludedLibraryVariableSets $Path
+
+    if (! $Quiet) { Write-Output "  Post-processing complete" }
   }
 }
 #endregion
