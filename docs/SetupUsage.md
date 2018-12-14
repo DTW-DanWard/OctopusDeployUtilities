@@ -73,6 +73,8 @@ C:\>
 
 You can now check out the export folder (in this case: C:\OctoExports\MyOctoServer.octopus.app\20181213-183336).  I recommend opening that folder in a modern text editor like VS Code, Atom or Sublime Text (not notepad).  Using a good text editor will allow you to browse and search more easily.
 
+Or [see this for an example](SampleExport.md) of an export.
+
 
 ## Set Your Text Editor and Diff Viewer Paths
 
