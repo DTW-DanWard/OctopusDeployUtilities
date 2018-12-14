@@ -46,11 +46,11 @@ If FolderPath not passed, uses value from Get-ODUExportLatestPath
 .PARAMETER Path
 Path for export
 .EXAMPLE
-Read-ODUExportFromFiles c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
-<returns PSObject with all exported data under that folder
+Read-ODUExportFromFiles
+<returns PSObject with all exported data from latest export>
 .EXAMPLE
 Read-ODUExportFromFiles c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
-<returns PSObject with all exported data for latest export
+<returns PSObject with all exported data for that particular export>
 #>
 function Read-ODUExportFromFiles {
   [CmdletBinding()]

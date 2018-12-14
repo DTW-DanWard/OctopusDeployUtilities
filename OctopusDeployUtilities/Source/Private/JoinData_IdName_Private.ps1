@@ -34,7 +34,7 @@ function Get-ODUIdToNameLookup {
       $RestApiCall = $_
       $ItemExportFolder = Join-Path -Path $Path -ChildPath ($RestApiCall.RestName)
       Get-ChildItem -Path $ItemExportFolder -File -Recurse | ForEach-Object {
-        $ExportItem = (Get-Content -Path $_) | ConvertFrom-Json
+        $ExportItem = (Get-Content -Path $_.FullName) | ConvertFrom-Json
         if ($null -ne $ExportItem) {
           # if item has BOTH Id and IdToNamePropertyName properties, capture it
           $PropertyName = $RestApiCall.IdToNamePropertyName

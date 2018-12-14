@@ -13,7 +13,7 @@ Full url of REST API to call
 .PARAMETER ApiKey
 Unencrypted ApiKey to pass in REST API call headers
 .EXAMPLE
-Invoke-ODURestMethod -Url https://MyOctoServer.octopus.app -ApiKey 'API-123456789012345678901234567'
+Invoke-ODURestMethod -Url https://MyOctoServer.octopus.app -ApiKey 'API-ABCDEFGH01234567890ABCDEFGH'
 <calls Url passing in ApiKey and returns results>
 #>
 function Invoke-ODURestMethod {

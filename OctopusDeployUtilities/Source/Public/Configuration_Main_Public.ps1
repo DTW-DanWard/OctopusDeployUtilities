@@ -16,7 +16,7 @@ Root url of Octopus server
 .PARAMETER ApiKey
 API Key for a specific user account to use for exports
 .EXAMPLE
-Add-ODUConfigOctopusServer -Url https://MyOctoServer.octopus.app -ApiKey 'API-123456789012345678901234567'
+Add-ODUConfigOctopusServer -Url https://MyOctoServer.octopus.app -ApiKey 'API-ABCDEFGH01234567890ABCDEFGH'
 <validates then sets url and api key for Octo server>
 #>
 function Add-ODUConfigOctopusServer {

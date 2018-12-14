@@ -110,10 +110,13 @@ There are two ways to review all these settings you've made:
 1. For every ```Set-``` function you called there's a corresponding ```Get-``` function.  For example: ```Set-ODUConfigExportRootFolder``` has ```Get-ODUConfigExportRootFolder```.  You can find all these functions and more by typing:
 
 ```
+# see all the main functions:
 Get-Command -Module OctopusDeployUtilities
+# see all the aliases (shortcuts) for these functions:
+Get-Alias odu*
 ```
 
-2. You can review the ODU config file itself; you can find it's path with ```Get-ODUConfigFilePath```.  Be careful if you manually edit this file, you might break it!
+2. You can review the ODU config file itself; you can find it's path with ```Get-ODUConfigFilePath```.  Be careful - if you manually edit this file, you might break ODU!
 
 If you configured your text editor above you can open your ODU config file this way:
 

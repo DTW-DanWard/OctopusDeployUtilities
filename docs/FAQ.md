@@ -50,7 +50,9 @@ The JSON for an exported Sensitive variable will look something like:
 ## How can I quickly find out what cmdlets come with Octopus Deploy Utilities?
 In PowerShell run: ```Get-Command -Module OctopusDeployUtilities```
 
-If you want to see the help for a cmdlet type: ```Get-Help <cmdlet name> -Full```
+To see aliases (shortcuts) that come with ODU type: ```Get-Alias odu*```
+
+If you then want to see the help for an alias or cmdlet type: ```Get-Help <cmdlet name> -Full```
 
 
 ## How do I get the latest full export path?  How can I view it in a text editor?

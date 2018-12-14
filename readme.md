@@ -43,6 +43,7 @@ I have a [bunch of questions](docs/FAQ.md).
     * [Type description](docs/TypeDescription.md)
   * [Property whitelist & blacklist configuration](docs/PropertyWhiteListBlackListConfig.md)
 * [Getting details & reporting](docs/DetailsAndReporting.md)
+* [Searching through variables](docs/SearchingVariables.md)
 * [Unit test your configuration](docs/UnitTesting.md)
 * [Octopus Deploy best practices and testing rules](docs/BestPracticesTestingRules.md)
 * [Frequently asked questions](docs/FAQ.md)
