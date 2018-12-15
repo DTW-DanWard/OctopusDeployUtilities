@@ -43,17 +43,20 @@ With your Octopus Deploy data exported you can do some **crazy stuff *really* ea
 (oduobject).Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
 
 # return all project-level variables that are explicitly scoped for your EU production environment
-(oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains "Prod-EU" }
+(oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU' }
 ```
 
-Imagine the powerful unit tests you could easily write!
+Imagine the powerful Pester unit tests you could easily write!
 
 ```PowerShell
 # find any variables with 'password' or 'pwd' in their name that AREN'T encrypted
-It 'Confirm no plaintext *password* or *pwd* variables' { (oduobject).Projects.VariableSet.Variables | ? { $_.Name -match 'password|pwd' -and $_.IsSensitive -eq $false } | Should BeNullOrEmpty }
+It 'Confirm no plaintext *password* or *pwd* variables' { (oduobject).Projects.VariableSet.Variables | 
+  ? { $_.Name -match 'password|pwd' -and $_.IsSensitive -eq $false } | Should BeNullOrEmpty }
 
-# make sure only the people we know are admins
-It 'Confirm only dave, janet and lee are administrators' { Compare-Object -ReferenceObject @('dave','janet','lee') -DifferenceObject (((oduobject).Teams | ? Name -eq 'Octopus Administrators').MemberUserNames) | Should BeNullOrEmpty
+# make sure only the people we know are administrators
+It 'Confirm only dave, janet and lee are admins' {
+  Compare-Object -ReferenceObject @('dave','janet','lee')
+    -DifferenceObject (((oduobject).Teams | ? Name -eq 'Octopus Administrators').MemberUserNames) | Should BeNullOrEmpty }
 
 # WOW!
 ```

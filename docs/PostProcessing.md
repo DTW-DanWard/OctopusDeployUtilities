@@ -74,7 +74,7 @@ Here's single, **short** line of PowerShell that gets the latest export and retu
 
 Here's single, **short** line of PowerShell that gets the latest export and searches across **all project-level variables** in **all projects** and returns the variables that have a scope that specifies environment Prod-EU-2:
 ```PowerShell
-(oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains "Prod-EU-2" }
+(oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU-2' }
 ```
 This simplicity is pretty awesome!  If you are writing unit testing this will be incredibly helpful.
 
