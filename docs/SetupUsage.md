@@ -30,31 +30,31 @@ The Octopus Deploy REST API requires a unique API key for your account to authen
 
 ## Installation
 Get the Octopus Deploy Utilities module.  Easiest way is to install it; open a PowerShell Windows *running as Administrator* and type:
-```
+```PowerShell
 Install-Module OctopusDeployUtilities
 ```
 Installing it has the additional benefit that you never need to manually import the module afterwards.
 
 
 The other option is you can clone or download the module from GitHub.  In that case you need to manually import the module each time you use it (or add the import statement to your $profile).
-```
+```PowerShell
 Import-Module <path to where you cloned or downloaded>\OctopusDeployUtilities\OctopusDeployUtilities.psd1
 ```
 
 ## Set Root Folder and Register Octopus Server
 Once the module is loaded the first thing you need to set a root folder under which exports will get stored.  This step initializes the ODU settings.  For example:
-```
+```PowerShell
 Set-ODUConfigExportRootFolder c:\OctoExports
 ```
 
 Once the root export folder has been set you can now register your Octopus Deploy Server.  Register your server with the url (including http/https) and your API key from Pre-installation.  For example:
-```
+```PowerShell
 Add-ODUConfigOctopusServer 'https://MyOctoServer.octopus.app' 'API-ABCDEFGH01234567890ABCDEFGH'
 ```
 
 ## Run Your First Manual Export
 At this point you can run an export without needing to change anything else.  Running ```oduexport``` will do this.  Here's an example:
-```
+```PowerShell
 C:\> oduexport
 Exporting data...
   Data exported to: C:\OctoExports\MyOctoServer.octopus.app\20181213-183336
@@ -79,15 +79,18 @@ Or [see this for an example](SampleExport.md) of an export.
 ## Set Your Text Editor and Diff Viewer Paths
 
 ODU has some handy shortcuts.  For example you can always open the latest export in a text editor by typing: ```odutext```  In order for this to work you need to tell ODU the full path to your text editor using Get-ODUConfigTextEditor.  For example:
-```
+```PowerShell
 # use PowerShell to get the path to VS Code
 Set-ODUConfigTextEditor ((Get-Command code.cmd).Source)
 ```
-Once you've configured this you can type: ```odutext``` to automatically open the latest export.
-
-You can also tell ODU the path to your diff viewer.  (This currently isn't used but will be used when compare release functionality is deployed.)  To set this use ```Set-ODUConfigDiffViewer```
-
+Once you've configured this you can type: 
+```PowerShell
+odutext
 ```
+to automatically open the latest export.
+
+You can also tell ODU the path to your diff viewer.  (This currently isn't used but will be used when compare release functionality is deployed.)  To set this:
+```PowerShell
 # set the diff viewer to Exam Diff Pro (my favorite diff viewer)
 Set-ODUConfigDiffViewer "C:\Program Files\ExamDiff Pro\ExamDiff.exe"
 ```
@@ -111,7 +114,7 @@ asdf
 There are two ways to review all these settings you've made:
 1. For every ```Set-``` function you called there's a corresponding ```Get-``` function.  For example: ```Set-ODUConfigExportRootFolder``` has ```Get-ODUConfigExportRootFolder```.  You can find all these functions and more by typing:
 
-```
+```PowerShell
 # see all the main functions:
 Get-Command -Module OctopusDeployUtilities
 # see all the aliases (shortcuts) for these functions:
@@ -122,7 +125,7 @@ Get-Alias odu*
 
 If you configured your text editor above you can open your ODU config file this way:
 
-```
+```PowerShell
 & (Get-ODUConfigTextEditor) (Get-ODUConfigFilePath)
 ```
 

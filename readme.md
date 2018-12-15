@@ -11,7 +11,7 @@ Octopus Deploy is a great product but it has a one limitation: it hides your con
 Fortunately Octopus Deploy provides a great REST API that can be used for exporting your configuration data.  And once you can export the data, you can do all sorts of awesome stuff:
 * *Easily* search across your entire configuration.
 * *Easily* see all changes to the entire system over time.
-* *Easily* get details on anything you can think of: How many projects do you have?  Which ones are Windows Services?  How many variables do you have; how many are encrypted?  Which projects are using a particular Library Variable Set?
+* *Easily* get details on anything you can think of: How many projects do you have?  Which ones are Windows Services?  How many variables do you have; which ones are encrypted?  Which projects are using a particular Library Variable Set?
 * **Implement standards/best practices in your Octopus Deploy setup and then automatically confirm these standards by unit testing your configuration export.**  You will save countless hours and ensure quality by automating it.
 * Compare releases (coming soon - on [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
 
@@ -21,11 +21,10 @@ There is a lot you can do with an export; you might want to read the [full ratio
 ## Why Use *This* Set Of Tools?
 
 Octopus Deploy does not provide a good out-of-the-box solution for getting all your configuration settings so I created Octopus Deploy Utilities.  It has a lot of cool and unexpected features:
-* It exports all your data or can selectively export particular types using a whitelist or blacklist.
-* It exports all properties for a particular type or can export certain type-specific properties using a whitelist or blacklist.
+* It exports all your data or can selectively export particular types using a whitelist or blacklist.  Properties for a particular type can also be whitelisted or blacklisted.
 * **It post-processes your export data to simplify and improve usage.**  For example it automatically adds id -> name lookup information so you can view/work with a variable scope with its user-friendly name, i.e. ```EnvironmentName = 'Production-West'``` instead of only by Id, i.e. ```Environment = 'Environments-37'```.  It also adds deploy process and variable configuration directly to each project file.  And a lot more!
-* It is written in [PowerShell Core](https://github.com/PowerShell/PowerShell) so it runs on any OS - but also runs great in Windows PowerShell 5.  No other pre-compiled components required.  (Docker container version is on [road map](docs/OctopusDeployUtilitiesRoadmap.md))
-* It exports all data to local JSON files so you can process the data with with any language.
+* It is written in [PowerShell Core](https://github.com/PowerShell/PowerShell) so it runs on any OS - but also runs great in Windows PowerShell 5.  No other pre-compiled components required.  (Docker container version is on the [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
+* It exports all data to local JSON files so you can process the data with any language.
 * It comes with helper tools written in PowerShell.  One tool aggregates all the data in an export into a single object for easy parsing.  Other tools help you test/filter your projects based on type.  Other tools allow you to search your Octopus Deploy configuration and your application code configuration files (web.config, etc.) to see where Octopus Deploy variables are actually being used (coming soon - on [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
 
 
@@ -34,6 +33,32 @@ Octopus Deploy does not provide a good out-of-the-box solution for getting all y
 So, just what does an [export look like](docs/SampleExport.md) anyway?
 
 I have a [bunch of questions](docs/FAQ.md).
+
+### Quick Tease
+
+With your Octopus Deploy data exported you can do some **crazy stuff *really* easily**.
+
+```PowerShell
+# return all project-level variables, their values and scope
+(oduobject).Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
+
+# return all project-level variables that are explicitly scoped for your EU production environment
+(oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains "Prod-EU" }
+```
+
+Imagine the powerful unit tests you could easily write!
+
+```PowerShell
+# find any variables with 'password' or 'pwd' in their name that AREN'T encrypted
+It 'Confirm no plaintext *password* or *pwd* variables' { (oduobject).Projects.VariableSet.Variables | ? { $_.Name -match 'password|pwd' -and $_.IsSensitive -eq $false } | Should BeNullOrEmpty }
+
+# make sure only the people we know are admins
+It 'Confirm only dave, janet and lee are administrators' { Compare-Object -ReferenceObject @('dave','janet','lee') -DifferenceObject (((oduobject).Teams | ? Name -eq 'Octopus Administrators').MemberUserNames) | Should BeNullOrEmpty
+
+# WOW!
+```
+
+
 
 
 ## OK, Let's Get Going Already!
@@ -50,7 +75,7 @@ I have a [bunch of questions](docs/FAQ.md).
 
 ## More Info
 
-* [What does the post processing step do?](docs/PostProcessing.md)
+* [What does the post-processing step do?](docs/PostProcessing.md)
 * [Road map for Octopus Deploy Utilities](docs/OctopusDeployUtilitiesRoadmap.md)
 * [Rationale for exporting](docs/Rationale.md)
 * [License - it's MIT, don't worry](LICENSE)

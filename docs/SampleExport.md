@@ -63,7 +63,7 @@ Now, let's look at a much more complex example.
 
 ## Sample Export File - Project
 
-Below is a project JSON file that has been post-processed.  It's big - *and it's been edited* - so let me summarize the types of changes you can see.
+Below is a project JSON file that has been post-processed.  It's big (even after being edited) so let me summarize the types of changes you can see.
 
 1. By default a project export from Octopus is pretty simple, it contains only a fraction of this info.  The post-processing looks up and 'joins' all of the external data so it's much more helpful for reporting and processing.
 2. Fields with suffix a field 'Id' *and* that have a proper user-friendly name are looked up and added to it.  For example "IncludedLibraryVariableSetIds" = "LibraryVariableSets-7" comes with the export but post-processing has added "IncludedLibraryVariableSetNames" = "Global Variables 1". The same is true for ClonedFromProjectName, LifecycleName and ProjectGroupName.
@@ -289,4 +289,3 @@ Below is a project JSON file that has been post-processed.  It's big - *and it's
   ]
 }
 ```
-

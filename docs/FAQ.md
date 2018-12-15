@@ -48,21 +48,39 @@ The JSON for an exported Sensitive variable will look something like:
 
 
 ## How can I quickly find out what cmdlets come with Octopus Deploy Utilities?
-In PowerShell run: ```Get-Command -Module OctopusDeployUtilities```
+In PowerShell run: 
+```PowerShell
+Get-Command -Module OctopusDeployUtilities
+```
 
-To see aliases (shortcuts) that come with ODU type: ```Get-Alias odu*```
+To see aliases (shortcuts) that come with ODU type: 
+```PowerShell
+Get-Alias odu*
+```
 
-If you then want to see the help for an alias or cmdlet type: ```Get-Help <cmdlet name> -Full```
+If you then want to see the help for an alias or cmdlet type: 
+```PowerShell
+Get-Help <cmdlet name> -Full
+```
 
 
 ## How do I get the latest full export path?  How can I view it in a text editor?
-To get the latest export folder path, run: ```Get-ODUExportLatestPath```.
+To get the latest export folder path, run: 
+```PowerShell
+Get-ODUExportLatestPath
+```
 
-If you configured your [text editor path with Set-ODUConfigTextEditor](SetupUsage.md), you can quickly open this folder with ```odutext```.
+If you configured your [text editor path with Set-ODUConfigTextEditor](SetupUsage.md), you can quickly open this folder:
+```PowerShell
+odutext
+```
 
 
 ## How do I quickly run a fresh export?
-Run: ```oduexport```
+```PowerShell
+# run a new export
+oduexport
+```
 
 Make sure you review the [usage info](SetupUsage.md) for more tips.
 
@@ -78,11 +96,18 @@ Read this to learn all about [post-processing the data](PostProcessing.md).  If 
 * run the post-processing on the folder copy;
 * do a diff of the two folders.
 
-Instructions on how to do this are in that linked page.  You will be surprised at all the work the post processing does...
+Instructions on how to do this are in that linked page.  You will be surprised at all the work the post-processing does...
 
 
 ## What is the root export folder?  How do I change it?
-Run ```Get-ODUConfigExportRootFolder``` to get the folder path.  To change that root to a new path run ```Set-ODUConfigExportRootFolder -Path *the_new_root_path*```
+
+```PowerShell
+# to get the folder path
+Get-ODUConfigExportRootFolder
+
+# to change that root to a new path
+Set-ODUConfigExportRootFolder -Path *the_new_root_path*
+```
 
 Make sure you manually copy or move any folders from the old location to the new location afterwards.
 
