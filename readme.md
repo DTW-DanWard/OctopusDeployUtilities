@@ -30,13 +30,11 @@ Octopus Deploy does not provide a good out-of-the-box solution for getting all y
 
 ## You are Getting Curious...?
 
-So, just what does an [export look like](docs/SampleExport.md) anyway?
-
-I have a [bunch of questions](docs/FAQ.md).
+So, just what does an [export look like](docs/SampleExport.md) anyway?  Also, I have a [bunch of questions (FAQ)](docs/FAQ.md).
 
 ### Quick Tease
 
-With your Octopus Deploy data exported you can do some **crazy stuff *really* easily**.
+With Octopus Deploy Utilities you can do some **crazy stuff *really* easily**.
 
 ```PowerShell
 # return all project-level variables, their values and scope

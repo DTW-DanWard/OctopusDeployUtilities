@@ -5,9 +5,9 @@ Set-StrictMode -Version Latest
 
 <#
 .SYNOPSIS
-Post processes export data: gets lookup data, adds id/name values, scope names, etc.
+Post-processes export data: gets lookup data, adds id/name values, scope names, etc.
 .DESCRIPTION
-Post processes export data:
+Post-processes export data:
  - creates id to name lookup
  - adds external names for ids in exported data
  - adds scope names to variables
