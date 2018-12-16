@@ -33,6 +33,8 @@ function Get-SourceScriptFilePath {
   $ParentFolderName = Split-Path -Path (Split-Path -Path $MyInvocation.PSCommandPath -Parent) -Leaf
   # add script parent folder name to source script name so unique match across Public/Private
   $SourceScriptName = Join-Path -Path $ParentFolderName -ChildPath $SourceScriptName
+  # escape backslash so doesn't break -match below (only affects Windows machines)
+  $SourceScriptName = $SourceScriptName.Replace('\','\\')
 
   # Source code folder is located under Module folder
   $SourceFolderPath = Join-Path -Path $env:BHModulePath -ChildPath 'Source'
