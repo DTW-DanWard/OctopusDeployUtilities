@@ -21,7 +21,7 @@ Get full path for a source file for a given .Tests.ps1 file.  Assumes:
  - Source code is found under Source folder which is located under <module name> folder
    and this <module name> folder contains the .psd1 file.
  - There is only 1 .psd1 file in the module.
- - There is only 1 source file matching the .Tests.ps1 name
+ - The source file parent folder name matches test file parent folder (i.e. Private or Public is same).
 #>
 function Get-SourceScriptFilePath {
   # get current test script name (the script calling this function)
@@ -29,7 +29,12 @@ function Get-SourceScriptFilePath {
   # source script is test script name minus .Tests
   $SourceScriptName = $TestScriptName -replace '\.Tests', ''
 
-  # Source folder is located under Module folder
+  # get current test script parent folder name
+  $ParentFolderName = Split-Path -Path (Split-Path -Path $MyInvocation.PSCommandPath -Parent) -Leaf
+  # add script parent folder name to source script name so unique match across Public/Private
+  $SourceScriptName = Join-Path -Path $ParentFolderName -ChildPath $SourceScriptName
+
+  # Source code folder is located under Module folder
   $SourceFolderPath = Join-Path -Path $env:BHModulePath -ChildPath 'Source'
   # confirm Source path is good
   if ($false -eq (Test-Path -Path $SourceFolderPath)) {
@@ -37,7 +42,7 @@ function Get-SourceScriptFilePath {
   }
 
   # now find $SourceScriptName under Source; make sure exactly one found
-  [object[]]$SourceFile = Get-ChildItem -Path $SourceFolderPath -Include $SourceScriptName -Recurse
+  [object[]]$SourceFile = Get-ChildItem -Path $SourceFolderPath -Recurse | Where-Object { $_.FullName -match $SourceScriptName }
   if ($null -eq $SourceFile -or $SourceFile.Count -eq 0) {
     throw "No corresponding source file $SourceScriptName found found for $TestScriptName"
   } elseif ($SourceFile.Count -gt 1) {
