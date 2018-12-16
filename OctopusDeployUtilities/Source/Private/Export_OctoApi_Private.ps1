@@ -22,8 +22,6 @@ function Find-ODUInvalidRestApiTypeName {
   [CmdletBinding()]
   [OutputType([bool])]
   param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
     [string[]]$TypeName
   )
   process {
