@@ -13,7 +13,7 @@ So, what calls does ODU use and how does it use them?  Run this in PowerShell:
 ```PowerShell
 Get-ODUStandardExportRestApiCalls | Select RestName, RestMethod, ApiFetchType, FileNamePropertyName
 ```
-And you'll see the table below.  There are 3 pieces of information for each item:
+And you'll see the table below.  There are 4 pieces of information for each item listed here:
 1. RestName: in general this matches the Swagger API name and is the name of the folder created for storing data for non-'Simple' types (more below).
 2. RestMethod: the API call used for retrieving data.
 3. ApiFetchType: type identifying how to use this API (more below).
@@ -84,7 +84,7 @@ For the most part, the Octopus Deploy REST APIs are very, *very* consistent (tha
 MultiFetch represents the bulk of the data we are interested in exporting: Projects, Machines, Environments, etc. and has these characteristics:
 1. RestName matches the Swagger name exactly (one exception: ServerStatus-Extensions)
 2. RestName is used for the folder name created to store the exported data.
-3. When the API is called, the results might have 0, 1 or more items in it.  Each item is stored *in it's own separate file* under the folder; the name of the file is the item's in the property in FileNamePropertyName (usually the Id or Name).
+3. When the API is called, the results might have 0, 1 or more items in it.  Each item is stored *in it's own separate file* under the folder.  The item's file name is the value in the property identified in FileNamePropertyName (usually the Id or Name).
 4. When the API is called, it might have a portion or all of the results for that type.  ODU might have to make the call multiple times, paging through the results, saving each item it it's own file.
 
 
@@ -96,20 +96,15 @@ The work-around to this is to explicitly fetch the currently used DeploymentProc
 Otherwise ItemIdOnly calls are similar to MultiFetch: the RestName matches the Swagger name, items are stored in a folder with the RestName and an item is stored in an individual file with a name based on FileNamePropertyName.
 
 
+### ApiFetchType = Simple
+These calls are admin-type configuration details.  The data in them is retrieved in a single call.  The individual items in the results may not have a unique Id that can be used for saving to a individual file so all items are saved in a single file with the RestName as the file name (this is why FileNamePropertyName = NOT_USED).
 
-Single call to that API
+Many of these calls *will not work* if you are using a Octopus Deploy-hosted cloud instance - you won't have the privileges.  Many of these calls have data that is unlikely to change.  Any many of these calls have info that is, in my humble opinion, not really useful (time zones, smtp configuration, upgrade configuration?  meh).
+
+This data is still exported and is available via the oduobject call.  However, rather than clutter the main export folder with a bunch of folders for these less-than-useful calls (each folder of which would probably only have 1 file in it), all the Simple results are stored in a folder call Miscellaneous.
+
+It is possible, as some point, that specific Simple calls could be promoted to MultiFetch status based on user demand.
 
 
-Why Miscellaneous ?
-
-
-
-Get-ODURestApiTypeNames
-
-
-Type black list, etc.
-  see default - look for function Get-ODUConfig....
-
-asdf
-
-Get-ODUStandardExportRestApiCalls
+## So What Do I Do With This Information?
+Now that you have a greater insight into the various Octopus Deploy API calls you can use this information to configure which types to export via the [blacklist and whitelist configuration](TypeWhiteListBlackListConfig.md).
