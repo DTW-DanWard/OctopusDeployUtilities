@@ -44,7 +44,7 @@ C:\> # return all project-level variables that are explicitly scoped for your EU
 C:\> (oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU' }
 ```
 
-Imagine the powerful Pester unit tests you could easily write!
+Imagine the powerful **Pester** unit tests you could easily write!
 
 ```PowerShell
 # find any variables with 'password' or 'pwd' in their name that AREN'T encrypted
@@ -58,6 +58,7 @@ It 'Confirm only dave, janet and lee are admins' {
 
 # WOW!
 ```
+(Pester is a test and mock framework that comes with PowerShell.)
 
 
 ## OK, Let's Get Going Already!
