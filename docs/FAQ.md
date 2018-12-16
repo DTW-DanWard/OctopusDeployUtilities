@@ -50,36 +50,36 @@ The JSON for an exported Sensitive variable will look something like:
 ## How can I quickly find out what cmdlets come with Octopus Deploy Utilities?
 In PowerShell run: 
 ```PowerShell
-Get-Command -Module OctopusDeployUtilities
+C:\> Get-Command -Module OctopusDeployUtilities
 ```
 
 To see aliases (shortcuts) that come with ODU type: 
 ```PowerShell
-Get-Alias odu*
+C:\> Get-Alias odu*
 ```
 
 If you then want to see the help for an alias or cmdlet type: 
 ```PowerShell
-Get-Help <cmdlet name> -Full
+C:\> Get-Help <cmdlet name> -Full
 ```
 
 
 ## How do I get the latest full export path?  How can I view it in a text editor?
 To get the latest export folder path, run: 
 ```PowerShell
-Get-ODUExportLatestPath
+C:\> Get-ODUExportLatestPath
 ```
 
 If you configured your [text editor path with Set-ODUConfigTextEditor](SetupUsage.md), you can quickly open this folder:
 ```PowerShell
-odutext
+C:\> odutext
 ```
 
 
 ## How do I quickly run a fresh export?
 ```PowerShell
-# run a new export
-oduexport
+C:\> # run a new export
+C:\> oduexport
 ```
 
 Make sure you review the [usage info](SetupUsage.md) for more tips.
@@ -102,11 +102,11 @@ Instructions on how to do this are in that linked page.  You will be surprised a
 ## What is the root export folder?  How do I change it?
 
 ```PowerShell
-# to get the folder path
-Get-ODUConfigExportRootFolder
+C:\> # to get the folder path
+C:\> Get-ODUConfigExportRootFolder
 
-# to change that root to a new path
-Set-ODUConfigExportRootFolder -Path *the_new_root_path*
+C:\> # to change that root to a new path
+C:\> Set-ODUConfigExportRootFolder -Path *the_new_root_path*
 ```
 
 Make sure you manually copy or move any folders from the old location to the new location afterwards.

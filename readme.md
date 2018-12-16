@@ -37,11 +37,11 @@ So, just what does an [export look like](docs/SampleExport.md) anyway?  Also, I 
 With Octopus Deploy Utilities you can do some **crazy stuff *really* easily**.
 
 ```PowerShell
-# return all project-level variables, their values and scope
-(oduobject).Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
+C:\> # return all project-level variables, their values and scope
+C:\> (oduobject).Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
 
-# return all project-level variables that are explicitly scoped for your EU production environment
-(oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU' }
+C:\> # return all project-level variables that are explicitly scoped for your EU production environment
+C:\> (oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU' }
 ```
 
 Imagine the powerful Pester unit tests you could easily write!
@@ -58,8 +58,6 @@ It 'Confirm only dave, janet and lee are admins' {
 
 # WOW!
 ```
-
-
 
 
 ## OK, Let's Get Going Already!

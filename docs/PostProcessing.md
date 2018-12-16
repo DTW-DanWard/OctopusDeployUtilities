@@ -70,12 +70,12 @@ We don't know what those environment and machine ids map to (roles don't require
 
 Here's single, **short** line of PowerShell that gets the latest export and returns **all project-level variables, their values and their scope**:
 ```PowerShell
-(oduobject).Projects.VariableSet.Variables | Select Name, Value, @{n='Scope'; e = { $_.Scope.Breadth } }
+C:\> (oduobject).Projects.VariableSet.Variables | Select Name, Value, @{n='Scope'; e = { $_.Scope.Breadth } }
 ```
 
 Here's single, **short** line of PowerShell that gets the latest export and searches across **all project-level variables** in **all projects** and returns the variables that have a scope that specifies environment Prod-EU-2:
 ```PowerShell
-(oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU-2' }
+C:\> (oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU-2' }
 ```
 This simplicity is pretty awesome!  If you are writing unit testing this will be incredibly helpful.
 
@@ -94,14 +94,14 @@ For a more detailed review of the post-processing steps you can review the code 
 Here are the steps to do that.
 
 ```PowerShell
-# this runs a export (saving data to a new folder), doesn't do the post-processing on it and returns the path of the export
-$ExportPathNoJoin = oduexport -SkipJoinData -PassThru
-# now let's copy that export folder to a new folder
-$ExportPathJoin = $ExportPathNoJoin + '_Join' 
-Copy-Item $ExportPathNoJoin $ExportPathJoin -Container -Recurse -Force
-# and run the post-processing on that new folder
-Update-ODUExportJoinData $ExportPathJoin
-# at this point you can diff those two folders
-# if you set up the path to your diff tool in ODU, this should work:
-& (Get-ODUConfigDiffViewer) $ExportPathNoJoin $ExportPathJoin
+C:\> # this runs a export (saving data to a new folder), doesn't do the post-processing on it and returns the path of the export
+C:\> $ExportPathNoJoin = oduexport -SkipJoinData -PassThru
+C:\> # now let's copy that export folder to a new folder
+C:\> $ExportPathJoin = $ExportPathNoJoin + '_Join' 
+C:\> Copy-Item $ExportPathNoJoin $ExportPathJoin -Container -Recurse -Force
+C:\> # and run the post-processing on that new folder
+C:\> Update-ODUExportJoinData $ExportPathJoin
+C:\> # at this point you can diff those two folders
+C:\> # if you set up the path to your diff tool in ODU, this should work:
+C:\> & (Get-ODUConfigDiffViewer) $ExportPathNoJoin $ExportPathJoin
 ```
