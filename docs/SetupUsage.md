@@ -98,15 +98,16 @@ C:\> Set-ODUConfigDiffViewer "C:\Program Files\ExamDiff Pro\ExamDiff.exe"
 
 ## Type Blacklist And Whitelist Settings
 
-asdf
-
+By default **NOT** all Octopus Deploy data types are exported but the default blacklist settings are probably a good starting place for you.  Learn how to [configure the type blacklist or whitelist](TypeWhiteListBlackListConfig.md) and more about the different Octopus Deploy [REST API data types](TypeDescription.md).
 
 
 ## Property Blacklist And Whitelist Settings
 
-asdf
+By default all properties for a particular type are saved in the JSON file.  However, if you want you can control which type-specific properties are saved by configuring the [property blacklist or whitelist](PropertyWhiteListBlackListConfig.md).
 
+Filtering out certain property types is a good way to filter out pieces of data that are time-sensitive (likely to be different) but not important.  These differences can be annoying if you want to compare changes to your system over time by diff'ing one export with a later one.
 
+Note: you should check out an export first to get a feel for the properties before starting to filter them.
 
 
 ## How to Review All These Settings
