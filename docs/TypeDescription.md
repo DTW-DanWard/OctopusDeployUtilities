@@ -14,7 +14,7 @@ So, what calls does ODU use and how does it use them?  Run this in PowerShell:
 Get-ODUStandardExportRestApiCalls | Select RestName, RestMethod, ApiFetchType, FileNamePropertyName
 ```
 And you'll see the table below.  There are 4 pieces of information for each item listed here:
-1. RestName: in general this matches the Swagger API name and is the name of the folder created for storing data for non-'Simple' types (more below).
+1. RestName: in general this matches the Swagger API name and is the name of the folder created for storing data for non-'Simple' types (more below).  It is also the value used when configuring the Type blacklist or whitelist.
 2. RestMethod: the API call used for retrieving data.
 3. ApiFetchType: type identifying how to use this API (more below).
 4. FileNamePropertyName: individual exported item property value to use for file name.
@@ -97,11 +97,11 @@ Otherwise ItemIdOnly calls are similar to MultiFetch: the RestName matches the S
 
 
 ### ApiFetchType = Simple
-These calls are admin-type configuration details.  The data in them is retrieved in a single call.  The individual items in the results may not have a unique Id that can be used for saving to a individual file so all items are saved in a single file with the RestName as the file name (this is why FileNamePropertyName = NOT_USED).
+These calls have admin-type configuration information.  The data in them is retrieved in a single call.  The individual items in the results may not have a unique Id that can be used for saving to a individual file so all items are saved in a single file with the RestName as the file name (this is why FileNamePropertyName = NOT_USED).
 
 Many of these calls *will not work* if you are using a Octopus Deploy-hosted cloud instance - you won't have the privileges.  Many of these calls have data that is unlikely to change.  Any many of these calls have info that is, in my humble opinion, not really useful (time zones, smtp configuration, upgrade configuration?  meh).
 
-This data is still exported and is available via the oduobject call.  However, rather than clutter the main export folder with a bunch of folders for these less-than-useful calls (each folder of which would probably only have 1 file in it), all the Simple results are stored in a folder call Miscellaneous.
+This data is still exported and is available via the oduobject call.  However, rather than clutter the main export folder with a bunch of folders for these less-than-useful calls (each folder of which would probably only have 1 file in it), all the Simple results are stored in a folder call **Miscellaneous**.
 
 It is possible, as some point, that specific Simple calls could be promoted to MultiFetch status based on user demand.
 
