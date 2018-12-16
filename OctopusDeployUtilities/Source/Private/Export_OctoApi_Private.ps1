@@ -1,28 +1,40 @@
 
 Set-StrictMode -Version Latest
 
-#region Description of REST API call properties
+#region Function: Find-ODUInvalidRestApiTypeName
+
 <#
-These names are not pretty but they have been named so as to (hopefully) be not confusing:
-RestName                          name of REST API call (Accounts, Projects, etc.), used in display and
-                                  type/property white/black lists
-RestMethod                        relative api call to use (/api/accounts, /api/projects)
-ApiFetchType                      type of fetch: Simple, MultiFetch or ItemIdOnly
-FileNamePropertyName              when saving the item just fetched from server, this value is the name of
-                                  a property on the item that will be unique and is best to use for the file name
-                                     for Simple fetches, this will be 'NOT_USED" as the RestName is ultimately used
-                                     for all others it will be either the item Id or Name property
-IdToNamePropertyName              name of property on the item to use for Id -> name lookups; when you want
-                                  to resolve "Projects-18" to it's proper name of "AuthorizationServer"
-                                  this is the name of the property to use to provide the proper name
-                                  most of the time this is the Name property but there are a few exceptions
-ExternalIdToResolvePropertyName   for an item, these are the names of properties that reference an external item
-                                  we will look up these id values and get the proper names for the items
-ItemIdOnlyReferencePropertyName   for items fetched by ItemIdOnly, this is the name of the id property used by the other
-                                  items to refer to this item
-                                  for example, Variables is fetched by ItemIdOnly and other items refer to it by
-                                  a local property (in those other items) named VariableSetId
+.SYNOPSIS
+For list of Type names, throws error if finds invalid entry, else does nothing
+.DESCRIPTION
+For list of Type names, throws error if finds invalid entry, else does nothing
+.PARAMETER TypeName
+Type name to validate
+.EXAMPLE
+Find-ODUInvalidRestApiTypeName Projects
+<does nothing>
+Find-ODUInvalidRestApiTypeName Projects, Variables
+<does nothing>
+Find-ODUInvalidRestApiTypeName Projects, Variables, blahblahblah
+<throws error 'blahblahblah' not valid>
 #>
+function Find-ODUInvalidRestApiTypeName {
+  [CmdletBinding()]
+  [OutputType([bool])]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string[]]$TypeName
+  )
+  process {
+    $ValidTypeNames = Get-ODURestApiTypeNames
+    $TypeName | ForEach-Object {
+      if ($_ -notin $ValidTypeNames) {
+        throw "Not a valid REST API Type name: $_"
+      }
+    }
+  }
+}
 #endregion
 
 
@@ -128,6 +140,40 @@ function New-ODUExportRestApiCall {
       ExternalIdToResolvePropertyName = $ExternalIdToResolvePropertyName
       ItemIdOnlyReferencePropertyName = $ItemIdOnlyReferencePropertyName
     }
+  }
+}
+#endregion
+
+
+#region Function: Test-ODUValidateRestApiTypeName
+
+<#
+.SYNOPSIS
+Validates list of values against Type names used with Octopus Deploy REST API
+.DESCRIPTION
+Validates list of values against Type names used with Octopus Deploy REST API
+If all passed values are valid, returns $true, if any one is invalid, returns $false
+.PARAMETER TypeName
+Type name to validate
+.EXAMPLE
+Test-ODUValidateRestApiTypeName Projects
+$true
+Test-ODUValidateRestApiTypeName Projects, Variables
+$true
+Test-ODUValidateRestApiTypeName Projects, Variables, blahblahblah
+$false
+#>
+function Test-ODUValidateRestApiTypeName {
+  [CmdletBinding()]
+  [OutputType([bool])]
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string[]]$TypeName
+  )
+  process {
+    $ValidTypeNames = Get-ODURestApiTypeNames
+    $null -eq ($TypeName | Where-Object { $_ -notin $ValidTypeNames })
   }
 }
 #endregion
