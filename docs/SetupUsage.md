@@ -92,10 +92,10 @@ C:\> odutext
 You can also tell ODU the path to your diff viewer, allows you to open a diff viewer comparing your most recent export with older exports.  To set this:
 ```PowerShell
 C:\> # set the diff viewer to Exam Diff Pro (my favorite diff viewer)
-C:\> Set-ODUConfigDiffViewer "C:\Program Files\ExamDiff Pro\ExamDiff.exe"
+C:\> Set-ODUConfigDiffViewer 'C:\Program Files\ExamDiff Pro\ExamDiff.exe'
 C:\> 
 C:\> # but KDiff3 is pretty sweet, too, so perhaps this is your option:
-C:\> Set-ODUConfigDiffViewer "C:\Program Files (x86)\KDiff3\kdiff3.exe"
+C:\> Set-ODUConfigDiffViewer 'C:\Program Files (x86)\KDiff3\kdiff3.exe'
 ```
 Once you've configured this you quickly open up your exports in a diff viewer to see changes over time:
 ```PowerShell
