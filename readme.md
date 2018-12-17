@@ -25,8 +25,11 @@ Octopus Deploy does not provide a good out-of-the-box solution for getting all y
 * **It post-processes your export data to simplify and improve usage.**  For example it automatically adds id -> name lookup information so you can view/work with a variable scope with its user-friendly name, i.e. ```EnvironmentName = 'Production-West'``` instead of only by Id, i.e. ```Environment = 'Environments-37'```.  It also adds deploy process and all variable values **directly** to each project file.  And a lot more!
 * It is written in [PowerShell Core](https://github.com/PowerShell/PowerShell) so it runs on any OS - but also runs great in Windows PowerShell 5.  No other pre-compiled components required.  (Docker container version is on the [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
 * It exports all data to local JSON files so you can process the data with any language.
-* It comes with helper tools written in PowerShell.  One tool aggregates all the data in an export into a single object for easy parsing.  Other tools help you test/filter your projects based on type.  Other tools allow you to search your Octopus Deploy configuration and your application code configuration files (web.config, etc.) to see where Octopus Deploy variables are actually being used (coming soon - on [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
-
+* It comes with fun helper tools written in PowerShell.
+  * Aggregates all  data in an export into a single object for easy parsing.
+  * Test/filter your projects based on deploy process type.
+  * Search your variables by name and/or value across all projects & included variable sets.
+  * And more!
 
 ## You are Getting Curious...?
 
