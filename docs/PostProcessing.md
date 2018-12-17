@@ -1,7 +1,7 @@
 
 # Data Export Post-Processing
 
-## Why Post-Processing
+## Why Post-Process
 When data is first exported from an Octopus Deploy API call, it's not nearly as helpful as it could be - there's a lot of data that missing.  Here's a portion of a JSON file for a project directly exported from Octopus Deploy:
 
 ```JSON
