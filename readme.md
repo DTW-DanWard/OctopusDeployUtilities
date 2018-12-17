@@ -28,7 +28,7 @@ Octopus Deploy does not provide a good out-of-the-box solution for getting all y
 * It comes with fun helper tools written in PowerShell.
   * Aggregates all  data in an export into a single object for easy parsing.
   * Test/filter your projects based on deploy process type.
-  * Search your variables by name and/or value across all projects & included variable sets.
+  * Search your variables by name or value across all projects & included variable sets.
   * And more!
 
 ## You are Getting Curious...?
@@ -72,7 +72,7 @@ It 'Confirm only dave, janet and lee are admins' {
   * [Property whitelist & blacklist configuration](docs/PropertyWhiteListBlackListConfig.md)
 * [Viewing Changes Over Time](docs/ViewingChangesOverTime.md)
 * [Getting details & reporting](docs/DetailsAndReporting.md)
-* [Searching through variables](docs/SearchingVariables.md)
+* [Searching through variables by name or value](docs/SearchingVariables.md)
 * [Unit test your configuration](docs/UnitTesting.md)
 * [Octopus Deploy best practices and testing rules](docs/BestPracticesTestingRules.md)
 * [Commands at a glance](docs/CommandsAtAGlance.md)

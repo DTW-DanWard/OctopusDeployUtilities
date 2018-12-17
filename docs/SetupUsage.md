@@ -108,7 +108,7 @@ C:\> odudiff 48
 
 ## Type Blacklist And Whitelist Settings
 
-By default **NOT** all Octopus Deploy data types are exported but the default blacklist settings are probably a good starting place for you.  Learn how to [configure the type blacklist or whitelist](TypeWhiteListBlackListConfig.md) and more about the different Octopus Deploy [REST API data types](TypeDescription.md).
+By default **NOT** all Octopus Deploy data types are exported - but the default blacklist settings are probably a good starting place for you.  Learn how to [configure the type blacklist or whitelist](TypeWhiteListBlackListConfig.md) and more about the different Octopus Deploy [REST API data types](TypeDescription.md).
 
 
 ## Property Blacklist And Whitelist Settings

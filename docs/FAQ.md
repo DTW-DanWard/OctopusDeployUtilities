@@ -70,7 +70,7 @@ To get the latest export folder path, run:
 C:\> Get-ODUExportLatestPath
 ```
 
-If you configured your [text editor path with Set-ODUConfigTextEditor](SetupUsage.md), you can quickly open this folder:
+If you configured your [text editor path with Set-ODUConfigTextEditor](SetupUsage.md#set-your-text-editor-and-diff-viewer-paths), you can quickly open this folder:
 ```PowerShell
 C:\> odutext
 ```
