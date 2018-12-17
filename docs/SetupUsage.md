@@ -18,9 +18,17 @@ Setup and usage notes for Octopus Deploy Utilities.
 
 
 ## Pre-installation
+
+
+### Windows PowerShell v5 or PowerShell Core
+If you are running on Windows and aren't on v5, it's time to upgrade; do it!  Octopus Deploy Utilities has not been tested on PowerShell pre-v5 and it definitely will fail on older versions (ODU uses fallback member resolution).
+
+If you aren't on Windows or you want to use the latest and greatest, get [PowerShell Core](https://github.com/PowerShell/PowerShell).  Note: *Windows* PowerShell is not going to be upgraded past v5 so you really should start using PowerShell Core now.
+
+
+### Get an Octopus Deploy API Key for your Server
 The Octopus Deploy REST API requires a unique API key for your account to authenticate your requests.  You need to generate this key within the Octopus Server UI and supply it when registering the server with ODU.
 
-### Get the API Key
 * Log into your Octopus Deploy Server.
 * At the top-right, click on your account name and select **Profile**.
 * In the left nav, click on **My API Keys**.
