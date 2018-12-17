@@ -10,7 +10,7 @@ Gets latest export full folder path that matches YYYYMMDD-HHMMSS name format
 Gets latest export full folder path that matches YYYYMMDD-HHMMSS name format
 Grabs latest export found under: Root folder \ Octo Server Name
 but has format name: YYYYMMDD-HHMMSS  or, more specifically: ^\d{8}-\d{6}$
-If you copies/renames folder it won't get returned unless it matches that format
+If you copy & rename a folder it won't get returned unless it matches that format.
 .EXAMPLE
 Get-ODUExportLatestPath
 c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
@@ -31,6 +31,66 @@ function Get-ODUExportLatestPath {
     if ($null -eq $Folder) { throw "No export folders matching pattern ^\d{8}-\d{6}$ (i.e. YYYYMMDD-HHMMSS) found under Server instance path: $OctoServerRootFolderPath" }
 
     $Folder.FullName
+  }
+}
+#endregion
+
+
+#region Function: Get-ODUExportOlderPath
+
+<#
+.SYNOPSIS
+Gets an older (not latest) export full folder path that matches YYYYMMDD-HHMMSS name format
+.DESCRIPTION
+Gets an older (not latest) export full folder path that matches YYYYMMDD-HHMMSS name format.
+If no value is passed for parameter Hours it returns the most recent export path before the
+latest export.  If an Hours value is passed it finds the first export that many hours older
+than the most recent export and returns that path.
+The folder names that are parsed/returned must match YYYYMMDD-HHMMSS name format or, more
+specifically: ^\d{8}-\d{6}$
+If you copy & rename a folder it won't get returned unless it matches that format.
+.PARAMETER Hours
+Minimum number of hours older the export should be compared to latest export
+.EXAMPLE
+Get-ODUExportOlderPath
+c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
+.EXAMPLE
+Get-ODUExportOlderPath 24
+c:\OctoExports\MyOctoServer.octopus.app\20181105-1132512
+#>
+function Get-ODUExportOlderPath {
+  [CmdletBinding()]
+  [OutputType([string])]
+  param(
+    [ValidateScript({$_ -ge 0})]
+    [int]$Hours = 0
+  )
+  process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+
+    # get Octopus Server instance root folder
+    $OctoServerRootFolderPath = Join-Path -Path (Get-ODUConfigExportRootFolder) -ChildPath (Get-ODUConfigOctopusServer).Name
+    if ($false -eq (Test-Path -Path $OctoServerRootFolderPath)) { throw "Root server path not found, bad configuration: $OctoServerRootFolderPath" }
+
+    # get latest that matches format YYYYMMDD-HHMMSS
+    [object[]]$Folders = Get-ChildItem -Path $OctoServerRootFolderPath | Where-Object { $_.Name -match '^\d{8}-\d{6}$' } | Sort-Object -Descending
+    if ($Folders.Count -eq 0) { throw "No export folders matching pattern ^\d{8}-\d{6}$ (i.e. YYYYMMDD-HHMMSS) found under Server instance path: $OctoServerRootFolderPath" }
+    if ($Folders.Count -eq 1) { throw "Only one export folder matching pattern ^\d{8}-\d{6}$ (i.e. YYYYMMDD-HHMMSS) found under Server instance path: $OctoServerRootFolderPath" }
+
+    # if no Hours passed we can safely return the path of the second item
+    if ($Hours -eq 0) {
+      # not returning first (0) item, that's the most recent export
+      $Folders[1].FullName
+    } else {
+      $OlderThanTime = $Folders[1].CreationTime.AddHours(-$Hours)
+      # filter down folders
+      [object[]]$Folders = $Folders | Where-Object { $_.CreationTime -lt $OlderThanTime } | Select -First 1
+      if ($Folders.Count -eq 0) { 
+        throw "No export folder found older than $Hours hours (or, more specifically, older than $OlderThanTime"
+      } else {
+        $Folders[0].FullName
+      }
+    }
   }
 }
 #endregion
@@ -68,7 +128,7 @@ function Read-ODUExportFromFiles {
     if ($false -eq (Confirm-ODUConfig)) { return }
 
     # if no path passed, use latest
-    if ($null -eq $Path -or ($Path.Trim() -eq '') )  { $Path = (Get-ODUExportLatestPath) }
+    if ($null -eq $Path -or ($Path.Trim() -eq '') ) { $Path = (Get-ODUExportLatestPath) }
 
     # confirm projects type folders found
     # make sure standard export type folders exist under path; if less than half, probably wrong path - don't process

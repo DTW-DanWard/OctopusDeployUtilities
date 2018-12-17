@@ -83,18 +83,28 @@ ODU has some handy shortcuts.  For example you can always open the latest export
 C:\> # use PowerShell to get the path to VS Code
 C:\> Set-ODUConfigTextEditor ((Get-Command code.cmd).Source)
 ```
-Once you've configured this you can type: 
+
+Once you've configured this you can quickly open your most recent export:
 ```PowerShell
 C:\> odutext
 ```
-to automatically open the latest export in the text editor.
 
-You can also tell ODU the path to your diff viewer.  (This currently isn't used but will be used when compare release functionality is deployed.)  To set this:
+You can also tell ODU the path to your diff viewer, allows you to open a diff viewer comparing your most recent export with older exports.  To set this:
 ```PowerShell
 C:\> # set the diff viewer to Exam Diff Pro (my favorite diff viewer)
 C:\> Set-ODUConfigDiffViewer "C:\Program Files\ExamDiff Pro\ExamDiff.exe"
+C:\> 
+C:\> # but KDiff3 is pretty sweet, too, so perhaps this is your option:
+C:\> Set-ODUConfigDiffViewer "C:\Program Files (x86)\KDiff3\kdiff3.exe"
 ```
-
+Once you've configured this you quickly open up your exports in a diff viewer to see changes over time:
+```PowerShell
+C:\> # opens your diff viewer comparing the two most recent exports (most recent on right-side, of course)
+C:\> odudiff
+C:\> 
+C:\> # opens diff of most recent export and first export that is 48 hours older than the most recent export
+C:\> odudiff 48
+```
 
 ## Type Blacklist And Whitelist Settings
 

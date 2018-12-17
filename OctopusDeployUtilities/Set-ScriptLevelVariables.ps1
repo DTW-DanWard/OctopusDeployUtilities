@@ -22,9 +22,10 @@ Set-Variable ApiFetchTypeList -Value @($ApiFetchType_Simple, $ApiFetchType_Multi
 
 # define alias/function mappings
 $Exports = @{
+  odudiff   = 'Compare-ODUExportMostRecentWithOlder'
   oduexport = 'Export-ODUOctopusDeployConfig'
   oduobject = 'Read-ODUExportFromFiles'
-  odutext = 'Open-ODUExportTextEditor'
+  odutext   = 'Open-ODUExportTextEditor'
 }
 Set-Variable OfficialAliasExports -Value $Exports -Scope Script
 
