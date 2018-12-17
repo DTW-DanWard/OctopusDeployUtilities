@@ -52,7 +52,7 @@ What changes have been made to your Octopus Deploy setup over the past week?
 * Have any new deployment targets been added?
 * **Has an account you don't recognize been recently added to the Administrators team?**  (That got your attention).
 
-Wouldn't you like to be able to easily tell what's changed recently?  With Octopus Deploy's web interface, it's impossible to easily see these changes.  But if you can export the data, it's easy: just occasionally manually run an export (or schedule an export to run automatically) and then diff the two export folders with any diff tool.  Done!
+Wouldn't you like to be able to easily tell what's changed recently?  With Octopus Deploy's web interface, it's impossible to easily see these changes.  But if you can export the data, it's easy: just occasionally manually run an export (or schedule an export to run automatically) and then diff the two export folders with any diff tool.  Done!  [More instructions here](ViewingChangesOverTime.md).
 
 
 ## Use Your Imagination
