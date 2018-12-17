@@ -71,6 +71,7 @@ It 'Confirm only dave, janet and lee are admins' {
 * [Searching through variables](docs/SearchingVariables.md)
 * [Unit test your configuration](docs/UnitTesting.md)
 * [Octopus Deploy best practices and testing rules](docs/BestPracticesTestingRules.md)
+* [Commands at a glance](docs/CommandsAtAGlance.md)
 * [Frequently asked questions](docs/FAQ.md)
 
 ## More Info
