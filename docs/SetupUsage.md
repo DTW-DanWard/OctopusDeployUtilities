@@ -87,7 +87,7 @@ Once you've configured this you can type:
 ```PowerShell
 C:\> odutext
 ```
-to automatically open the latest export.
+to automatically open the latest export in the text editor.
 
 You can also tell ODU the path to your diff viewer.  (This currently isn't used but will be used when compare release functionality is deployed.)  To set this:
 ```PowerShell

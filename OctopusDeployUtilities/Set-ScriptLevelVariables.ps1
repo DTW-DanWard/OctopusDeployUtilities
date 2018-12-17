@@ -24,6 +24,7 @@ Set-Variable ApiFetchTypeList -Value @($ApiFetchType_Simple, $ApiFetchType_Multi
 $Exports = @{
   oduexport = 'Export-ODUOctopusDeployConfig'
   oduobject = 'Read-ODUExportFromFiles'
+  odutext = 'Open-ODUExportTextEditor'
 }
 Set-Variable OfficialAliasExports -Value $Exports -Scope Script
 

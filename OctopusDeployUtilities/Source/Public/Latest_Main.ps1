@@ -20,6 +20,8 @@ function Get-ODUExportLatestPath {
   [OutputType([string])]
   param()
   process {
+    if ($false -eq (Confirm-ODUConfig)) { return }
+
     # get Octopus Server instance root folder
     $OctoServerRootFolderPath = Join-Path -Path (Get-ODUConfigExportRootFolder) -ChildPath (Get-ODUConfigOctopusServer).Name
     if ($false -eq (Test-Path -Path $OctoServerRootFolderPath)) { throw "Root server path not found, bad configuration: $OctoServerRootFolderPath" }
