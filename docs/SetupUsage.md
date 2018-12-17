@@ -37,7 +37,7 @@ The Octopus Deploy REST API requires a unique API key for your account to authen
 * Copy the API key to clipboard and paste temporarily to a text editor; you'll use it shortly.  The API key should begin with API-
 
 ## Installation
-Get the Octopus Deploy Utilities module.  Easiest way is to install it; open a PowerShell Windows *running as Administrator* and type:
+Get the Octopus Deploy Utilities module.  Easiest way is to install it; open a PowerShell Windows **running as Administrator** and type:
 ```PowerShell
 C:\> Install-Module OctopusDeployUtilities
 ```
