@@ -71,7 +71,7 @@ It 'Confirm only dave, janet and lee are admins' {
     * [Type description](docs/TypeDescription.md)
   * [Property whitelist & blacklist configuration](docs/PropertyWhiteListBlackListConfig.md)
 * [Viewing Changes Over Time](docs/ViewingChangesOverTime.md)
-* [Getting details & reporting](docs/DetailsAndReporting.md)
+* [Getting details & reporting](docs/DetailsAndReporting.md) is crucial for understanding how to walk through an export object
 * [Searching through variables by name or value](docs/SearchingVariables.md)
 * [Unit test your configuration](docs/UnitTesting.md)
 * [Octopus Deploy best practices and testing rules](docs/BestPracticesTestingRules.md)
