@@ -61,7 +61,7 @@ C:\> Add-ODUConfigOctopusServer 'https://MyOctoServer.octopus.app' 'API-ABCDEFGH
 ```
 
 ## Run Your First Manual Export
-At this point you can run an export without needing to change anything else.  Running ```oduexport``` will do this.  Here's an example:
+At this point you can run an export without needing to change anything else.  Running `oduexport` will do this.  Here's an example:
 ```PowerShell
 C:\> oduexport
 Exporting data...
@@ -86,7 +86,7 @@ Or [see this for an example](SampleExport.md) of an export.
 
 ## Set Your Text Editor and Diff Viewer Paths
 
-ODU has some handy shortcuts.  For example you can always open the latest export in a text editor by typing: ```odutext```  In order for this to work you need to tell ODU the full path to your text editor using Get-ODUConfigTextEditor.  For example:
+ODU has some handy shortcuts.  For example you can always open the latest export in a text editor by typing: `odutext`  In order for this to work you need to tell ODU the full path to your text editor using Get-ODUConfigTextEditor.  For example:
 ```PowerShell
 C:\> # use PowerShell to get the path to VS Code
 C:\> Set-ODUConfigTextEditor ((Get-Command code.cmd).Source)
@@ -131,7 +131,7 @@ Note: you should check out an export first to get a feel for the properties befo
 ## How to Review All These Settings
 
 There are two ways to review all these settings you've made:
-1. For every ```Set-``` function you called there's a corresponding ```Get-``` function.  For example: ```Set-ODUConfigExportRootFolder``` has ```Get-ODUConfigExportRootFolder```.  You can find all these functions and more by typing:
+1. For every `Set-` function you called there's a corresponding `Get-` function.  For example: `Set-ODUConfigExportRootFolder` has `Get-ODUConfigExportRootFolder`.  You can find all these functions and more by typing:
 
 ```PowerShell
 C:\> # see all the main functions:
@@ -140,7 +140,7 @@ C:\> # see all the aliases (shortcuts) for these functions:
 C:\> Get-Alias odu*
 ```
 
-2. You can review the ODU config file itself; you can find it's path with ```Get-ODUConfigFilePath```.  Be careful - if you manually edit this file, you might break ODU!
+2. You can review the ODU config file itself; you can find it's path with `Get-ODUConfigFilePath`.  Be careful - if you manually edit this file, you might break ODU!
 
 If you configured your text editor above you can open your ODU config file this way:
 
@@ -158,8 +158,8 @@ To schedule exports: on Windows, use Task Scheduler; on Unix, use cron.
 * Create a new Task
 * Add a new Action
 * Program/script value:
-  * If you are using PowerShell Core:     ```pwsh.exe```
-  * If you are using Windows PowerShell:  ```powershell.exe```
+  * If you are using PowerShell Core:     `pwsh.exe`
+  * If you are using Windows PowerShell:  `powershell.exe`
 * Add arguments:
   * If you installed the module: -c "oduexport"
   * If you cloned & manually import the module: -c "Import-Module C:\path\to\OctopusDeployUtilities\OctopusDeployUtilities\OctopusDeployUtilities.psd1; oduexport"

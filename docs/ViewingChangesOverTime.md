@@ -15,7 +15,7 @@ How easy is that?  In *seconds* you can open up a diff to show you all the chang
 
 ## Built-in Shortcut: odudiff
 
-If you configured the path to your diff viewer with ```Set-ODUConfigDiffViewer``` there's a handy shortcut for you: ```odudiff```.  If you run it with no parameters it opens up your diff viewer comparing the two most recent exports.  However, if you supply a parameter to it (hours) it opens your diff viewer comparing the most recent export with the first export that is at least that many hours older than the latest export.
+If you configured the path to your diff viewer with `Set-ODUConfigDiffViewer` there's a handy shortcut for you: `odudiff`.  If you run it with no parameters it opens up your diff viewer comparing the two most recent exports.  However, if you supply a parameter to it (hours) it opens your diff viewer comparing the most recent export with the first export that is at least that many hours older than the latest export.
 
 ```PowerShell
 C:\> # opens your diff viewer comparing the two most recent exports (most recent on right-side, of course)

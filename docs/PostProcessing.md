@@ -30,7 +30,7 @@ And Octopus Deploy Utilities does!  After an export it performs the post-process
 Searches through every file in the export, gathering the unique identifier (say *Projects-23* or *Environments-12*) and the display name (say *QueueProcessor* or *TestEnv*) for each item.  These values are stored in file IdToNameLookup.json in the export root.
 
 ### Adds External Name Values for Ids
-Looks for Id references to other items (example ```"ClonedFromProjectId": "Projects-4"```) and adds a new property with the display name (adds ```"ClonedFromProjectrName" = "MyCo.WebMain"```).
+Looks for Id references to other items (example `"ClonedFromProjectId": "Projects-4"`) and adds a new property with the display name (adds `"ClonedFromProjectrName" = "MyCo.WebMain"`).
 
 ### Adds Scope Names to Variables - Including Aggregate Breadth Property
 The default Octopus Deploy export of a variable is OK but could be better.  Here's an example without processing:

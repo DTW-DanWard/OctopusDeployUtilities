@@ -17,7 +17,7 @@ If you'd like more detail about the export process please review the source code
 You can learn more about the Octopus Deploy REST API by reviewing the [Swagger on their demo server](https://demo.octopus.com/swaggerui/index.html).
 
 ## Where is the Octopus Deploy Utilities configuration file stored?
-To get the path, run this in PowerShell: ```Get-ODUConfigFilePath```
+To get the path, run this in PowerShell: `Get-ODUConfigFilePath`
 
 Developer's note: configuration support is provided by the [Configuration module from PowerShellGallery](https://www.powershellgallery.com/packages/Configuration/1.3.1), using User scope, which is why the Configuration.psd1 is stored under c:\Users\\*your_account*
 

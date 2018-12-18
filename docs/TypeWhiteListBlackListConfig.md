@@ -32,11 +32,11 @@ Events
 
 
 ### Setting Blacklist or Whitelist
-```Get-ODUConfigTypeBlacklist``` and ```Get-ODUConfigTypeWhitelist``` return the settings for the black / white lists.  How do you set them?  ```Set-ODUConfigTypeBlacklist``` and ```Set-ODUConfigTypeWhitelist```.
+`Get-ODUConfigTypeBlacklist` and `Get-ODUConfigTypeWhitelist` return the settings for the black / white lists.  How do you set them?  `Set-ODUConfigTypeBlacklist` and `Set-ODUConfigTypeWhitelist`.
 
 Note: you can have either a type blacklist or whitelist - **not both** - so if you call one the other gets reset to an empty list.
 
-Both ```Set-ODUConfigTypeBlacklist``` and ```Set-ODUConfigTypeWhitelist``` take an array of strings.  Below are some examples.  But first: know that you can back up your configuration file first!  You can find the path to this file by calling: ```Get-ODUConfigFilePath```.  If you have difficulties you can't fix delete this file and re-run the [set root folder and register Octopus Server](SetupUsage.md#set-root-folder-and-register-octopus-server).
+Both `Set-ODUConfigTypeBlacklist` and `Set-ODUConfigTypeWhitelist` take an array of strings.  Below are some examples.  But first: know that you can back up your configuration file first!  You can find the path to this file by calling: `Get-ODUConfigFilePath`.  If you have difficulties you can't fix delete this file and re-run the [set root folder and register Octopus Server](SetupUsage.md#set-root-folder-and-register-octopus-server).
 
 ```PowerShell
 C:\> # temporarily store the default blacklist that comes with the standard configuration
@@ -59,4 +59,4 @@ C:\> $BL = $BL | ? { $_ -ne 'Feeds' }
 C:\> Set-ODUConfigTypeBlacklist $BL
 ```
 
-Again, for emphasis: you can always back up your configuration file first!  You can find the path to this file by calling: ```Get-ODUConfigFilePath```.  If you have difficulties you can't fix delete this file and re-run the [set root folder and register Octopus Server](SetupUsage.md#set-root-folder-and-register-octopus-server).
+Again, for emphasis: you can always back up your configuration file first!  You can find the path to this file by calling: `Get-ODUConfigFilePath`.  If you have difficulties you can't fix delete this file and re-run the [set root folder and register Octopus Server](SetupUsage.md#set-root-folder-and-register-octopus-server).

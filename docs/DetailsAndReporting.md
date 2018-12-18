@@ -2,7 +2,7 @@
 # Getting Details About Your Export
 
 ## Getting a Single Object
-Octopus Deploy Utilities saves all your Octopus Deploy configuration data as JSON files.  These days JSON files are easy to parse with any language - and PowerShell is no exception.  PowerShell provides a handy cmdlet ```ConvertFrom-Json``` for taking a JSON file and converting it to an object.  For example, if you wanted to get an object that you could use for a single file in a particular export, an Environment file, you could run a command like below and see the output:
+Octopus Deploy Utilities saves all your Octopus Deploy configuration data as JSON files.  These days JSON files are easy to parse with any language - and PowerShell is no exception.  PowerShell provides a handy cmdlet `ConvertFrom-Json` for taking a JSON file and converting it to an object.  For example, if you wanted to get an object that you could use for a single file in a particular export, an Environment file, you could run a command like below and see the output:
 
 ```PowerShell
 C:\> Get-Content -Path C:\OctoExports\MyOctoServer.octopus.app\20181213-183336\Environments\TestEnv.json | ConvertFrom-Json

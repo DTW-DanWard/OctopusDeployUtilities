@@ -22,7 +22,7 @@ There is a lot you can do with an export; you might want to read the [full ratio
 
 Octopus Deploy does not provide a good out-of-the-box solution for getting all your configuration settings so I created Octopus Deploy Utilities.  It has a lot of cool and unexpected features:
 * It exports all your data or can selectively export particular types using a whitelist or blacklist.  Properties for a particular type can also be whitelisted or blacklisted.
-* **It post-processes your export data to simplify and improve usage.**  For example it automatically adds id -> name lookup information so you can view/work with a variable scope with its user-friendly name, i.e. ```EnvironmentName = 'Production-West'``` instead of only by Id, i.e. ```Environment = 'Environments-37'```.  It also adds deploy process and all variable values **directly** to each project file.  And a lot more!
+* **It post-processes your export data to simplify and improve usage.**  For example it automatically adds id -> name lookup information so you can view/work with a variable scope with its user-friendly name, i.e. `EnvironmentName = 'Production-West'` instead of only by Id, i.e. `Environment = 'Environments-37'`.  It also adds deploy process and all variable values **directly** to each project file.  And a lot more!
 * It is written in [PowerShell Core](https://github.com/PowerShell/PowerShell) so it runs on any OS - but also runs great in Windows PowerShell 5.  No other pre-compiled components required.  (Docker container version is on the [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
 * It exports all data to local JSON files so you can process the data with any language.
 * It comes with fun helper tools written in PowerShell.
