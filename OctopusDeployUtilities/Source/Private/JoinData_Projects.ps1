@@ -69,32 +69,27 @@ function Update-ODUExportProjectAddIncludedLibraryVariableSets {
   process {
     if ($false -eq (Test-Path -Path $Path)) { throw "No export found at: $Path" }
 
-    # get project and variable set folders
+    # get folder paths
     $ProjectExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Projects' }).RestName)
     $IncludedLibraryVariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'LibraryVariableSets' }).RestName)
-    $VariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Variables' }).RestName)
 
     Get-ChildItem -Path $ProjectExportFolder -Recurse | ForEach-Object {
       $ExportFileProject = $_.FullName
       $ExportItemProject = Get-Content -Path $ExportFileProject | ConvertFrom-Json
 
-      # loop through all IncludedLibraryVariableSetIds, for each, get the IncludedLibraryVariableSet, for that, get it's VariableSet
-      #   add the VariableSet to the IncludedLibraryVariableSet and add the whole array to the project
+      # loop through all IncludedLibraryVariableSetIds, get the IncludedLibraryVariableSet and add to array
       [object[]]$IncludedLibraryVariableSets = @()
       $ExportItemProject.IncludedLibraryVariableSetIds | ForEach-Object {
         $IncludedLibraryVariableSetId = $_
         $ExportItemIncludedLibraryVariableSet = Get-Content -Path (Join-Path -Path $IncludedLibraryVariableSetExportFolder -ChildPath ($IncludedLibraryVariableSetId + $JsonExtension)) | ConvertFrom-Json
-        # now fetch the variables for this IncludedLibraryVariableSet
-        $ExportItemVariableSet = Get-Content -Path (Join-Path -Path $VariableSetExportFolder -ChildPath ($ExportItemIncludedLibraryVariableSet.VariableSetId + $JsonExtension)) | ConvertFrom-Json
-        # now add variable set to included library variable set
-        Add-ODUOrUpdateMember -InputObject $ExportItemIncludedLibraryVariableSet -PropertyName 'VariableSet' -Value $ExportItemVariableSet
-        # now add included library variable set to array
+
+        # add included library variable set to array
         $IncludedLibraryVariableSets += $ExportItemIncludedLibraryVariableSet
       }
 
-      # now add array to project
+      # now add library variable set array to project
       Add-ODUOrUpdateMember -InputObject $ExportItemProject -PropertyName 'IncludedLibraryVariableSets' -Value $IncludedLibraryVariableSets
-      # and finally save
+      # and finally save project
       Out-ODUFileJson -FilePath $ExportFileProject -Data $ExportItemProject
     }
   }

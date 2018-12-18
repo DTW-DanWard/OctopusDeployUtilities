@@ -15,8 +15,8 @@ AllowDynamicInfrastructure : False
 Links                      : @{Self=/api/environments/Environments-21; Machines=/api/environments/Environments-21/machines{?skip,take,partialName,roles,isDisabled,healthStatuses,commStyles,tenantIds,tenantTags
                              };
                              SinglyScopedVariableDetails=/api/environments/Environments-21/singlyScopedVariableDetails}
-MachineIds                 : {}
-MachineNames               : {}
+MachineIds                 : { Machines-325 }
+MachineNames               : { TestWeb4}
 ```
 
 From there you can manipulate the object, check it's properties, etc.  And that's all well and good for a single object... but having to write that out for every file in an export gets tiring in a hurry.

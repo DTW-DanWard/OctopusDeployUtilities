@@ -43,13 +43,19 @@ function Update-ODUExportJoinData {
     if (! $Quiet) { Write-Output "  Adding external names for ids in exported data" }
     Update-ODUExportAddExternalNamesForIds $Path
 
-    # for exported variables, add scope names and breadth
+    # environments: add machines
+    if (! $Quiet) { Write-Output "  Adding machine information to environments" }
+    Update-ODUExportAddMachinesToEnvironments $Path
+    
+    # exported variables (project-level and included variableset-level): add scope names and breadth
+    # this must come before adding variables to included variable sets and before adding any variables to projects
     if (! $Quiet) { Write-Output "  Adding scope names to variables" }
     Update-ODUExportAddScopeNamesToVariables $Path
 
-    # add machines listing to environments
-    if (! $Quiet) { Write-Output "  Adding machine information to environments" }
-    Update-ODUExportAddMachinesToEnvironments $Path
+    # included variable sets: add actual variables
+    # this must come before adding included library variable sets to projects
+    if (! $Quiet) { Write-Output "  Adding variables to included variable sets" }
+    Update-ODUExportIncludedVariableSetsAddVariables $Path
 
     # add deployment processes to projects
     if (! $Quiet) { Write-Output "  Adding deployment processes to projects" }
