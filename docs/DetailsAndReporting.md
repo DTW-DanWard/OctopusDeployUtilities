@@ -251,20 +251,19 @@ Here's single, **short** line of PowerShell that gets the latest export and sear
 C:\> (oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU-2' }
 ```
 
-
-
-
 ## Helper Functions for Filtering
 
-asdf filtering IIS / WIndows Services
+Octopus Deploy Utilities comes with a few help filtering utilities out of the box.
 
-asdf function for getting value of a deploy process property
+### Test-ODUProjectDeployIISSite and Test-ODUProjectDeployWindowsService
 
+Want to be able to quickly find IIS Site and / or Windows Service projects?  Use Test-ODUProjectDeployIISSite and / or Test-ODUProjectDeployWindowsService; these check a project's deploy process configuration to see if it deploys an IIS site and / or a Windows Service.  Or, to get real specific (now that you can view the project details in the JSON), they check a project's DeploymentProcess.Steps.Actions.ActionType for either *Octopus.IIS* or *Octopus.WindowsService*, respectively.
 
-A list of all users and their teams? A list of all sensitive variable names across all projects?  
-
-
-
-Filter this way:
-  .Breadth -contains 'Staging'
-  .EnvironmentName -contains 'Staging'
+```PowerShell
+C:\> # how many projects deploy an IIS site
+C:\> ($Export.Projects | ? { Test-ODUProjectDeployIISSite $_ }).Count
+26
+C:\> # how many projects deploy a Windows Service
+C:\> ($Export.Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
+72
+```

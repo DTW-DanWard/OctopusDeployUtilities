@@ -112,7 +112,7 @@ Read-ODUExportFromFiles
 <returns PSObject with all exported data from latest export>
 .EXAMPLE
 Read-ODUExportFromFiles c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
-<returns PSObject with all exported data for that particular export>
+<returns PSObject with all exported data for that particular export folder>
 #>
 function Read-ODUExportFromFiles {
   [CmdletBinding()]

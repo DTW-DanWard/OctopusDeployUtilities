@@ -42,9 +42,13 @@ With Octopus Deploy Utilities you can do some **crazy stuff *really* easily**.
 ```PowerShell
 C:\> # return all project-level variables, their values and scope
 C:\> (oduobject).Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
-
+C:\>
 C:\> # return all project-level variables that are explicitly scoped for your EU production environment
 C:\> (oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU' }
+C:\>
+C:\> # how many projects deploy a Windows Service
+C:\> ((oduobject).Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
+72
 ```
 
 Imagine the powerful **Pester** unit tests you could easily write!
