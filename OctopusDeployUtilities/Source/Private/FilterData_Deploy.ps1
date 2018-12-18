@@ -29,7 +29,7 @@ function Test-ODUProjectDeployActionType {
     [string]$ActionType
   )
   process {
-    if (($null -eq $Project.DeploymentProcess.Steps) -or ($Project.DeploymentProcess.Steps.Count -eq 0) -or ($null -eq ($Project.DeploymentProcess.Steps | Get-Member -Name 'Actions'))) { 
+    if (($null -eq $Project.DeploymentProcess.Steps) -or ($Project.DeploymentProcess.Steps.Count -eq 0) -or ($null -eq ($Project.DeploymentProcess.Steps | Get-Member -Name 'Actions'))) {
       $false
     } else {
       $Project.DeploymentProcess.Steps.Actions.ActionType -contains $ActionType

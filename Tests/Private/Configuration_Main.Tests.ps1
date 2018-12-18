@@ -97,7 +97,7 @@ Describe 'Configuration: Octopus Server initialized' {
   $OctoServerName = 'test.com'
   $OctoServerUrl = 'https://test.com'
   $OctoServerApiKey = 'API-ABCDEFGH01234567890ABCDEFGH'
-  
+
   # encryption tests only run on Windows
   $Windows = $false
   # encrypt key they test decrypt with Convert-ODUDecryptApiKey

@@ -1,7 +1,7 @@
 
 # Getting Details About Your Export
 
-There's a lot of detail here but it's good stuff.  Make sure you read to the end - it covers included helper functions for helping you find / filter your data.
+There are a lot of details in here but it's all good stuff.  Make sure you read to the end - it covers included helper functions for helping you find / filter your data.
 
 ## Learn PowerShell
 PowerShell is great for filtering and reporting on data, especially walking/parsing through large complex sets of objects (like an Octopus Deploy export).  If you don't know PowerShell I highly recommend you start learning before attempting anything too complex in reporting - otherwise you might get frustrated.  One example you try will work while another will fail; they will both look very similar and it won't be clear what's going on.  There is a lot of built-in magic in PowerShell that is incredibly useful in walking through objects - fallback member resolution being the most important.
@@ -267,3 +267,5 @@ C:\> # how many projects deploy a Windows Service
 C:\> ($Export.Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
 72
 ```
+
+There is a lot of room for growth with regard to filtering functions for ODU.  Please submit any contributions you have!

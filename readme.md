@@ -55,7 +55,7 @@ Imagine the powerful **Pester** unit tests you could easily write!
 
 ```PowerShell
 # find any variables with 'password' or 'pwd' in their name that AREN'T encrypted
-It 'Confirm no plaintext *password* or *pwd* variables' { (oduobject).Projects.VariableSet.Variables | 
+It 'Confirm no plaintext *password* or *pwd* variables' { (oduobject).Projects.VariableSet.Variables |
   ? { $_.Name -match 'password|pwd' -and $_.IsSensitive -eq $false } | Should BeNullOrEmpty }
 
 # make sure only the people we know are administrators
