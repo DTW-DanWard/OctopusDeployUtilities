@@ -178,7 +178,7 @@ C:\> # (lots more details...)
 ```
 
 ### Tips on Using Each - And Another Thing to Know
-If you are interested in looking / evaluating / searching / reporting at a particular project level, you probably want to check both the projects's VariableSet and IncludedLibraryVariableSets contents.  However, if you want to search across *all* projects searching for a particular variable (local and global) and it's usage, you probably do NOT want to check the contents of the project's IncludedLibraryVariableSets.  Why?  You'll have multiple hits at the project level.
+If you are interested in looking / evaluating / searching / reporting at a particular project level, you probably want to check both the projects's VariableSet and IncludedLibraryVariableSets contents.  However, if you want to search across *all* projects searching for a particular variable (local and global) and it's usage, you probably do NOT want to check the contents of a *project's* IncludedLibraryVariableSets.  Why?  You'll have multiple hits at the project level when checking included library variable sets.
 
 Imagine you have an Included Library Variable Set named *ConnectionStrings* and this contains a variable *SalesDbCnString*.  Included Library Variable Set *ConnectionStrings* is included in 30 projects.  If you were to search for *SalesDbCnString*, at a project-level, through every IncludedLibraryVariableSets you'd get 30 matches.  And none of these is the source variable!  So where is the source?
 
@@ -202,9 +202,55 @@ Is that clear?  Man I hope so; I am really sick of typing *included library vari
 
 
 
-## Variable Scope
+## Variable Scope and Breadth
 
-As mentioned in the asdf....
+This next bit is a copy of the [post processing](PostProcessing.md) section *Adds Scope Names to Variables*.  However it is very important to know for reporting on variables with regard to scope so I'm including it here.
+
+The default Octopus Deploy export of a variable is OK but could be better.  Here's an example without processing:
+```JSON
+{
+  "Name": "TempImagePath",
+  "Value": "D:\\Cache\\Images",
+  "Scope": {
+    "Environment": [ "Environments-7", "Environments-16" ],
+    "Machine": [ "Machines-42" ],
+    "Role": [ "WebClientFacing" ]
+  },
+  ...
+}
+```
+
+We don't know what those environment and machine ids map to (roles don't require a lookup).  Post-processing adds the name values for the ids:
+
+```JSON
+{
+  "Name": "TempImagePath",
+  "Value": "D:\\Cache\\Images",
+  "Scope": {
+    "Environment": [ "Environments-15", "Environments-16" ],
+    "EnvironmentName": [ "Prod-EU-1", "Prod-EU-2" ],
+    "Machine": [ "Machines-42" ],
+    "MachineName": [ "Staging-Web-3" ],
+    "Role": [ "WebClientFacing" ],
+    "Breadth": [ "Prod-EU-1", "Prod-EU-2", "Staging-Web-3" "WebClientFacing", ]
+  },
+  ...
+}
+```
+
+#### Breadth???
+*Do you see that other change the post-processing made?*  It also added a property Breadth that aggregates all the other name values and roles!  This make it much, *much* easier when writing code to search and report on Octopus Deploy variables.  For an Octopus Deploy variable export, a particular property like Environment, Machine or Role will only exist if a value has been set for that property type.  That means if you want to check a variable if it has a particular setting, you have to check first to see if the property exists on that variable, making your search / unit testing code ugly.  However, with Breadth *always* available you don't have to worry.
+
+Here's single, **short** line of PowerShell that gets the latest export and returns **all project-level variables, their values and their scope**:
+```PowerShell
+C:\> (oduobject).Projects.VariableSet.Variables | Select Name, Value, @{n='Scope'; e = { $_.Scope.Breadth } }
+```
+
+Here's single, **short** line of PowerShell that gets the latest export and searches across **all project-level variables** in **all projects** and returns the variables that have a scope that specifies environment Prod-EU-2:
+```PowerShell
+C:\> (oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU-2' }
+```
+
 
 
 

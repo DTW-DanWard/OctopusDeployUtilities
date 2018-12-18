@@ -47,7 +47,7 @@ The default Octopus Deploy export of a variable is OK but could be better.  Here
 }
 ```
 
-We don't know what those environment and machine ids map to (roles don't require a lookup).  Post-processing adds the name values for the ids::
+We don't know what those environment and machine ids map to (roles don't require a lookup).  Post-processing adds the name values for the ids:
 
 ```JSON
 {
