@@ -251,7 +251,7 @@ Here's single, **short** line of PowerShell that gets the latest export and sear
 C:\> (oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU-2' }
 ```
 
-## Helper Functions for Filtering
+## Helper Functions for Selecting & Filtering
 
 Octopus Deploy Utilities comes with a few help filtering utilities out of the box.
 
@@ -269,3 +269,26 @@ C:\> ($Export.Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
 ```
 
 There is a lot of room for growth with regard to filtering functions for ODU.  Please submit any contributions you have!
+
+
+### Get Any Deploy Process Property with Select-ODUProjectDeployActionProperty
+
+**This one is super handy!**  If you look at the deploy process Properties there are a lot of values in there.  *A lot*.  And, depending on the configuration options you set for a project (say, enabling Custom Installation Directory), that list of properties will vary from project to project.  And walking that object notation to get to those Properties can get pretty ugly.  It gets even more ugly if you are running your PowerShell with `Set-StrictMode` (which you should) as if you attempt to access a property and it's not there, an error gets thrown.
+
+But don't worry about any of that - just use `Select-ODUProjectDeployActionProperty`.  If you pass in a particular Property name it will return the value - if it exists - and return $null if it doesn't.  Some examples:
+
+```PowerShell
+C:\> # what's the app pool name for project 0
+C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.IISWebSite.WebApplication.ApplicationPoolName'
+MyAppPool
+C:\> 
+C:\> # does project 0 specify that a custom install folder should be purged?
+C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectoryShouldBePurgedBeforeDeployment'
+True
+C:\> 
+C:\> # and what is the name of that custom install folder?
+C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectory'
+D:\Applications\MyWebSite
+```
+
+Cool stuff.  Again: I think there is a lot of room for growth for filtering & selection functions so please contribute your own creations!

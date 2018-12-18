@@ -49,6 +49,9 @@ C:\>
 C:\> # how many projects deploy a Windows Service
 C:\> ((oduobject).Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
 72
+C:\> # what is the name of custom install folder for the first project?
+C:\> Select-ODUProjectDeployActionProperty ((oduobject).Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectory'
+D:\Applications\MyWebSite
 ```
 
 Imagine the powerful **Pester** unit tests you could easily write!
