@@ -54,6 +54,7 @@ Once the module is loaded the first thing you need to set a root folder under wh
 ```PowerShell
 C:\> Set-ODUConfigExportRootFolder c:\OctoExports
 ```
+Don't worry about the warning `Warning: user path c:\Users\yourname\AppData\Local\powershell cannot be found`.  That occurs because it's the first time the PowerShell Configuration module has been run on your machine.
 
 Once the root export folder has been set you can now register your Octopus Deploy Server.  Register your server with the url (including http/https) and your API key from Pre-installation.  For example:
 ```PowerShell
