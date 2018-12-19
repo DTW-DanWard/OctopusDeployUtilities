@@ -48,7 +48,7 @@ Links                      : @{Self=/api/environments/Environments-21; Machines=
                              };
                              SinglyScopedVariableDetails=/api/environments/Environments-21/singlyScopedVariableDetails}
 MachineIds                 : { Machines-325 }
-MachineNames               : { TestWeb4}
+MachineNames               : { TestWeb4 }
 ```
 
 From there you can manipulate the object, check it's properties, etc.  And that's all well and good for a single object... but having to write that out for every file in an export gets tiring in a hurry.
@@ -64,7 +64,7 @@ C:\> # sorry, there is so much data it's not worth it to show it here
 C:\> # but I can show you this:
 C:\> (oduobject | Get-Member -MemberType NoteProperty).Count
 25
-C:\> # there are 25 separate properties on the data object
+C:\> # there are 25 separate properties on the data object, one for each folder in this export
 C:\>
 C:\> # if you don't want the latest export but want an older one, you can pass in a path:
 C:\> oduobject C:\OctoExports\MyOctoServer.octopus.app\20181210-103023
@@ -81,7 +81,7 @@ C:\> $Export = oduobject
 C:\> 
 C:\> $Export.Environments.Count
 13
-C:\> $Export.Environments  # this should list all the data but...
+C:\> $Export.Environments  # this should list all the data but
 C:\> # again, there's too much data to display so I'm omitting it
 C:\> # normally it would show these properties for 13 environment objects
 C:\> #   Id, Name, Description, SortOrder, UseGuidedFailure, AllowDynamicInfrastructure, Links, MachineIds, MachineNames
