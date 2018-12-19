@@ -48,7 +48,7 @@ function Get-ODUConfigDefaultTypeWhitelist {
   process {
     # need to prepend with comma to ensure returns an array as PowerShell changes empty arrays to null when returning from function
     # https://stackoverflow.com/questions/18476634/powershell-doesnt-return-an-empty-array-as-an-array
-    ,@()
+    , @()
   }
 }
 #endregion
@@ -70,16 +70,28 @@ function Get-ODUConfigDefaultPropertyBlacklist {
   [OutputType([hashtable])]
   param()
   process {
-    @{}
+    # by default the Octopus Deploy REST API includes ALL of the id to name lookup information
+    # for every call for LibraryVariableSet, Project and Variable 
+    # this info is unnecessary because the post processing already adds this info to the object but
+    # it doesn't add ALL the lookup info, just the id->name for the ids actually being used
+    # if you are working with an instance with hundreds of servers, many many environments, many 
+    # roles,  etc. it can quickly add up; for one test instance I worked with ScopeValues was well 
+    # over 1000 lines extra to every LibraryVariableSet, Project and Variable file
+    # so let's filter them out
+    @{
+      LibraryVariableSets = @('ScopeValues')
+      Projects            = @('ScopeValues')
+      Variables           = @('ScopeValues')
+    }
     # if you want to filter out time-sensitive properties that don't really affect the important config values
     # i.e. you want to make it easier to see changes over time by filtering out properties that are likely
-    # to be different like HasLatestCalamari or LastSeen, then comment the above line and uncomment this section
+    # to be different like HasLatestCalamari or LastSeen, you should include these items along with the value 
+    # above
     <#
     @{
       Licenses                  = @('MaintenanceExpiresIn')
       Machines                  = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary')
       OctopusServerNodes        = @('LastSeen')
-      Projects                  = @('Links')
       ServerStatus              = @('MaintenanceExpires','MaximumAvailableVersion','MaximumAvailableVersionCoveredByLicense')
       'ServerStatus-Nuget'      = @('TotalPackages')
       'ServerStatus-SystemInfo' = @('ThreadCount', 'Uptime', 'WorkingSetBytes')
