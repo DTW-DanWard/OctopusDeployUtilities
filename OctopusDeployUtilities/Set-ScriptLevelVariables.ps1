@@ -21,13 +21,13 @@ Set-Variable ApiFetchType_ItemIdOnly -Value 'ItemIdOnly' -Option ReadOnly -Scope
 Set-Variable ApiFetchTypeList -Value @($ApiFetchType_Simple, $ApiFetchType_MultiFetch, $ApiFetchType_ItemIdOnly) -Option ReadOnly -Scope Script
 
 # define alias/function mappings
-$Exports = @{
+$AliasesToExport = @{
   odudiff   = 'Compare-ODUExportMostRecentWithOlder'
   oduexport = 'Export-ODUOctopusDeployConfig'
   oduobject = 'Read-ODUExportFromFiles'
   odutext   = 'Open-ODUExportTextEditor'
 }
-Set-Variable OfficialAliasExports -Value $Exports -Scope Script
+Set-Variable OfficialAliasExports -Value $AliasesToExport -Scope Script
 
 # version of configuration details
 $script:ConfigVersion = '1.0.0'

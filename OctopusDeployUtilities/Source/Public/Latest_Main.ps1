@@ -142,10 +142,9 @@ function Read-ODUExportFromFiles {
     Get-ChildItem -Path $Path -Directory | ForEach-Object {
       $Folder = $_
       $TypeName = $Folder.Name
-      [object[]]$TypeData = $null
-      $TypeData = Get-ChildItem -Path $Folder.FullName -Recurse -Include ('*' + $JsonExtension) | ForEach-Object {
-        Get-Content $_ | ConvertFrom-Json
-      }
+      Write-Verbose "Reading folder $TypeName"
+      $TypeData = [System.Collections.ArrayList]@()
+      (Get-ChildItem -Path $Folder.FullName -Recurse -Include ('*' + $JsonExtension)).foreach({  $null = $TypeData.Add((ConvertFrom-Json -InputObject (Get-Content -Path $_ -Raw))) })
       $ExportData.$TypeName = $TypeData
     }
     [PSCustomObject]$ExportData
