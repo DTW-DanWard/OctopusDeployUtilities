@@ -36,16 +36,11 @@ function Invoke-ODURestMethod {
     } catch {
       $Err = $_
       # a user may not have access to a particular api which is not the end of the world - it's
-      # not worth throwing an unhandled error so instead, if it appears to be a missing permission
-      # error, write to host (gasp!) with helpful info and return $null else re-throw error
+      # not worth throwing a terminating exception so just write error so user can see
       if (($Err.ToString()) -match "You do not have permission to perform this action. Please contact your Octopus administrator") {
         Write-Verbose "$($MyInvocation.MyCommand) :: Error calling $Url"
         Write-Verbose "$($MyInvocation.MyCommand) :: Error was $Err"
-        Write-Host "`nError occurred calling: $Url" -ForegroundColor Cyan
-        Write-Host "It appears you don't have permission to access this API. You might want to exclude" -ForegroundColor Cyan
-        Write-Host "this type from exports by including it in a call to Set-ODUConfigTypeBlacklist" -ForegroundColor Cyan
-        Write-Host "Make sure that you don't lose any existing types by checking Get-ODUConfigTypeBlacklist first." -ForegroundColor Cyan
-        Write-Host "Error was: $Err" -ForegroundColor Cyan
+        Write-Error -Message "Error occurred calling: $Url  You may not have permission to access this API; you should exclude this type from exports by adding it to the type blacklist.  See the docs. Error was: $Err"
       } else {
         throw $Err
       }

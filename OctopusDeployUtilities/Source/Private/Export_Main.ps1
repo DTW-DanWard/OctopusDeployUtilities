@@ -40,11 +40,6 @@ function Export-ODUOctopusDeployConfigMain {
       $ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
     }
 
-
-
-    # make sure no old background job data in memory still
-    Get-RSJob | Remove-RSJob
-
     # put into simple object for easier Using: reference
     $ItemIdOnlyIdsLookupKeys = $ItemIdOnlyIdsLookup.Keys
 
@@ -54,54 +49,36 @@ function Export-ODUOctopusDeployConfigMain {
       New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
     }
 
-
-
-
-
-    # Get-RSJob    Wait-RSJob    Receive-RSJob    Remove-RSJob
-
-    # asdf need error handling - Receive has Errors
-    # asdf set throttle from variable
-    
-    # bad url or something? something thrown? check code down stream
-
-
     # process (export/save) the non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process after
     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
-      $ExportJobDetails | Start-RSJob -Throttle 5 -ScriptBlock {
+      $Jobs = $ExportJobDetails | Start-RSJob -Throttle 5 -ScriptBlock {
         # asdf need to change to specify module name, not this
         # way to create variable so has full path when in dev mode but
         # just module name when uploaded?
         Import-Module C:\code\GitHub\OctopusDeployUtilities\OctopusDeployUtilities\OctopusDeployUtilities.psd1
         # values are returned, we'll fetch after jobs complete
         Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
-      } | Wait-RSJob
-    
-      Get-RSJob | Receive-RSJob | ForEach-Object {
-        $ItemIdOnlyDetails = $_
-        # transfer values to main hash table
-        $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
-      } | Remove-RSJob
+      }
+
+      Wait-RSJob -Job $Jobs
+      # there could be errors; collect all of them first and remove jobs before throwing errors or
+      # other jobs will never get removed
+      [object[]]$Errors = $null
+      $Jobs | ForEach-Object {
+        $Job = $_
+        if ($Job.HasErrors) {
+          $Errors += Select-Object -InputObject $Job -ExpandProperty Error
+        } else {
+          $ItemIdOnlyDetails = Receive-RSJob -Job $Job
+          # transfer values to main hash table
+          $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
+        }
+        Remove-RSJob -Job $Job
+      }
+      if (($null -ne $Errors) -and ($Errors.Count -gt 0)) {
+         $Errors | ForEach-Object { throw $_ }
+      }
     }
-
-
-    # asdf -Throttle 10
-
-    # # asdf REMOVE
-
-    #     # process (export/save) the non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process after
-    #     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
-    #       $ExportJobDetails | ForEach-Object {
-    #         $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
-    #         # transfer values to main hash table
-    #         $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
-    #       }
-    #     }
-    
-
-
-
-
 
     # now loop through ItemIdOnly calls, creating jobs using captured ItemIdOnly Ids
     [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly } | ForEach-Object {
@@ -114,14 +91,26 @@ function Export-ODUOctopusDeployConfigMain {
 
     # process (export/save) the ItemIdOnly jobs
     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
-      $ExportJobDetails | Start-RSJob -ScriptBlock {
+      $Jobs = $ExportJobDetails | Start-RSJob -ScriptBlock {
         # asdf need to change to specify module name, not this
         # way to create variable so has full path when in dev mode but
         # just module name when uploaded?
         Import-Module C:\code\GitHub\OctopusDeployUtilities\OctopusDeployUtilities\OctopusDeployUtilities.psd1
         # shouldn't be any values returned; even if there are, we ignore
         $null = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
-      } | Wait-RSJob | Receive-RSJob | Remove-RSJob
+      }
+      Wait-RSJob -Job $Jobs
+
+      # there should be no output that we care about from these jobs but still check for errors
+      [object[]]$Errors = $null
+      $Jobs | ForEach-Object {
+        $Job = $_
+        if ($Job.HasErrors) { $Errors += Select-Object -InputObject $Job -ExpandProperty Error }
+        Remove-RSJob -Job $Job
+      }
+      if (($null -ne $Errors) -and ($Errors.Count -gt 0)) {
+        $Errors | ForEach-Object { throw $_ }
+      }
     }
 
     # return path to this export
