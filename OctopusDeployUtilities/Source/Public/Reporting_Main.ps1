@@ -139,19 +139,39 @@ function Read-ODUExportFromFiles {
     }
 
     $ExportData = [ordered]@{}
-    Get-ChildItem -Path $Path -Directory | ForEach-Object {
-      $Folder = $_
-      $TypeName = $Folder.Name
+    $Jobs = Get-ChildItem -Path $Path -Directory | Start-RSJob -Throttle 10 -ScriptBlock {
+      Param($Directory)
+      # return results in hash table with Directory name and objects
+      $Results = @{ Name = $Directory.Name }
       Write-Verbose "Reading folder $TypeName"
-      $TypeData = [System.Collections.ArrayList]@()
-
-      (Get-ChildItem -Path $Folder.FullName -Recurse -Include ('*' + $JsonExtension)).foreach({
+      $Data = [System.Collections.ArrayList]@()
+      (Get-ChildItem -Path $Directory.FullName -Recurse -Include ('*' + $JsonExtension)).foreach({
         $Content = Get-Content -Path $_ -Raw
         if ($null -ne $Content) {
-          $null = $TypeData.Add((ConvertFrom-Json -InputObject $Content))
+          $null = $Data.Add((ConvertFrom-Json -InputObject $Content))
         }
       })
-      $ExportData.$TypeName = $TypeData
+      # add Data to results object and return
+      $Results.Data = $Data
+      $Results
+    }
+    $null = Wait-RSJob -Job $Jobs
+
+    # there could be errors; collect all of them first and remove jobs before throwing errors or
+    # other jobs will never get removed
+    [object[]]$Errors = $null
+    $Jobs | ForEach-Object {
+      $Job = $_
+      if ($Job.HasErrors) {
+        $Errors += Select-Object -InputObject $Job -ExpandProperty Error
+      } else {
+        $TypeData = Receive-RSJob -Job $Job
+        $ExportData.($TypeData.Name) = $TypeData.Data
+      }
+      $null = Remove-RSJob -Job $Job
+    }
+    if (($null -ne $Errors) -and ($Errors.Count -gt 0)) {
+      $Errors | ForEach-Object { throw $_ }
     }
     [PSCustomObject]$ExportData
   }
