@@ -24,8 +24,8 @@ Describe 'Configuration: external tools initialized' {
   $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
   $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
 
-  New-Item -Path $ExportRootFolder -ItemType Directory > $null
-  New-Item -Path $ConfigFolderPath -ItemType Directory > $null
+  $null = New-Item -Path $ExportRootFolder -ItemType Directory
+  $null = New-Item -Path $ConfigFolderPath -ItemType Directory
 
   $DiffViewerPath = Join-Path -Path $TestDrive 'ADiffViewer.exe'
   $TextEditorPath = Join-Path -Path $TestDrive 'ATextEditor.exe'

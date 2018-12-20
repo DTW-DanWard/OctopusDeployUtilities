@@ -1,80 +1,6 @@
 
 Set-StrictMode -Version Latest
 
-#region Function: Export-ODUJob
-
-<#
-.SYNOPSIS
-Processes a single ExportJobDetail - i.e. data from a single Url
-.DESCRIPTION
-Processes a single ExportJobDetail:
- - fetches content for a single url;
- - captures ItemIdOnly value references;
- - filters propertes on the exported data;
- - saves data to file.
- Data might be 0, 1 or multiple items.
- Returns hashtable of ItemIdOnly reference values.  That is: if a property listed in
- ItemIdOnlyReferencePropertyNames is found on the object, the value for that property is
- captured and returned at the end of the function call.
-.PARAMETER ExportJobDetail
-Information about the export: ApiCall info, Url, ApiKey to use in call, folder to save to
-.PARAMETER ItemIdOnlyReferencePropertyNames
-ItemIdOnly property names to look for in data that is retrieved; return values for these if found
-.EXAMPLE
-Export-ODUJob
-<...>
-#>
-function Export-ODUJob {
-  [CmdletBinding()]
-  [OutputType([hashtable])]
-  param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [object]$ExportJobDetail,
-    [string[]]$ItemIdOnlyReferencePropertyNames
-  )
-  process {
-    $ExportItems = Invoke-ODURestMethod -Url $ExportJobDetail.Url -ApiKey $ExportJobDetail.ApiKey
-
-    [hashtable]$ItemIdOnlyReferenceValues = @{}
-    if ($null -ne $ExportItems) {
-
-      # simple references have a single item which does not have ItemIdOnly references; just save it
-      # same is true of items fetched by IdOnly
-      if (($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) ) {
-        $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((Format-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItems)) + $JsonExtension)
-        Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
-        Out-ODUFileJson -FilePath $FilePath -Data (Remove-ODUFilterPropertiesFromExportItem -RestName ($ExportJobDetail.ApiCall.RestName) -ExportItem $ExportItems)
-      } else {
-        # this is for TenantVariables, which returns multiple values that should be stored in multiple files
-        # BUT, for whatever really dumb reason, Octo API does not provide this info in the standard TotalResults / .Items format
-        # so we have this dumb workaround here - try to get the items as-is without the .Items property
-        [object[]]$ExportItemsToProcess = $ExportItems
-        if ($null -ne (Get-Member -InputObject $ExportItems -Name Items)) {
-          $ExportItemsToProcess = $ExportItems.Items
-        }
-        $ExportItemsToProcess | ForEach-Object {
-          $ExportItem = $_
-          # inspect exported item for ItemIdOnly id references
-          $ItemIdOnlyReferenceValuesOnItem = Get-ODUItemIdOnlyReferenceValues -ExportJobDetail $ExportJobDetail -ExportItem $ExportItem -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames
-          # transfer values to main hash table
-          $ItemIdOnlyReferenceValuesOnItem.Keys | ForEach-Object {
-            if (! $ItemIdOnlyReferenceValues.Contains($_)) { $ItemIdOnlyReferenceValues.$_ = @() }
-            $ItemIdOnlyReferenceValues.$_ += $ItemIdOnlyReferenceValuesOnItem.$_
-          }
-
-          $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((Format-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItem)) + $JsonExtension)
-          Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
-          Out-ODUFileJson -FilePath $FilePath -Data (Remove-ODUFilterPropertiesFromExportItem -RestName ($ExportJobDetail.ApiCall.RestName) -ExportItem $ExportItem)
-        }
-      }
-    }
-    $ItemIdOnlyReferenceValues
-  }
-}
-#endregion
-
-
 #region Function: Export-ODUOctopusDeployConfigMain
 
 <#
@@ -114,20 +40,68 @@ function Export-ODUOctopusDeployConfigMain {
       $ItemIdOnlyIdsLookup = Initialize-ODUFetchTypeItemIdOnlyIdsLookup -ApiCalls ($ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly })
     }
 
+
+
+    # make sure no old background job data in memory still
+    Get-RSJob | Remove-RSJob
+
+    # put into simple object for easier Using: reference
+    $ItemIdOnlyIdsLookupKeys = $ItemIdOnlyIdsLookup.Keys
+
     # loop through non-ItemIdOnly calls creating zero, one more more jobs for exporting content from it
     [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_ItemIdOnly } | ForEach-Object {
       $ApiCall = $_
       New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
     }
 
+
+
+
+
+    # Get-RSJob    Wait-RSJob    Receive-RSJob    Remove-RSJob
+
+    # asdf need error handling - Receive has Errors
+    # asdf set throttle from variable
+    
+    # bad url or something? something thrown? check code down stream
+
+
     # process (export/save) the non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process after
     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
-      $ExportJobDetails | ForEach-Object {
-        $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys)
+      $ExportJobDetails | Start-RSJob -Throttle 5 -ScriptBlock {
+        # asdf need to change to specify module name, not this
+        # way to create variable so has full path when in dev mode but
+        # just module name when uploaded?
+        Import-Module C:\code\GitHub\OctopusDeployUtilities\OctopusDeployUtilities\OctopusDeployUtilities.psd1
+        # values are returned, we'll fetch after jobs complete
+        Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
+      } | Wait-RSJob
+    
+      Get-RSJob | Receive-RSJob | ForEach-Object {
+        $ItemIdOnlyDetails = $_
         # transfer values to main hash table
         $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
-      }
+      } | Remove-RSJob
     }
+
+
+    # asdf -Throttle 10
+
+    # # asdf REMOVE
+
+    #     # process (export/save) the non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process after
+    #     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
+    #       $ExportJobDetails | ForEach-Object {
+    #         $ItemIdOnlyDetails = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
+    #         # transfer values to main hash table
+    #         $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
+    #       }
+    #     }
+    
+
+
+
+
 
     # now loop through ItemIdOnly calls, creating jobs using captured ItemIdOnly Ids
     [object[]]$ExportJobDetails = $ApiCalls | Where-Object { $_.ApiFetchType -eq $ApiFetchType_ItemIdOnly } | ForEach-Object {
@@ -140,10 +114,14 @@ function Export-ODUOctopusDeployConfigMain {
 
     # process (export/save) the ItemIdOnly jobs
     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
-      $ExportJobDetails | ForEach-Object {
+      $ExportJobDetails | Start-RSJob -ScriptBlock {
+        # asdf need to change to specify module name, not this
+        # way to create variable so has full path when in dev mode but
+        # just module name when uploaded?
+        Import-Module C:\code\GitHub\OctopusDeployUtilities\OctopusDeployUtilities\OctopusDeployUtilities.psd1
         # shouldn't be any values returned; even if there are, we ignore
-        Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames ($ItemIdOnlyIdsLookup.Keys) > $null
-      }
+        $null = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
+      } | Wait-RSJob | Receive-RSJob | Remove-RSJob
     }
 
     # return path to this export

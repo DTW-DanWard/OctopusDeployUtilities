@@ -85,7 +85,7 @@ function Test-ODUOctopusServerCredentials {
   #endregion
   process {
     # use machines roles api to test (simple and fast)
-    Invoke-RestMethod -Method Get -Uri ($ServerDomainName + "/api/machineroles/all") -Headers @{ 'X-Octopus-ApiKey' = $ApiKey } > $null
+    $null = Invoke-RestMethod -Method Get -Uri ($ServerDomainName + "/api/machineroles/all") -Headers @{ 'X-Octopus-ApiKey' = $ApiKey }
   }
 }
 #endregion

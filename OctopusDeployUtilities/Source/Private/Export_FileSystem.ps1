@@ -62,7 +62,7 @@ function New-ODUExportItemFolder {
   #endregion
   process {
     if ($false -eq (Test-Path -Path $FolderPath)) {
-      New-Item -ItemType Directory -Path $FolderPath > $null
+      $null = New-Item -ItemType Directory -Path $FolderPath
     }
   }
 }
@@ -142,11 +142,11 @@ function New-ODURootExportFolder {
     # add $ServerName to path and check if exists
     $Folder = Join-Path -Path $MainExportRoot -ChildPath $ServerName
     # Server-specific folder may not exist, so create if necessary
-    if ($false -eq (Test-Path -Path $Folder)) { New-Item -ItemType Directory -Path $Folder > $null }
+    if ($false -eq (Test-Path -Path $Folder)) { $null = New-Item -ItemType Directory -Path $Folder }
     # add datetime stamp folder name, this better be unique, don't check if exists
     $Folder = Join-Path -Path $Folder -ChildPath ('{0:yyyyMMdd-HHmmss}' -f $DateTime)
     Write-Verbose "$($MyInvocation.MyCommand) :: Create export root folder: $Folder"
-    New-Item -ItemType Directory -Path $Folder > $null
+    $null = New-Item -ItemType Directory -Path $Folder
     $Folder
   }
 }

@@ -24,8 +24,8 @@ Describe 'Configuration: export root folder initialized' {
   $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
   $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
 
-  New-Item -Path $ExportRootFolder -ItemType Directory > $null
-  New-Item -Path $ConfigFolderPath -ItemType Directory > $null
+  $null = New-Item -Path $ExportRootFolder -ItemType Directory
+  $null = New-Item -Path $ConfigFolderPath -ItemType Directory
 
   $ConfigString = @"
 @{

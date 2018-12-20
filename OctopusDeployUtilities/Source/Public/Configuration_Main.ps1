@@ -167,7 +167,7 @@ function Set-ODUConfigExportRootFolder {
       if ($false -eq (Test-Path -Path $Path)) {
         # must explicitly stop if there's an error; don't create config unless this is valid
         Write-Verbose "$($MyInvocation.MyCommand) :: Creating root export folder: $Path"
-        New-Item -Path $Path -ItemType Directory -ErrorAction Stop > $null
+        $null = New-Item -Path $Path -ItemType Directory -ErrorAction Stop
       }
 
       # this function is run to initialize the settings for the project so if settings files doesn't currently exist it should be created
