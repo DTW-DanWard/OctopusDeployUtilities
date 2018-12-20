@@ -60,7 +60,7 @@ function Export-ODUOctopusDeployConfigMain {
         Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
       }
 
-      Wait-RSJob -Job $Jobs
+      $null = Wait-RSJob -Job $Jobs
       # there could be errors; collect all of them first and remove jobs before throwing errors or
       # other jobs will never get removed
       [object[]]$Errors = $null
@@ -73,7 +73,7 @@ function Export-ODUOctopusDeployConfigMain {
           # transfer values to main hash table
           $ItemIdOnlyDetails.Keys | ForEach-Object { $ItemIdOnlyIdsLookup.$_ += $ItemIdOnlyDetails.$_ }
         }
-        Remove-RSJob -Job $Job
+        $null = Remove-RSJob -Job $Job
       }
       if (($null -ne $Errors) -and ($Errors.Count -gt 0)) {
          $Errors | ForEach-Object { throw $_ }
@@ -99,14 +99,14 @@ function Export-ODUOctopusDeployConfigMain {
         # shouldn't be any values returned; even if there are, we ignore
         $null = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
       }
-      Wait-RSJob -Job $Jobs
+      $null = Wait-RSJob -Job $Jobs
 
       # there should be no output that we care about from these jobs but still check for errors
       [object[]]$Errors = $null
       $Jobs | ForEach-Object {
         $Job = $_
         if ($Job.HasErrors) { $Errors += Select-Object -InputObject $Job -ExpandProperty Error }
-        Remove-RSJob -Job $Job
+        $null = Remove-RSJob -Job $Job
       }
       if (($null -ne $Errors) -and ($Errors.Count -gt 0)) {
         $Errors | ForEach-Object { throw $_ }
