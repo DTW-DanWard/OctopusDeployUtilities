@@ -40,31 +40,34 @@ So, just what does an [export look like](docs/SampleExport.md) anyway?  Also, I 
 With Octopus Deploy Utilities you can do some **crazy stuff *really* easily**.
 
 ```PowerShell
-C:\> # return all project-level variables, their values and scope
-C:\> (oduobject).Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
+C:\> # get an object that has all the data from a single export
+C:\> $Export = oduobject
+C:\> 
+C:\> # for that export, return all project-level variables, their values and scope
+C:\> $Export.Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
 C:\>
-C:\> # return all project-level variables that are explicitly scoped for your EU production environment
-C:\> (oduobject).Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU' }
+C:\> # now return all project-level variables that are explicitly scoped for your EU production environment
+C:\> $Export.Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU' }
 C:\>
 C:\> # how many projects deploy a Windows Service
-C:\> ((oduobject).Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
+C:\> ($Export.Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
 72
 C:\> # what is the name of custom install folder for the first project?
-C:\> Select-ODUProjectDeployActionProperty ((oduobject).Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectory'
+C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectory'
 D:\Applications\MyWebSite
 ```
 
-Imagine the powerful **Pester** unit tests you could easily write!
+Imagine the powerful **Pester** unit tests you could easily write!  Here's an excerpt:
 
 ```PowerShell
 # find any variables with 'password' or 'pwd' in their name that AREN'T encrypted
-It 'Confirm no plaintext *password* or *pwd* variables' { (oduobject).Projects.VariableSet.Variables |
+It 'Confirm no plaintext *password* or *pwd* variables' { $Export.Projects.VariableSet.Variables |
   ? { $_.Name -match 'password|pwd' -and $_.IsSensitive -eq $false } | Should BeNullOrEmpty }
 
 # make sure only the people we know are administrators
 It 'Confirm only dave, janet and lee are admins' {
   Compare-Object -ReferenceObject @('dave','janet','lee')
-    -DifferenceObject (((oduobject).Teams | ? Name -eq 'Octopus Administrators').MemberUserNames) | Should BeNullOrEmpty }
+    -DifferenceObject (($Export.Teams | ? Name -eq 'Octopus Administrators').MemberUserNames) | Should BeNullOrEmpty }
 
 # WOW!
 ```
@@ -93,4 +96,4 @@ It 'Confirm only dave, janet and lee are admins' {
 * [License - it's MIT, don't worry](LICENSE)
 
 
-Looking for a DevOps engineer with a software engineering background?  [I'm looking for work.](http://dtwconsulting.com/)
+Hey - are you looking to hire a DevOps engineer with a software engineering background who can create crazy solutions like this?  [I'm looking for work.](http://dtwconsulting.com/)
