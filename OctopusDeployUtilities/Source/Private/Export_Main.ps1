@@ -49,12 +49,6 @@ function Export-ODUOctopusDeployConfigMain {
       New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
     }
 
-    # asdf move to module-level code/script level variable
-    # fetch without buildhelpers
-    # way to create variable so has full path when in dev mode but
-    # just module name when uploaded?
-    $ThisModuleName = 'C:\code\GitHub\OctopusDeployUtilities\OctopusDeployUtilities\OctopusDeployUtilities.psd1'
-
     # process (export/save) the non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process after
     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
       $Jobs = $ExportJobDetails | Start-RSJob -Throttle 5 -ModulesToImport $ThisModuleName -ScriptBlock {
@@ -93,7 +87,7 @@ function Export-ODUOctopusDeployConfigMain {
 
     # process (export/save) the ItemIdOnly jobs
     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
-      $Jobs = $ExportJobDetails | Start-RSJob -ModulesToImport $ThisModuleName -ScriptBlock {
+      $Jobs = $ExportJobDetails | Start-RSJob -Throttle 5 -ModulesToImport $ThisModuleName -ScriptBlock {
         # shouldn't be any values returned; even if there are, we ignore
         $null = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
       }

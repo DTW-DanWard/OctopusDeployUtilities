@@ -39,3 +39,26 @@ Set-Variable JsonExtension -Value '.json' -Option ReadOnly -Scope Script
 
 # name of file in root of export that contains Id to name lookup values
 Set-Variable IdToNameLookupFileName -Value ('IdToNameLookup' + $JsonExtension) -Option ReadOnly -Scope Script
+
+# this is a workaround for PoshRSJob dev vs. prod use
+# when running some PoshRSJob jobs we need to pass in the name of the current module so that
+# the module can be re-imported in the job
+# problem is - how do we know whether to import the installed version versus the dev copy in our
+# local repo?  to figure this out we check the current $PSScriptRoot and if it appears
+# under a path in PSModulePath, then we are using the installed version, else we are running dev mode.
+# if we are running the installed version, the name of the module to import is just the module
+# name itself, if dev, it's the full path to the module psd1 (located in same folder as this)
+# it would be cleaner/nicer to be able to use BuildHelper tools here but those are not used at run-time
+# so just hard-code for now... (could search current folder for non-Configuration PSD1 files... meh)
+$script:InstalledModule = $false
+$ThisModuleNameTemp = 'OctopusDeployUtilities'
+$env:PSModulePath.Split(';') | ForEach-Object {
+  $Path = $_
+  if ($PSScriptRoot -like ($Path + '*')) {
+    $script:InstalledModule = $true
+  }
+}
+if ($false -eq $InstalledModule) {
+  $ThisModuleNameTemp = Join-Path -Path $PSScriptRoot -ChildPath ($ThisModuleNameTemp + '.psd1')
+}
+Set-Variable ThisModuleName -Value $ThisModuleNameTemp -Option ReadOnly -Scope Script

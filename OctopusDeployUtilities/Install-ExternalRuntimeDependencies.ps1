@@ -7,5 +7,5 @@
 'Configuration', 'PoshRSJob' | ForEach-Object {
   $ProgressPreference = 'SilentlyContinue'
   if ($null -eq (Get-Module -Name $_ -ListAvailable)) { Install-Module -Name $_ -Force -AllowClobber }
-  Import-Module -Name $_
+  Import-Module -Name $_ -Force
 }
