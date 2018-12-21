@@ -139,7 +139,7 @@ function Read-ODUExportFromFiles {
     }
 
     $ExportData = [ordered]@{}
-    $Jobs = Get-ChildItem -Path $Path -Directory | Start-RSJob -Throttle 10 -ScriptBlock {
+    $Jobs = Get-ChildItem -Path $Path -Directory | Start-RSJob -ScriptBlock {
       Param($Directory)
       # return results in hash table with Directory name and objects
       $Results = @{ Name = $Directory.Name }

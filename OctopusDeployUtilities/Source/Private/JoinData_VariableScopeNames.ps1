@@ -29,7 +29,7 @@ function Update-ODUExportAddScopeNamesToVariables {
 
     [string]$LookupPath = Join-Path -Path $Path -ChildPath $IdToNameLookupFileName
     if ($false -eq (Test-Path -Path $LookupPath)) { throw "Export Id to name lookup file not found: $LookupPath" }
-    $IdToNameLookup = Get-Content -Path $LookupPath | ConvertFrom-Json
+    $IdToNameLookup = ConvertFrom-Json -InputObject (Get-Content -Path $LookupPath -Raw)
 
     # for this we only process the Variables data
     $RestApiCall = Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Variables' }
@@ -39,7 +39,7 @@ function Update-ODUExportAddScopeNamesToVariables {
       # loop through all files under item folder
       Get-ChildItem -Path $ItemExportFolder -Recurse | ForEach-Object {
         $ExportFilePath = $_.FullName
-        $ExportItem = Get-Content -Path $ExportFilePath | ConvertFrom-Json
+        $ExportItem = ConvertFrom-Json -InputObject (Get-Content -Path $ExportFilePath -Raw)
 
         $ExportItem.Variables | Where-Object { $null -ne (Get-Member -InputObject $_.Scope -Type NoteProperty) } | ForEach-Object {
           $Variable = $_

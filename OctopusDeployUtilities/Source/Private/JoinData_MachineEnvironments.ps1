@@ -31,7 +31,7 @@ function Update-ODUExportAddMachinesToEnvironments {
     $RestApiCall = Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Machines' }
     $ItemExportFolder = Join-Path -Path $Path -ChildPath ($RestApiCall.RestName)
     $Machines = Get-ChildItem -Path $ItemExportFolder -Recurse | ForEach-Object {
-      $ExportItem = Get-Content -Path ($_.FullName) | ConvertFrom-Json
+      $ExportItem = ConvertFrom-Json -InputObject (Get-Content -Path ($_.FullName) -Raw)
       [PSCustomObject]@{
         Id = $ExportItem.Id
         Name = $ExportItem.Name
@@ -46,7 +46,7 @@ function Update-ODUExportAddMachinesToEnvironments {
     $ItemExportFolder = Join-Path -Path $Path -ChildPath ($RestApiCall.RestName)
     Get-ChildItem -Path $ItemExportFolder -Recurse | ForEach-Object {
       $ExportFile = $_.FullName
-      $ExportItem = Get-Content -Path ($ExportFile) | ConvertFrom-Json
+      $ExportItem = ConvertFrom-Json -InputObject (Get-Content -Path $ExportFile -Raw)
 
       [string[]]$MachineIdsForEnvironment = @()
       [string[]]$MachineNamesForEnvironment = @()

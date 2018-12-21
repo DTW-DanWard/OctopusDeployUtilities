@@ -33,10 +33,10 @@ function Update-ODUExportIncludedVariableSetsAddVariables {
 
     Get-ChildItem -Path $IncludedLibraryVariableSetExportFolder -Recurse | ForEach-Object {
       $ExportFileIncludedLibraryVariableSet = $_.FullName
-      $ExportItemIncludedLibraryVariableSet = Get-Content -Path $ExportFileIncludedLibraryVariableSet | ConvertFrom-Json
+      $ExportItemIncludedLibraryVariableSet = ConvertFrom-Json -InputObject (Get-Content -Path $ExportFileIncludedLibraryVariableSet -Raw)
 
       # get the variables for this included library variable set
-      $ExportItemVariableSet = Get-Content -Path (Join-Path -Path $VariableSetExportFolder -ChildPath ($ExportItemIncludedLibraryVariableSet.VariableSetId + $JsonExtension)) | ConvertFrom-Json
+      $ExportItemVariableSet = ConvertFrom-Json -InputObject (Get-Content -Path (Join-Path -Path $VariableSetExportFolder -ChildPath ($ExportItemIncludedLibraryVariableSet.VariableSetId + $JsonExtension)) -Raw)
       # add variables to included library variable set
       Add-ODUOrUpdateMember -InputObject $ExportItemIncludedLibraryVariableSet -PropertyName 'VariableSet' -Value $ExportItemVariableSet
 

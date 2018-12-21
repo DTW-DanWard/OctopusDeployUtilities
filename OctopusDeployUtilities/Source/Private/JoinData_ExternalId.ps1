@@ -72,7 +72,7 @@ function Update-ODUExportAddExternalNamesForIds {
 
     [string]$LookupPath = Join-Path -Path $Path -ChildPath $IdToNameLookupFileName
     if ($false -eq (Test-Path -Path $LookupPath)) { throw "Export Id to name lookup file not found: $LookupPath" }
-    $IdToNameLookup = Get-Content -Path $LookupPath | ConvertFrom-Json
+    $IdToNameLookup = ConvertFrom-Json -InputObject (Get-Content -Path $LookupPath -Raw)
 
     # when fetching lookup data, drive off rest api call info (instead of existing folders) as need Name and ExternalIdToResolvePropertyName fields
     # note: there's no lookup data for Simple rest api calls, so skip them
@@ -83,7 +83,7 @@ function Update-ODUExportAddExternalNamesForIds {
         # loop through all files under item folder
         Get-ChildItem -Path $ItemExportFolder -Recurse | ForEach-Object {
           $ExportFilePath = $_.FullName
-          $ExportItem = Get-Content -Path $ExportFilePath | ConvertFrom-Json
+          $ExportItem = ConvertFrom-Json -InputObject (Get-Content -Path $ExportFilePath -Raw)
 
           # for the item, loop through all external id property names
           $RestApiCall.ExternalIdToResolvePropertyName | ForEach-Object {
