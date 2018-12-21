@@ -40,7 +40,7 @@ So, just what does an [export look like](docs/SampleExport.md) anyway?  Also, I 
 With Octopus Deploy Utilities you can do some **crazy stuff *really* easily**.
 
 ```PowerShell
-C:\> # get an object that has all the data from a single export
+C:\> # get an object that has all the data from the latest export
 C:\> $Export = oduobject
 C:\> 
 C:\> # for that export, return all project-level variables *across all projects*, getting the names, values and scope
