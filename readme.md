@@ -43,18 +43,18 @@ With Octopus Deploy Utilities you can do some **crazy stuff *really* easily**.
 C:\> # get an object that has all the data from a single export
 C:\> $Export = oduobject
 C:\> 
-C:\> # for that export, return all project-level variables, their values and scope
+C:\> # for that export, return all project-level variables *across all projects*, getting the names, values and scope
 C:\> $Export.Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
 C:\>
 C:\> # now return all project-level variables that are explicitly scoped for your EU production environment
 C:\> $Export.Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU' }
 C:\>
-C:\> # how many projects deploy a Windows Service
+C:\> # how many projects deploy a Windows Service?
 C:\> ($Export.Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
 72
 C:\> # what is the name of custom install folder for the first project?
 C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectory'
-D:\Applications\MyWebSite
+D:\Applications\WebAuth
 ```
 
 Imagine the powerful **Pester** unit tests you could easily write!  Here's an excerpt:
