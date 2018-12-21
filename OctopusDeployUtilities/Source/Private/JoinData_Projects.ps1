@@ -73,18 +73,26 @@ function Update-ODUExportProjectAddIncludedLibraryVariableSets {
     $ProjectExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Projects' }).RestName)
     $IncludedLibraryVariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'LibraryVariableSets' }).RestName)
 
+    # included library variable sets are used across multiple projects; if you have many projects it becomes very
+    # file intensive (unnecessarily) to keep reading the same included library variable set, converting from JSON, etc.
+    # to add to each project.  so instead: read all the included library variable sets once, store as objects off of
+    # hashtable and add to each project as necessary
+    $IncludedLibraryVariableSetsCache = @{}
+    Get-ChildItem -Path $IncludedLibraryVariableSetExportFolder -Recurse | ForEach-Object {
+      $IncludedLibraryVariableSet = ConvertFrom-Json -InputObject (Get-Content -Path $_.FullName -Raw)
+      # use Id as key, will match
+      $IncludedLibraryVariableSetsCache.($IncludedLibraryVariableSet.Id) = $IncludedLibraryVariableSet
+    }
+
     Get-ChildItem -Path $ProjectExportFolder -Recurse | ForEach-Object {
       $ExportFileProject = $_.FullName
       $ExportItemProject = ConvertFrom-Json -InputObject (Get-Content -Path $ExportFileProject -Raw)
 
-      # loop through all IncludedLibraryVariableSetIds, get the IncludedLibraryVariableSet and add to array
+      # loop through all IncludedLibraryVariableSetIds, get the IncludedLibraryVariableSet from cache and add to array
       [object[]]$IncludedLibraryVariableSets = @()
       $ExportItemProject.IncludedLibraryVariableSetIds | ForEach-Object {
-        $IncludedLibraryVariableSetId = $_
-        $ExportItemIncludedLibraryVariableSet = ConvertFrom-Json -InputObject (Get-Content -Path (Join-Path -Path $IncludedLibraryVariableSetExportFolder -ChildPath ($IncludedLibraryVariableSetId + $JsonExtension)) -Raw)
-
         # add included library variable set to array
-        $IncludedLibraryVariableSets += $ExportItemIncludedLibraryVariableSet
+        $IncludedLibraryVariableSets += $IncludedLibraryVariableSetsCache.$_
       }
 
       # now add library variable set array to project
