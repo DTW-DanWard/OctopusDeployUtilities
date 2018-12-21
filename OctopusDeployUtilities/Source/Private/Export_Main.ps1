@@ -49,9 +49,13 @@ function Export-ODUOctopusDeployConfigMain {
       New-ODUExportJobInfo -ServerBaseUrl $ServerUrl -ApiKey $ApiKey -ApiCall $ApiCall -ParentFolder $CurrentExportRootFolder
     }
 
+    [int]$Throttle = Get-ODUConfigBackgroundJobsMax
+    # just in case a sneaky user manually edited the config file to go higher than 9
+    if ($Throttle -gt 9) { $Throttle = 9 }
+
     # process (export/save) the non-ItemIdOnly jobs, capturing ItemIdOnly Ids to process after
     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
-      $Jobs = $ExportJobDetails | Start-RSJob -Throttle 5 -ModulesToImport $ThisModuleName -ScriptBlock {
+      $Jobs = $ExportJobDetails | Start-RSJob -Throttle $Throttle -ModulesToImport $ThisModuleName -ScriptBlock {
         # values are returned, we'll fetch after jobs complete
         Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
       }
@@ -87,7 +91,7 @@ function Export-ODUOctopusDeployConfigMain {
 
     # process (export/save) the ItemIdOnly jobs
     if (($null -ne $ExportJobDetails) -and ($ExportJobDetails.Count -gt 0)) {
-      $Jobs = $ExportJobDetails | Start-RSJob -Throttle 5 -ModulesToImport $ThisModuleName -ScriptBlock {
+      $Jobs = $ExportJobDetails | Start-RSJob -Throttle $Throttle -ModulesToImport $ThisModuleName -ScriptBlock {
         # shouldn't be any values returned; even if there are, we ignore
         $null = Export-ODUJob -ExportJobDetail $_ -ItemIdOnlyReferencePropertyNames $Using:ItemIdOnlyIdsLookupKeys
       }

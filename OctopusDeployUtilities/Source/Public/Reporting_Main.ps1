@@ -139,7 +139,10 @@ function Read-ODUExportFromFiles {
     }
 
     $ExportData = [ordered]@{}
-    $Jobs = Get-ChildItem -Path $Path -Directory | Start-RSJob -ScriptBlock {
+    [int]$Throttle = Get-ODUConfigBackgroundJobsMax
+    # just in case a sneaky user manually edited the config file to go higher than 9
+    if ($Throttle -gt 9) { $Throttle = 9 }
+    $Jobs = Get-ChildItem -Path $Path -Directory | Start-RSJob -Throttle $Throttle -ScriptBlock {
       Param($Directory)
       # return results in hash table with Directory name and objects
       $Results = @{ Name = $Directory.Name }

@@ -5,5 +5,5 @@
     TextEditorPath = 'UNDEFINED'
     DiffViewerPath = 'UNDEFINED'
   }
-  BackgroundJobsMax = 1
+  BackgroundJobsMax = 5
 }

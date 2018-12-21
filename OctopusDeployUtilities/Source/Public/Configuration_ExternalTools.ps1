@@ -8,7 +8,6 @@ Set-StrictMode -Version Latest
 Gets path for diff viewer on local machine
 .DESCRIPTION
 Gets path for diff viewer on local machine
-This will be used with compare revision functionality (not implemented yet)
 .EXAMPLE
 Get-ODUConfigDiffViewer
 <path to diff viewer>
