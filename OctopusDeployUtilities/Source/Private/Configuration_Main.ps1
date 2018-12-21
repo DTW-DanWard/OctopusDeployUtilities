@@ -123,7 +123,7 @@ function Initialize-ODUConfig {
       TextEditorPath = $Undefined
       DiffViewerPath = $Undefined
     }
-    $Config.ParallelJobsCount = 5
+    $Config.BackgroundJobsMax = 5
 
     Write-Verbose "$($MyInvocation.MyCommand) :: Saving configuration with Save-ODUConfig"
     Save-ODUConfig -Config $Config

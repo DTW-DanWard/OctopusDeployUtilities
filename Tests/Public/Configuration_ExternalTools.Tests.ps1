@@ -37,7 +37,7 @@ Describe 'Configuration: external tools initialized' {
       DiffViewerPath = $DiffViewerPath
       TextEditorPath = $TextEditorPath
     }
-    ParallelJobsCount = 1
+    BackgroundJobsMax = 1
   }
   Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
 

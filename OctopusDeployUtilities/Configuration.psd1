@@ -5,5 +5,5 @@
     TextEditorPath = 'UNDEFINED'
     DiffViewerPath = 'UNDEFINED'
   }
-  ParallelJobsCount = 1
+  BackgroundJobsMax = 1
 }

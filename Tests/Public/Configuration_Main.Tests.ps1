@@ -35,7 +35,7 @@ ExternalTools = @{
   DiffViewerPath = 'UNDEFINED'
   TextEditorPath = 'UNDEFINED'
 }
-ParallelJobsCount = 1
+BackgroundJobsMax = 1
 }
 "@
   Set-Content -Path $ConfigFilePath -Value $ConfigString
@@ -48,7 +48,7 @@ ParallelJobsCount = 1
       DiffViewerPath = 'UNDEFINED'
       TextEditorPath = 'UNDEFINED'
     }
-    ParallelJobsCount = 1
+    BackgroundJobsMax = 1
   }
 
   function Confirm-ODUConfig { $true }

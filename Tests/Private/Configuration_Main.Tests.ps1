@@ -58,7 +58,7 @@ Describe 'Configuration: export root folder initialized' {
       DiffViewerPath = 'UNDEFINED'
       TextEditorPath = 'UNDEFINED'
     }
-    ParallelJobsCount = 1
+    BackgroundJobsMax = 1
   }
   Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
 
@@ -129,7 +129,7 @@ Describe 'Configuration: Octopus Server initialized' {
       DiffViewerPath = 'UNDEFINED'
       TextEditorPath = 'UNDEFINED'
     }
-    ParallelJobsCount = 1
+    BackgroundJobsMax = 1
   }
   Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
 
