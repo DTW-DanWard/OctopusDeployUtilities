@@ -61,6 +61,8 @@ function Get-ODURestApiTypeNames {
 Returns PSObjects with Octopus Deploy API call details
 .DESCRIPTION
 Returns PSObjects with Octopus Deploy API call details
+See this for more information: 
+https://github.com/DTW-DanWard/OctopusDeployUtilities/blob/master/docs/TypeDescription.md
 .EXAMPLE
 Get-ODUStandardExportRestApiCalls
 <returns info>

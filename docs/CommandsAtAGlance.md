@@ -1,6 +1,11 @@
 
 # Commands At A Glance
 
+Note: if you want addition information about any particular command, review the docs on this site and/or type this in PowerShell:
+```PowerShell
+C:\> Get-Help <Command> -Full
+```
+
 ## Table of Contents
 * [Installation](#installation)
 * [Configure black/white lists](#configure-black-and-white-lists)
@@ -12,26 +17,22 @@
 
 
 
-asdf
-
 ## Installation
 |Command|Purpose|Example|
 |---|---|---|
-|FILL_IN|FILL_IN|FILL_IN|
-|Set-ODUConfigExportRootFolder|FILL_IN|FILL_IN|
-|Get-ODUConfigExportRootFolder|FILL_IN|FILL_IN|
-|Add-ODUConfigOctopusServer|FILL_IN|FILL_IN|
-|Get-ODUConfigFilePath|FILL_IN|FILL_IN|
-|Update-ODUExportJoinData|FILL_IN|FILL_IN|
-|Get-ODUConfigBackgroundJobsMax|Gets max number of background jobs to use|Get-ODUConfigBackgroundJobsMax<BR> # returns 5|
+|Set-ODUConfigExportRootFolder|Sets root folder used for all exports.|Set-ODUConfigExportRootFolder c:\OctoExports|
+|Get-ODUConfigExportRootFolder|Gets root folder used for all exports.|Get-ODUConfigExportRootFolder|
+|Add-ODUConfigOctopusServer|Sets Octopus Server configuration (root url and API key).|Add-ODUConfigOctopusServer -Url https://MyOctoServer.octopus.app -ApiKey 'API-ABCDEFGH01234567890ABCDEFGH'|
+|Get-ODUConfigFilePath|Gets path to Octopus Deploy Utilities configuration file.|Get-ODUConfigFilePath|
+|Get-ODUConfigBackgroundJobsMax|Gets max number of background jobs to use|Get-ODUConfigBackgroundJobsMax<BR># returns 5|
 |Set-ODUConfigBackgroundJobsMax|Sets max number of background jobs to use|Set-ODUConfigBackgroundJobsMax 3|
 
 
 ## Configure Black and White Lists
 |Command|Purpose|Example|
 |---|---|---|
-|Get-ODURestApiTypeNames|FILL_IN|FILL_IN|
-|Get-ODUStandardExportRestApiCalls|FILL_IN|FILL_IN|
+|Get-ODURestApiTypeNames|Returns list of Type names used with Octopus Deploy REST API.|Get-ODURestApiTypeNames|
+|Get-ODUStandardExportRestApiCalls|Returns PSObjects with Octopus Deploy API call details.|Get-ODUStandardExportRestApiCalls|
 |Get-ODUConfigTypeBlacklist|FILL_IN|FILL_IN|
 |Get-ODUConfigTypeWhitelist|FILL_IN|FILL_IN|
 |Set-ODUConfigTypeBlacklist|FILL_IN|FILL_IN|
@@ -47,7 +48,7 @@ asdf
 |---|---|---|
 |oduexport|Runs a fresh export; alias of Export-ODUOctopusDeployConfig.|oduexport|
 |Export-ODUOctopusDeployConfig|Runs a fresh export.|Export-ODUOctopusDeployConfig|
-|Update-ODUExportJoinData|FILL_IN|FILL_IN|
+|Update-ODUExportJoinData|Runs data post-processing on a export folder.  Note: this is done automatically by the export process.|Update-ODUExportJoinData C:\OctoExports\MyOctoServer.octopus.app\20181213-183336|
 |Get-ODUExportLatestPath|Gets full path of most recent export.|Get-ODUExportLatestPath|
 |Get-ODUExportOlderPath|Gets full path of an export from *before* most recent.|Get-ODUExportOlderPath<BR># gets export full path from before most recent<BR>Get-ODUExportOlderPath 48<BR># gets export full path from first export that occurred more than 48 hours before the latest|
 
@@ -73,12 +74,11 @@ asdf
 ## Reporting
 |Command|Purpose|Example|
 |---|---|---|
-|oduobject|FILL_IN|FILL_IN|
-|Read-ODUExportFromFiles|FILL_IN|FILL_IN|
-|Test-ODUProjectDeployIISSite|FILL_IN|FILL_IN|
-|Test-ODUProjectDeployWindowsService|FILL_IN|FILL_IN|
-|Select-ODUProjectDeployActionProperty|FILL_IN|FILL_IN|
-
+|oduobject|Returns PSObject containing all values of an export.  If no path parameter returns latest.  Alias of Read-ODUExportFromFiles.|oduobject<BR># returns object with latest export<BR>oduobject C:\OctoExports\MyOctoServer.octopus.app\20181213-183336<BR># returns object with data for that path|
+|Read-ODUExportFromFiles|Returns PSObject containing all values of an export.|Read-ODUExportFromFiles|
+|Test-ODUProjectDeployIISSite|Returns true if Project contains at least one deploy steps for an IIS Site (Octopus.IIS).|Test-ODUProjectDeployIISSite $Project|
+|Test-ODUProjectDeployWindowsService|Returns true if Project contains at least one deploy steps for a Windows Service (Octopus.WindowsService).|Test-ODUProjectDeployWindowsService $Project|
+|Select-ODUProjectDeployActionProperty|Retrieves deploy action property from a project|Select-ODUProjectDeployActionProperty $Project 'Octopus.Action.Package.CustomInstallationDirectory'<BR>D:\Applications\TestService
 
 ## Variable Search
 |Command|Purpose|Example|
