@@ -102,7 +102,7 @@ You can also tell ODU the path to your diff viewer, allows you to open a diff vi
 ```PowerShell
 C:\> # set the diff viewer to Exam Diff Pro (my favorite diff viewer)
 C:\> Set-ODUConfigDiffViewer 'C:\Program Files\ExamDiff Pro\ExamDiff.exe'
-C:\> 
+C:\>
 C:\> # but KDiff3 is pretty sweet, too, so perhaps this is your option:
 C:\> Set-ODUConfigDiffViewer 'C:\Program Files (x86)\KDiff3\kdiff3.exe'
 ```
@@ -110,7 +110,7 @@ Once you've configured this you quickly open up your exports in a diff viewer to
 ```PowerShell
 C:\> # opens your diff viewer comparing the two most recent exports (most recent on right-side, of course)
 C:\> odudiff
-C:\> 
+C:\>
 C:\> # opens diff of most recent export and first export that is 48 hours older than the most recent export
 C:\> odudiff 48
 ```

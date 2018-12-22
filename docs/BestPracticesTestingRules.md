@@ -6,7 +6,7 @@ Use variables for deploy process
 
 PackageName
 ServiceName
-Displayname 
+Displayname
 
 
 clone from template
@@ -46,7 +46,7 @@ Create Octo template project with all settings
 Passwords
   if name match *Password*, *Pwd* - make sure IsSensitive
   Conversely, maybe you ought to check that all your password variables have Pwd extension
-  What about variables with no pwd and not secure? Perhaps rules based on length, 
+  What about variables with no pwd and not secure? Perhaps rules based on length,
 
 
 Global library variable sets:

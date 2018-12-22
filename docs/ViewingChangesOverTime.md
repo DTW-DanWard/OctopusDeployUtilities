@@ -20,10 +20,10 @@ If you configured the path to your diff viewer with `Set-ODUConfigDiffViewer` th
 ```PowerShell
 C:\> # opens your diff viewer comparing the two most recent exports (most recent on right-side, of course)
 C:\> odudiff
-C:\> 
+C:\>
 C:\> # opens diff of most recent export and first export that is 48 hours older than the most recent export
 C:\> odudiff 48
-C:\> 
+C:\>
 C:\> # opens diff of most recent export and first export that is 3 weeks older than the most recent export
 C:\> odudiff (24 * 7 * 3)
 C:\> # nice!

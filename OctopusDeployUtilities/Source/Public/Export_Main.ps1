@@ -48,17 +48,22 @@ function Export-ODUOctopusDeployConfig {
 
 <#
 .SYNOPSIS
-Processes a single ExportJobDetail - i.e. data from a single Url
+Processes a single ExportJobDetail - DO NOT USE THIS FUNCTION DIRECTLY
 .DESCRIPTION
-Processes a single ExportJobDetail:
+DO NOT USE THIS FUNCTION DIRECTLY - it is only public so that it can be processed by
+background jobs so it can run in parallel.  In general you should NOT be directly
+calling this function unless you plan on manually constructing the ExportJobDetail
+object, which is a lot of work.
+
+That said, this function processes a single ExportJobDetail:
  - fetches content for a single url;
  - captures ItemIdOnly value references;
  - filters propertes on the exported data;
  - saves data to file.
- Data might be 0, 1 or multiple items.
- Returns hashtable of ItemIdOnly reference values.  That is: if a property listed in
- ItemIdOnlyReferencePropertyNames is found on the object, the value for that property is
- captured and returned at the end of the function call.
+Data might be 0, 1 or multiple items.
+Returns hashtable of ItemIdOnly reference values.  That is: if a property listed in
+ItemIdOnlyReferencePropertyNames is found on the object, the value for that property is
+captured and returned at the end of the function call.
 .PARAMETER ExportJobDetail
 Information about the export: ApiCall info, Url, ApiKey to use in call, folder to save to
 .PARAMETER ItemIdOnlyReferencePropertyNames

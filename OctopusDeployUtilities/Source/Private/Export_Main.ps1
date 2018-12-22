@@ -7,17 +7,24 @@ Set-StrictMode -Version Latest
 .SYNOPSIS
 Main function controlling a standard export process
 .DESCRIPTION
-Main function controlling a standard export process
-Create.... asdf fill in here
+Main function controlling a standard export process:
+ - creates folder that will be the root for this export;
+ - creates item id lookup object;
+ - create job detail object(s) for each API to query;
+ - creates background jobs to process detail objects, aggregating item id lookups to process after;
+ - creates background jobs to process lookup ids;
+ - returns folder path.
 .EXAMPLE
 Export-ODUOctopusDeployConfigMain
-<...>
+<exports data into newly created folder>
 #>
 function Export-ODUOctopusDeployConfigMain {
   [CmdletBinding()]
   [OutputType([string])]
   param()
   process {
+    # this function has gotten a bit big and should be refactored...
+
     # get Octopus Server details now, pass into job creation
     $OctopusServer = Get-ODUConfigOctopusServer
     $ServerName = $OctopusServer.Name

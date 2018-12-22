@@ -4,7 +4,7 @@
 Here's the basic flow: when the Octopus Deploy Utilities (hereafter ODU) export is run it:
 * gets your server url and profile API key;
 * creates a folder with a datetime stamp for a name;
-* gets a list of API calls to make, possibly filtered based on your configured [type blacklist or whitelist](TypeWhiteListBlackListConfig.md); 
+* gets a list of API calls to make, possibly filtered based on your configured [type blacklist or whitelist](TypeWhiteListBlackListConfig.md);
 * for each API call:
   * creates a folder with the name matching the API name;
   * make 1 or more API calls to the server to fetch data;
@@ -48,24 +48,24 @@ The JSON for an exported Sensitive variable will look something like:
 
 
 ## How can I quickly find out what cmdlets come with Octopus Deploy Utilities?
-In PowerShell run: 
+In PowerShell run:
 ```PowerShell
 C:\> Get-Command -Module OctopusDeployUtilities
 ```
 
-To see aliases (shortcuts) that come with ODU type: 
+To see aliases (shortcuts) that come with ODU type:
 ```PowerShell
 C:\> Get-Alias odu*
 ```
 
-If you then want to see the help for an alias or cmdlet type: 
+If you then want to see the help for an alias or cmdlet type:
 ```PowerShell
 C:\> Get-Help <cmdlet name> -Full
 ```
 
 
 ## How do I get the latest full export path?  How can I view it in a text editor?
-To get the latest export folder path, run: 
+To get the latest export folder path, run:
 ```PowerShell
 C:\> Get-ODUExportLatestPath
 ```

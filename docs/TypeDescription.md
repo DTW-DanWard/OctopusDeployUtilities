@@ -5,7 +5,7 @@
 
 Octopus Deploy Utilities (ODU) use the Octopus Deploy REST API to export data.  The best way to learn about the API is to review the Swagger info on your server (url for your server/swaggerui/index.html) or on the [Octopus Deploy demo server](https://demo.octopus.com/swaggerui/index.html).
 
-Note: ODU does not use every possible call in the Swagger API list; there are a number of API calls that don't return any useful information, appear to still be under development, etc.  
+Note: ODU does not use every possible call in the Swagger API list; there are a number of API calls that don't return any useful information, appear to still be under development, etc.
 
 ## ODU API Call Information - Summary
 

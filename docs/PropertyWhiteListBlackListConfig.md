@@ -1,12 +1,12 @@
 
 Why filter
   smaller, cleaner exports list (remove Links)
-  remove 
+  remove
 
 Filtering properties:
-  Prevent diffs being thownn off - OctopusServerNodes:LastSeen
+  Prevent diffs being thown off - OctopusServerNodes:LastSeen
     SEE NOTES IN CODE
-  Remove Links from objects 
+  Remove Links from objects
   For all projects, this changed:
    Links
     "Logo": "/api/projects/Projects-22/logo?cb=2018.9.0"

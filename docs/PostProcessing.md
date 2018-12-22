@@ -97,7 +97,7 @@ Here are the steps to do that.
 C:\> # this runs a export (saving data to a new folder), doesn't do the post-processing on it and returns the path of the export
 C:\> $ExportPathNoJoin = oduexport -SkipJoinData -PassThru
 C:\> # now let's copy that export folder to a new folder
-C:\> $ExportPathJoin = $ExportPathNoJoin + '_Join' 
+C:\> $ExportPathJoin = $ExportPathNoJoin + '_Join'
 C:\> Copy-Item $ExportPathNoJoin $ExportPathJoin -Container -Recurse -Force
 C:\> # and run the post-processing on that new folder
 C:\> Update-ODUExportJoinData $ExportPathJoin

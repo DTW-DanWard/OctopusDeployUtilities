@@ -42,7 +42,7 @@ With Octopus Deploy Utilities you can do some **crazy stuff *really* easily**.
 ```PowerShell
 C:\> # get an object that has all the data from the latest export
 C:\> $Export = oduobject
-C:\> 
+C:\>
 C:\> # for that export, return all project-level variables *across all projects*, getting the names, values and scope
 C:\> $Export.Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
 C:\>
