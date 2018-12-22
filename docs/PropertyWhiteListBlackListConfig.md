@@ -4,7 +4,7 @@ Why filter
   remove
 
 Filtering properties:
-  Prevent diffs being thown off - OctopusServerNodes:LastSeen
+  Prevent diffs being thrown off - OctopusServerNodes:LastSeen
     SEE NOTES IN CODE
   Remove Links from objects
   For all projects, this changed:

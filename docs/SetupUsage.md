@@ -128,6 +128,11 @@ Filtering out certain property types is a good way to filter out pieces of data 
 
 Note: you should check out an export first to get a feel for the properties before starting to filter them.
 
+## Max Number of Background Jobs
+Certain processes (export, most notably) are run using multiple background jobs to complete more quickly.  The max number of background jobs can be configured with a value of 1 - 9; the default value is 5.  The value can be set or fetched with `Set-ODUConfigBackgroundJobsMax` and `Get-ODUConfigBackgroundJobsMax`, respectively.
+
+**NOTE:** setting this number to 9 **DOES NOT NECESSARILY** speed up your exports - in fact it probably will slow them down!  Testing on my machine shows that 5, the default, tends to be the sweet spot.
+
 
 ## How to Review All These Settings
 
@@ -135,9 +140,9 @@ There are two ways to review all these settings you've made:
 1. For every `Set-` function you called there's a corresponding `Get-` function.  For example: `Set-ODUConfigExportRootFolder` has `Get-ODUConfigExportRootFolder`.  You can find all these functions and more by typing:
 
 ```PowerShell
-C:\> # see all the main functions:
+C:\> # see the ODU public functions:
 C:\> Get-Command -Module OctopusDeployUtilities
-C:\> # see all the aliases (shortcuts) for these functions:
+C:\> # see the ODU aliases (shortcuts) that exist for some of the functions:
 C:\> Get-Alias odu*
 ```
 
