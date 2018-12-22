@@ -18,6 +18,8 @@ API Key for a specific user account to use for exports
 .EXAMPLE
 Add-ODUConfigOctopusServer -Url https://MyOctoServer.octopus.app -ApiKey 'API-ABCDEFGH01234567890ABCDEFGH'
 <validates then sets url and api key for Octo server>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Add-ODUConfigOctopusServer {
   [CmdletBinding()]
@@ -103,7 +105,9 @@ Returns export root folder path
 Returns export root folder path
 .EXAMPLE
 Get-ODUConfigExportRootFolder
-<export root folder path>
+c:\OctoExports
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUConfigExportRootFolder {
   [CmdletBinding()]
@@ -126,7 +130,9 @@ Gets path to configuration file
 Gets path to configuration file
 .EXAMPLE
 Get-ODUConfigFilePath
-<path to file Configuration.psd1>
+C:\Users\myaccount\AppData\Local\powershell\DTWConsulting.com\OctopusDeployUtilities\1.0.0\Configuration.psd1
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUConfigFilePath {
   [CmdletBinding()]
@@ -152,6 +158,8 @@ Path to export root folder
 .EXAMPLE
 Set-ODUConfigExportRootFolder -Path c:\OctoExports
 <sets root path for exports>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Set-ODUConfigExportRootFolder {
   [CmdletBinding()]

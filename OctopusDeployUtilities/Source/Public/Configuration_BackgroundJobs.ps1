@@ -14,6 +14,8 @@ is the sweet spot.
 .EXAMPLE
 Get-ODUConfigBackgroundJobsMax
 5
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUConfigBackgroundJobsMax {
   [CmdletBinding()]
@@ -42,6 +44,8 @@ is the sweet spot.
 Path to diff viewer
 .EXAMPLE
 Set-ODUConfigBackgroundJobsMax
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Set-ODUConfigBackgroundJobsMax {
   [CmdletBinding()]

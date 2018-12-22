@@ -14,6 +14,8 @@ If you copy & rename a folder it won't get returned unless it matches that forma
 .EXAMPLE
 Get-ODUExportLatestPath
 c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUExportLatestPath {
   [CmdletBinding()]
@@ -57,6 +59,8 @@ c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
 .EXAMPLE
 Get-ODUExportOlderPath 24
 c:\OctoExports\MyOctoServer.octopus.app\20181105-1132512
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUExportOlderPath {
   [CmdletBinding()]
@@ -113,6 +117,8 @@ Read-ODUExportFromFiles
 .EXAMPLE
 Read-ODUExportFromFiles c:\OctoExports\MyOctoServer.octopus.app\20181107-185919
 <returns PSObject with all exported data for that particular export folder>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Read-ODUExportFromFiles {
   [CmdletBinding()]

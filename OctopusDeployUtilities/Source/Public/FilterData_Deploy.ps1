@@ -15,6 +15,8 @@ Name of property to look for in deploy steps
 .EXAMPLE
 Select-ODUProjectDeployActionProperty $MyWebProject 'Octopus.Action.Package.CustomInstallationDirectoryShouldBePurgedBeforeDeployment'
 $true
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Select-ODUProjectDeployActionProperty {
   [CmdletBinding()]
@@ -68,6 +70,8 @@ $true
 .EXAMPLE
 Test-ODUProjectDeployIISSite $MyWinServiceProject
 $false
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Test-ODUProjectDeployIISSite {
   [CmdletBinding()]
@@ -100,6 +104,8 @@ $false
 .EXAMPLE
 Test-ODUProjectDeployWindowsService $MyWinServiceProject
 $true
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Test-ODUProjectDeployWindowsService {
   [CmdletBinding()]

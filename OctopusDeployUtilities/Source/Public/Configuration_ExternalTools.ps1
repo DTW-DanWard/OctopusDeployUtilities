@@ -11,6 +11,8 @@ Gets path for diff viewer on local machine
 .EXAMPLE
 Get-ODUConfigDiffViewer
 <path to diff viewer>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUConfigDiffViewer {
   [CmdletBinding()]
@@ -34,6 +36,8 @@ Gets path for text editor on local machine
 .EXAMPLE
 Get-ODUConfigTextEditor
 <path to text editor>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUConfigTextEditor {
   [CmdletBinding()]
@@ -59,6 +63,8 @@ Path to diff viewer
 .EXAMPLE
 Set-ODUConfigDiffViewer -Path 'C:\Program Files\ExamDiff Pro\ExamDiff.exe'
 <sets path to diff viewer>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Set-ODUConfigDiffViewer {
   [CmdletBinding()]
@@ -96,6 +102,8 @@ Path to text editor
 .EXAMPLE
 Set-ODUConfigTextEditor -Path ((Get-Command code.cmd).Source)
 <sets path for VS Code - if you have it installed>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Set-ODUConfigTextEditor {
   [CmdletBinding()]

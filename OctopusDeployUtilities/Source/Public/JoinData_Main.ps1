@@ -21,6 +21,8 @@ Full path to individual export
 Suppress status output
 .EXAMPLE
 Update-ODUExportJoinData
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Update-ODUExportJoinData {
   [CmdletBinding()]

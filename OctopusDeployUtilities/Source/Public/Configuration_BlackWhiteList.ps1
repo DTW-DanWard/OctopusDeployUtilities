@@ -11,6 +11,8 @@ Gets values for property black list
 .EXAMPLE
 Get-ODUConfigPropertyBlacklist
 @{ LibraryVariableSets = @('ScopeValues'); Projects = @('ScopeValues'); Variables = @('ScopeValues') }
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUConfigPropertyBlacklist {
   [CmdletBinding()]
@@ -43,6 +45,8 @@ Gets values for property white list
 Get-ODUConfigPropertyWhitelist
 $null
 # by default, blacklist is set with values, whitelist is not
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUConfigPropertyWhitelist {
   [CmdletBinding()]
@@ -88,6 +92,8 @@ ServerConfiguration
 ServerStatus-Extensions
 ServerStatus-SystemInfo
 Tasks
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUConfigTypeBlacklist {
   [CmdletBinding()]
@@ -120,6 +126,8 @@ Gets values for type white list
 Get-ODUConfigTypeWhitelist
 $null
 # by default, blacklist is set with values, whitelist is not
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUConfigTypeWhitelist {
   [CmdletBinding()]
@@ -153,6 +161,8 @@ Hashtable of types|prperty names to not export
 .EXAMPLE
 Set-ODUConfigPropertyBlacklist -TypePropertyListLookup @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
 <sets property black list - don't export those particular properties on those types>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Set-ODUConfigPropertyBlacklist {
   [CmdletBinding()]
@@ -197,6 +207,8 @@ Hashtable of types|prperty names to not export
 .EXAMPLE
 Set-ODUConfigPropertyWhitelist -TypePropertyListLookup @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
 <sets property white list - for those types ONLY export those particular properties, which is a small list of content to fetch>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Set-ODUConfigPropertyWhitelist {
   [CmdletBinding()]
@@ -241,6 +253,8 @@ List of names of types to not export
 .EXAMPLE
 Set-ODUConfigTypeBlacklist -List @('Deployments', 'Events', 'Interruptions')
 <sets type black list to those values>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Set-ODUConfigTypeBlacklist {
   [CmdletBinding()]
@@ -285,6 +299,8 @@ List of names of types to ONLY export
 .EXAMPLE
 Set-ODUConfigTypeWhitelist -List @('Deployments', 'Events', 'Interruptions')
 <sets type white list to those values>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Set-ODUConfigTypeWhitelist {
   [CmdletBinding()]

@@ -42,6 +42,8 @@ BuiltInRepository
 ExternalSecurityGroups
 FeaturesConfiguration
 ...
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODURestApiTypeNames {
   [CmdletBinding()]
@@ -66,6 +68,8 @@ https://github.com/DTW-DanWard/OctopusDeployUtilities/blob/master/docs/TypeDescr
 .EXAMPLE
 Get-ODUStandardExportRestApiCalls
 <returns info>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Get-ODUStandardExportRestApiCalls {
   [CmdletBinding()]

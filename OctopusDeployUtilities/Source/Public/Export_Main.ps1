@@ -19,6 +19,8 @@ Returns string path to export; also suppresses status output (sets Quiet = $true
 .EXAMPLE
 Export-ODUOctopusDeployConfig
 asdf
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Export-ODUOctopusDeployConfig {
   [CmdletBinding()]
@@ -71,6 +73,8 @@ ItemIdOnly property names to look for in data that is retrieved; return values f
 .EXAMPLE
 Export-ODUJob
 <...>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Export-ODUJob {
   [CmdletBinding()]

@@ -23,6 +23,8 @@ Compare-ODUExportMostRecentWithOlder
 Compare-ODUExportMostRecentWithOlder 24
 <opens the most recent export along with the first export older that is more than 24 hours
 older than the most recent export in your diff viewer>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Compare-ODUExportMostRecentWithOlder {
   [CmdletBinding()]
@@ -67,6 +69,8 @@ Open-ODUExportTextEditor
 .EXAMPLE
 odutext
 <opens latest export in text editor>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Open-ODUExportTextEditor {
   [CmdletBinding()]
