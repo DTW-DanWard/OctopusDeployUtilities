@@ -10,7 +10,7 @@ Gets values for property black list
 Gets values for property black list
 .EXAMPLE
 Get-ODUConfigPropertyBlacklist
-<property black list - could be null>
+@{ LibraryVariableSets = @('ScopeValues'); Projects = @('ScopeValues'); Variables = @('ScopeValues') }
 #>
 function Get-ODUConfigPropertyBlacklist {
   [CmdletBinding()]
@@ -41,7 +41,8 @@ Gets values for property white list
 Gets values for property white list
 .EXAMPLE
 Get-ODUConfigPropertyWhitelist
-<property white list - could be null>
+$null
+# by default, blacklist is set with values, whitelist is not
 #>
 function Get-ODUConfigPropertyWhitelist {
   [CmdletBinding()]
@@ -72,7 +73,21 @@ Gets values for type black list
 Gets values for type black list
 .EXAMPLE
 Get-ODUConfigTypeBlacklist
-<type black list - could be null>
+CommunityActionTemplates
+Deployments
+Events
+Interruptions
+LetsEncrypt
+Licenses
+MaintenanceConfiguration
+OctopusServerNodes
+Packages
+Releases
+Reporting
+ServerConfiguration
+ServerStatus-Extensions
+ServerStatus-SystemInfo
+Tasks
 #>
 function Get-ODUConfigTypeBlacklist {
   [CmdletBinding()]
@@ -103,7 +118,8 @@ Gets values for type white list
 Gets values for type white list
 .EXAMPLE
 Get-ODUConfigTypeWhitelist
-<type white list - could be null>
+$null
+# by default, blacklist is set with values, whitelist is not
 #>
 function Get-ODUConfigTypeWhitelist {
   [CmdletBinding()]
@@ -179,8 +195,8 @@ Sets value for property white list
 .PARAMETER TypePropertyListLookup
 Hashtable of types|prperty names to not export
 .EXAMPLE
-Set-ODUConfigPropertyBlacklist -TypePropertyListLookup @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
-<sets property black list - ONLY export those particular properties on those types>
+Set-ODUConfigPropertyWhitelist -TypePropertyListLookup @{ Licenses = @('MaintenanceExpiresIn'); Machines = @('HasLatestCalamari', 'HealthStatus', 'StatusSummary') }
+<sets property white list - for those types ONLY export those particular properties, which is a small list of content to fetch>
 #>
 function Set-ODUConfigPropertyWhitelist {
   [CmdletBinding()]
