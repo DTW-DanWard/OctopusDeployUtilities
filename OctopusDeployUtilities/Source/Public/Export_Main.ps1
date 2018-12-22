@@ -18,7 +18,7 @@ Skip running join data process (id->name lookup, add deploy process to projects,
 Returns string path to export; also suppresses status output (sets Quiet = $true)
 .EXAMPLE
 Export-ODUOctopusDeployConfig
-asdf
+<create datetime stamp folder, exports all content to it and post-processes it>
 .LINK
 https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
