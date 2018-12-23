@@ -1,7 +1,7 @@
 
 # Octopus Deploy Utilities
 
-Utilities to help you export, search, measure, see changes over time and unit test your Octopus Deploy configuration.  All your configuration data in local JSON files!
+Utilities to help you export, search, measure, see changes over time and unit test your Octopus Deploy configuration.  All your configuration data in local JSON files.  Test your deployments *before* production!
 
 
 ## Why Export Your Data?
