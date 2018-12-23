@@ -9,7 +9,7 @@ Note: ODU does not use every possible call in the Swagger API list; there are a 
 
 ## ODU API Call Information - Summary
 
-So, what calls does ODU use and how does it use them?  Run this in PowerShell:
+So, what calls does ODU use and how does it use them?  Run this in PowerShell or check out the table below:
 ```PowerShell
 C:\> Get-ODUStandardExportRestApiCalls | Select RestName, RestMethod, ApiFetchType, FileNamePropertyName
 ```

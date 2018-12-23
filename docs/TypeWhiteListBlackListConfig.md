@@ -3,7 +3,7 @@
 
 There are a lot of different data types that can be exported from Octopus Deploy.  But, believe me, you probably don't want to export **all** of them.  Why?
 * Some types just aren't important.
-* Some are huge, like Events, Deployments, Releases and ServerTasks.  Do you want your export to take a few minutes to run or 30+ minutes?
+* Some are huge, like Events, Deployments, Releases and ServerTasks.  Do you want your export to run for a few minutes or 30+ minutes?
 * Some you might not be able to access to, especially if you are using a Octopus Deploy-hosted cloud instance.
 
 So which types do you want to blacklist or whitelist?  Check out the [type description](TypeDescription.md) information but for now try an export with the default values.  **By default Octopus Deploy Utilities does not export every type - just a subset!**  Large types like Events, Deployments, etc. are in the default blacklist along with types that are unimportant and likely to cause an error with a cloud-hosted instance.
@@ -46,11 +46,13 @@ C:\> # update the blacklist in configuration
 C:\> Set-ODUConfigTypeBlacklist $BL
 C:\> # you could now test with: oduexport
 C:\> oduexport
+C:\> # <ignoring output>
 C:\>
 C:\> # now let's export ONLY Environments and Machines via whitelist
 C:\> Set-ODUConfigTypeWhitelist @('Environments','Machines')
 C:\> # and test again with: oduexport
 C:\> oduexport
+C:\> # <ignoring output>
 C:\> # that ran fast! so little to export
 C:\>
 C:\> # now let's remove Feeds from the original list and set the blacklist back
@@ -58,7 +60,7 @@ C:\> $BL = $BL | ? { $_ -ne 'Feeds' }
 C:\> Set-ODUConfigTypeBlacklist $BL
 C:\>
 C:\> # what happens if you lost that variable $BL and want to set back to the default?
-C:\> # or, put another way, you just want to set a full array of values:
+C:\> # or, put another way, you just want to set a specific array of values:
 C:\> Set-ODUConfigTypeBlacklist @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'LetsEncrypt', 'Licenses', 'MaintenanceConfiguration', 'OctopusServerNodes', 'Packages', 'Releases', 'Reporting', 'ServerConfiguration', 'ServerStatus-Extensions', 'ServerStatus-SystemInfo', 'Tasks')
 C:\>
 ```
