@@ -65,4 +65,5 @@ C:\> $HT = @{
 C:\>
 C:\> Set-ODUConfigPropertyBlacklist $HT
 C:\> # note: there could be more properties than these, these are just the ones I've noticed
+C:\> # also: if you want to add the ScopeValue entries to this hashtable, go ahead
 ```
