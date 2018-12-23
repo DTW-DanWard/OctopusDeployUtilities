@@ -1,7 +1,7 @@
 
-# ODU Property Export Black List / White List
+# ODU Property Export BlackList / WhiteList
 
-Octopus Deploy Utilities also supports black lists and white lists.  What does that mean?  **For a particular type** you can specify whether you want all properties to be stored (no blacklist or whitelist), only certain properties to be stored (whitelist) or all properties except a certain list (blacklist).  *Why* would you want to configure this?  Turns out there are a few good reasons.
+Octopus Deploy Utilities also supports blacklists and whitelists.  What does that mean?  **For a particular type** you can specify whether you want all properties to be stored (no blacklist or whitelist), only certain properties to be stored (whitelist) or all properties except a certain list (blacklist).  *Why* would you want to configure this?  Turns out there are a few good reasons.
 
 ## Smaller, Cleaner Exports
 Depending on what you are looking for in an export, Octopus Deploy's REST API might delivery more than you want.  Simplest example: every object that is exported comes with a `Links` property.  This property contains pre-constructed urls that allow you to programmatically query the REST API to bring back additional data about that particular object.  With ODU, you are checking out the exports as a whole and not interrogating the API yourself, so Links is probably not important to you.
@@ -32,9 +32,9 @@ Turns out there are a lot of properties that might change over time and you don'
 
 Removing these unimportant but changing values will help simplify your diffs.
 
-## How to Set the Property Black List or White List
+## How to Set the Property BlackList or WhiteList
 
-You do it with `Get-ODUConfigPropertyBlacklist` and `Set-ODUConfigPropertyBlacklist`, as you might expect, but the structure is more complicated than the type black list and white list (which was a simple array).  For properties ODU uses a single hashtable where each key on the hashtable is the specific name of a type and each value on the hash table is an array listing the properties for that type.
+You do it with `Get-ODUConfigPropertyBlacklist` and `Set-ODUConfigPropertyBlacklist`, as you might expect, but the structure is more complicated than the type blacklist and whitelist (which was a simple array).  For properties ODU uses a single hashtable where each key on the hashtable is the specific name of a type and each value on the hash table is an array listing the properties for that type.
 
 Here's a property blacklist example that filters out ScopeValues from the aforementioned types LibraryVariableSets, Projects, Variables:
 ```PowerShell
@@ -47,7 +47,7 @@ C:\>
 C:\> Set-ODUConfigPropertyBlacklist $HT
 ```
 
-`The above example is the default property black list setup for ODU.  If you ever want to reset to the defaults, use the code above!`
+`The above example is the default property blacklist setup for ODU.  If you ever want to reset to the defaults, use the code above!`
 
 
 ## Filtering Out Properties That Change Over Time
