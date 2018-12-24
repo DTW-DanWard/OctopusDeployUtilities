@@ -18,19 +18,9 @@ Once you automate exports they can pile up.  If no changes exist between two exp
 Function to export/compare two releases for a particular project to identify differences.
 
 
-## Run Exports in Parallel
-
-Run export process requests in parallel.  Will save significant time downloading types with many entries (Deployments, Events, Releases, Tasks, etc.)
-
-
 ## Support for Multiple Server Configurations in Config System
 
 Current config system only supports one server configuration.  Supporting multiple configurations allows you to exports from multiple servers and/or have different configurations for a single instance (export different sets of types - full export vs. partial export).
-
-
-## PowerShell Command Line Type Output
-
-PowerShell PS1XML type output at the command line.
 
 
 ## Docker Container
