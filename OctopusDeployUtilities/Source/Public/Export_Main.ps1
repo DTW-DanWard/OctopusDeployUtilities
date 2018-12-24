@@ -108,7 +108,7 @@ function Export-ODUJob {
         $ExportItemsToProcess | ForEach-Object {
           $ExportItem = $_
           # inspect exported item for ItemIdOnly id references
-          $ItemIdOnlyReferenceValuesOnItem = Get-ODUItemIdOnlyReferenceValues -ExportJobDetail $ExportJobDetail -ExportItem $ExportItem -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames
+          $ItemIdOnlyReferenceValuesOnItem = Get-ODUItemIdOnlyReferenceValue -ExportJobDetail $ExportJobDetail -ExportItem $ExportItem -ItemIdOnlyReferencePropertyNames $ItemIdOnlyReferencePropertyNames
           # transfer values to main hash table
           $ItemIdOnlyReferenceValuesOnItem.Keys | ForEach-Object {
             if (! $ItemIdOnlyReferenceValues.Contains($_)) { $ItemIdOnlyReferenceValues.$_ = @() }

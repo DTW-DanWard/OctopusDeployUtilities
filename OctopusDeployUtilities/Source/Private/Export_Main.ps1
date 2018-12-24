@@ -123,7 +123,7 @@ function Export-ODUOctopusDeployConfigMain {
 #endregion
 
 
-#region Function: Get-ODUItemIdOnlyReferenceValues
+#region Function: Get-ODUItemIdOnlyReferenceValue
 
 <#
 .SYNOPSIS
@@ -137,10 +137,10 @@ Property names to look for in exported item, find values for these properties an
 .PARAMETER ExportItem
 Exported data item to review
 .EXAMPLE
-Get-ODUItemIdOnlyReferenceValues
+Get-ODUItemIdOnlyReferenceValue
 <returns subset of rest api call objects>
 #>
-function Get-ODUItemIdOnlyReferenceValues {
+function Get-ODUItemIdOnlyReferenceValue {
   [CmdletBinding()]
   [OutputType([hashtable])]
   param(
