@@ -42,7 +42,7 @@ function Add-ODUConfigOctopusServer {
     if ($Url.EndsWith('/')) { $Url = $Url.Substring(0, $Url.Length - 1) }
 
     # quick validation of Url / API key; use machines roles api to test (simple and fast)
-    try { Test-ODUOctopusServerCredentials -ServerDomainName $Url -ApiKey $ApiKey } catch { throw $_ }
+    try { Test-ODUOctopusServerCredential -ServerDomainName $Url -ApiKey $ApiKey } catch { throw $_ }
 
     #region Get default Name from Url - with explanation
     # future versions will support multiple Octopus Server configurations, at that time having a

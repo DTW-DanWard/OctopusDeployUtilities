@@ -50,22 +50,22 @@ function Invoke-ODURestMethod {
 #endregion
 
 
-#region Function: Invoke-ODURestMethod
+#region Function: Test-ODUOctopusServerCredential
 
 <#
 .SYNOPSIS
-Calls url with API key in header and returns results
+Calls simple, safe test url and discards results, if url or ApiKey is incorrect, throws error
 .DESCRIPTION
-Calls url with API key in header and returns results
+Calls simple, safe test url and discards results, if url or ApiKey is incorrect, throws error
 .PARAMETER ServerDomainName
 Protocol and domain name
 .PARAMETER ApiKey
 Unencrypted ApiKey to pass with REST API call
 .EXAMPLE
-Invoke-ODURestMethod -Url https://MyOctoServer.octopus.app -ApiKey 'API-ABCDEFGH01234567890ABCDEFGH'
-<calls Url passing in ApiKey and returns results>
+Test-ODUOctopusServerCredential -Url https://MyOctoServer.octopus.app -ApiKey 'API-ABCDEFGH01234567890ABCDEFGH'
+<no results, those values are valid>
 #>
-function Test-ODUOctopusServerCredentials {
+function Test-ODUOctopusServerCredential {
   #region Function parameters
   [CmdletBinding()]
   [OutputType([string])]
