@@ -19,7 +19,7 @@
   Copyright         = '(c) Dan Ward. All rights reserved.'
 
   # Description of the functionality provided by this module
-  Description       = 'Octopus Deploy Utilities: export, search, compare and unit test your setup'
+  Description       = 'Octopus Deploy Utilities: export, search, see changes to your system over time AND unit test your Octopus Deploy setup'
 
   # Minimum version of the PowerShell engine required by this module
   PowerShellVersion = '3.0'
