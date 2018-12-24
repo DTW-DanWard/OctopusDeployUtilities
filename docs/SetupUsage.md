@@ -46,6 +46,8 @@ Installing it has the additional benefit that you never need to manually import 
 
 The other option is you can clone or download the module from GitHub.  In that case you need to manually import the module each time you use it (or add the import statement to your $profile).
 ```PowerShell
+C:\> # you only need to Import-Module if you didn't Install it
+C:\> # if you ran Install-Module skip this
 C:\> Import-Module <path to where you cloned or downloaded>\OctopusDeployUtilities\OctopusDeployUtilities.psd1
 ```
 
