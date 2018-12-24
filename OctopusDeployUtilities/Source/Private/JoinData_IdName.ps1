@@ -30,7 +30,7 @@ function Get-ODUIdToNameLookup {
     $IdToNameLookup = @{ }
     # when fetching lookup data, drive off rest api call info (instead of existing folders) as need Name field
     # note: there's no lookup data for Simple rest api calls, so skip them
-    Get-ODUStandardExportRestApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_Simple } | ForEach-Object {
+    Get-ODUStandardExportRestApiCall | Where-Object { $_.ApiFetchType -ne $ApiFetchType_Simple } | ForEach-Object {
       $RestApiCall = $_
       $ItemExportFolder = Join-Path -Path $Path -ChildPath ($RestApiCall.RestName)
       Get-ChildItem -Path $ItemExportFolder -File -Recurse | ForEach-Object {

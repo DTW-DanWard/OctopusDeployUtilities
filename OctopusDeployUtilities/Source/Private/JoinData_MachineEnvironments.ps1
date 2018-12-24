@@ -1,7 +1,7 @@
 
 Set-StrictMode -Version Latest
 
-#region Function: Update-ODUExportAddMachinesToEnvironments
+#region Function: Update-ODUExportAddMachinesToEnvironment
 
 <#
 .SYNOPSIS
@@ -11,10 +11,10 @@ Adds machine names to environments
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportAddMachinesToEnvironments -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
+Update-ODUExportAddMachinesToEnvironment -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds machine names to environments>
 #>
-function Update-ODUExportAddMachinesToEnvironments {
+function Update-ODUExportAddMachinesToEnvironment {
   #region Function parameters
   [CmdletBinding()]
   [OutputType([string])]
@@ -28,7 +28,7 @@ function Update-ODUExportAddMachinesToEnvironments {
     if ($false -eq (Test-Path -Path $Path)) { throw "No export found at: $Path" }
 
     # get machine info first
-    $RestApiCall = Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Machines' }
+    $RestApiCall = Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'Machines' }
     $ItemExportFolder = Join-Path -Path $Path -ChildPath ($RestApiCall.RestName)
     $Machines = Get-ChildItem -Path $ItemExportFolder -Recurse | ForEach-Object {
       $ExportItem = ConvertFrom-Json -InputObject (Get-Content -Path ($_.FullName) -Raw)
@@ -42,7 +42,7 @@ function Update-ODUExportAddMachinesToEnvironments {
     $Machines = $Machines | Sort-Object -Property Name
 
     # now get environments; check each environment and add machine id/name values
-    $RestApiCall = Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Environments' }
+    $RestApiCall = Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'Environments' }
     $ItemExportFolder = Join-Path -Path $Path -ChildPath ($RestApiCall.RestName)
     Get-ChildItem -Path $ItemExportFolder -Recurse | ForEach-Object {
       $ExportFile = $_.FullName

@@ -1,7 +1,7 @@
 
 Set-StrictMode -Version Latest
 
-#region Function: Update-ODUExportAddScopeNamesToVariables
+#region Function: Update-ODUExportAddScopeNamesToVariable
 
 <#
 .SYNOPSIS
@@ -11,10 +11,10 @@ Adds scope names to variables
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportAddScopeNamesToVariables -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
+Update-ODUExportAddScopeNamesToVariable -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds scope names to variables>
 #>
-function Update-ODUExportAddScopeNamesToVariables {
+function Update-ODUExportAddScopeNamesToVariable {
   #region Function parameters
   [CmdletBinding()]
   [OutputType([string])]
@@ -32,7 +32,7 @@ function Update-ODUExportAddScopeNamesToVariables {
     $IdToNameLookup = ConvertFrom-Json -InputObject (Get-Content -Path $LookupPath -Raw)
 
     # for this we only process the Variables data
-    $RestApiCall = Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Variables' }
+    $RestApiCall = Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'Variables' }
     $ItemExportFolder = Join-Path -Path $Path -ChildPath ($RestApiCall.RestName)
 
     if (($null -ne $RestApiCall.ExternalIdToResolvePropertyName) -and ($RestApiCall.ExternalIdToResolvePropertyName.Count -gt 0)) {

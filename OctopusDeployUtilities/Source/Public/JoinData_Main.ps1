@@ -43,21 +43,21 @@ function Update-ODUExportJoinData {
 
     # for each exported item, look for external Id values in it, lookup the external name for the external id and add to exported item
     if (! $Quiet) { Write-Output "  Adding external names for ids in exported data" }
-    Update-ODUExportAddExternalNamesForIds $Path
+    Update-ODUExportAddExternalNameForId $Path
 
     # environments: add machines
     if (! $Quiet) { Write-Output "  Adding machine information to environments" }
-    Update-ODUExportAddMachinesToEnvironments $Path
+    Update-ODUExportAddMachinesToEnvironment $Path
 
     # exported variables (project-level and included variableset-level): add scope names and breadth
     # this must come before adding variables to included variable sets and before adding any variables to projects
     if (! $Quiet) { Write-Output "  Adding scope names to variables" }
-    Update-ODUExportAddScopeNamesToVariables $Path
+    Update-ODUExportAddScopeNamesToVariable $Path
 
     # included variable sets: add actual variables
     # this must come before adding included library variable sets to projects
     if (! $Quiet) { Write-Output "  Adding variables to included variable sets" }
-    Update-ODUExportIncludedVariableSetsAddVariables $Path
+    Update-ODUExportIncludedVariableSetsAddVariable $Path
 
     # add deployment processes to projects
     if (! $Quiet) { Write-Output "  Adding deployment processes to projects" }
@@ -69,7 +69,7 @@ function Update-ODUExportJoinData {
 
     # add included library variable sets to projects
     if (! $Quiet) { Write-Output "  Adding included library variable sets to projects" }
-    Update-ODUExportProjectAddIncludedLibraryVariableSets $Path
+    Update-ODUExportProjectAddIncludedLibraryVariableSet $Path
 
     if (! $Quiet) { Write-Output "  Post-processing complete" }
   }

@@ -107,7 +107,7 @@ C:\> # if you don't want the latest export but want an older one, you can pass i
 C:\> oduobject C:\OctoExports\MyOctoServer.octopus.app\20181210-103023
 ```
 
-Please note that last example: if you don't want the latest export but want an older one, you can pass in a path to the export folder.  Also note: oduobject is an alias for Read-ODUExportFromFiles.
+Please note that last example: if you don't want the latest export but want an older one, you can pass in a path to the export folder.  Also note: oduobject is an alias for Read-ODUExportFromFile.
 
 How does oduobject work? For each sub-folder (say Environments, Machines, Projects, etc.) in an export, it gathers all the JSON files *under* that sub-folder, converts them to objects and put them in an array under a property with the same name as the folder.  So environment JSON files under Environments folder get converted to objects and then are stored under an Environments property.  Pretty simple!  And this is why the NoteProperty members on the object match up with the folders in an [export](SampleExport.md).
 

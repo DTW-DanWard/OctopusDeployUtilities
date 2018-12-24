@@ -11,7 +11,7 @@ Note: ODU does not use every possible call in the Swagger API list; there are a 
 
 So, what calls does ODU use and how does it use them?  Run this in PowerShell or check out the table below:
 ```PowerShell
-C:\> Get-ODUStandardExportRestApiCalls | Select RestName, RestMethod, ApiFetchType, FileNamePropertyName
+C:\> Get-ODUStandardExportRestApiCall | Select RestName, RestMethod, ApiFetchType, FileNamePropertyName
 ```
 And you'll see the table below.  There are 4 pieces of information for each item listed here:
 1. RestName: in general this matches the Swagger API name and is the name of the folder created for storing data for non-'Simple' types (more below).  It is also the value used when configuring the Type blacklist or whitelist.

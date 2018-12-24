@@ -25,7 +25,7 @@ function Find-ODUInvalidRestApiTypeName {
     [string[]]$TypeName
   )
   process {
-    $ValidTypeNames = Get-ODURestApiTypeNames
+    $ValidTypeNames = Get-ODURestApiTypeName
     $TypeName | ForEach-Object {
       if ($_ -notin $ValidTypeNames) {
         throw "Not a valid REST API Type name: $_"
@@ -64,7 +64,7 @@ function Get-ODUFilteredExportRestApiCall {
     }
 
     # get all call info
-    [object[]]$ApiCallInfo = Get-ODUStandardExportRestApiCalls
+    [object[]]$ApiCallInfo = Get-ODUStandardExportRestApiCall
     # filter as necessary
     if ($null -ne $TypeWhiteList -and $TypeWhiteList.Count -gt 0) {
       Write-Verbose "$($MyInvocation.MyCommand) :: Filtering RestApiCalls based on Type whitelist: $TypeWhiteList"
@@ -89,7 +89,7 @@ function Get-ODUFilteredExportRestApiCall {
 Creates single PSObject with Octopus Deploy REST API call information
 .DESCRIPTION
 Creates single PSObject with Octopus Deploy REST API call information
-Helper function for Get-ODUStandardExportRestApiCalls
+Helper function for Get-ODUStandardExportRestApiCall
 .PARAMETER RestName
 Proper name of REST method
 .PARAMETER RestMethod
@@ -170,7 +170,7 @@ function Test-ODUValidateRestApiTypeName {
     [string[]]$TypeName
   )
   process {
-    $ValidTypeNames = Get-ODURestApiTypeNames
+    $ValidTypeNames = Get-ODURestApiTypeName
     $null -eq ($TypeName | Where-Object { $_ -notin $ValidTypeNames })
   }
 }

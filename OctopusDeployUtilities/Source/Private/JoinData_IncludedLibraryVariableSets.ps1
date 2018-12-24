@@ -1,7 +1,7 @@
 
 Set-StrictMode -Version Latest
 
-#region Function: Update-ODUExportIncludedVariableSetsAddVariables
+#region Function: Update-ODUExportIncludedVariableSetsAddVariable
 
 <#
 .SYNOPSIS
@@ -11,10 +11,10 @@ Adds variables to included variable sets
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportIncludedVariableSetsAddVariables -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
+Update-ODUExportIncludedVariableSetsAddVariable -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds variables to included variable sets>
 #>
-function Update-ODUExportIncludedVariableSetsAddVariables {
+function Update-ODUExportIncludedVariableSetsAddVariable {
   #region Function parameters
   [CmdletBinding()]
   [OutputType([string])]
@@ -28,8 +28,8 @@ function Update-ODUExportIncludedVariableSetsAddVariables {
     if ($false -eq (Test-Path -Path $Path)) { throw "No export found at: $Path" }
 
     # get folder paths
-    $IncludedLibraryVariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'LibraryVariableSets' }).RestName)
-    $VariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Variables' }).RestName)
+    $IncludedLibraryVariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'LibraryVariableSets' }).RestName)
+    $VariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'Variables' }).RestName)
 
     Get-ChildItem -Path $IncludedLibraryVariableSetExportFolder -Recurse | ForEach-Object {
       $ExportFileIncludedLibraryVariableSet = $_.FullName

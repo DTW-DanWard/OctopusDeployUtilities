@@ -26,7 +26,7 @@ ItemIdOnlyReferencePropertyName   for items fetched by ItemIdOnly, this is the n
 #endregion
 
 
-#region Function: Get-ODURestApiTypeNames
+#region Function: Get-ODURestApiTypeName
 
 <#
 .SYNOPSIS
@@ -36,7 +36,7 @@ Returns list of Type names used with Octopus Deploy REST API
 These are the available Type names that can be used with Type and Property
 blacklist and whitelist
 .EXAMPLE
-Get-ODURestApiTypeNames
+Get-ODURestApiTypeName
 Authentication
 BuiltInRepository
 ExternalSecurityGroups
@@ -45,18 +45,18 @@ FeaturesConfiguration
 .LINK
 https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
-function Get-ODURestApiTypeNames {
+function Get-ODURestApiTypeName {
   [CmdletBinding()]
   [OutputType([System.Array])]
   param()
   process {
-    (Get-ODUStandardExportRestApiCalls).RestName | Sort-Object
+    (Get-ODUStandardExportRestApiCall).RestName | Sort-Object
   }
 }
 #endregion
 
 
-#region Function: Get-ODUStandardExportRestApiCalls
+#region Function: Get-ODUStandardExportRestApiCall
 
 <#
 .SYNOPSIS
@@ -66,12 +66,12 @@ Returns PSObjects with Octopus Deploy API call details
 See this for more information:
 https://github.com/DTW-DanWard/OctopusDeployUtilities/blob/master/docs/TypeDescription.md
 .EXAMPLE
-Get-ODUStandardExportRestApiCalls
+Get-ODUStandardExportRestApiCall
 <returns info>
 .LINK
 https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
-function Get-ODUStandardExportRestApiCalls {
+function Get-ODUStandardExportRestApiCall {
   [CmdletBinding()]
   param()
   process {

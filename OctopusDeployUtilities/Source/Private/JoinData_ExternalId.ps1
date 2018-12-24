@@ -44,7 +44,7 @@ function Get-ODUIdToNameLookupValue {
 #endregion
 
 
-#region Function: Update-ODUExportAddExternalNamesForIds
+#region Function: Update-ODUExportAddExternalNameForId
 
 <#
 .SYNOPSIS
@@ -54,10 +54,10 @@ Scans each exported item, finds external Id references and adds property to item
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportAddExternalNamesForIds -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
+Update-ODUExportAddExternalNameForId -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds properties to exported items>
 #>
-function Update-ODUExportAddExternalNamesForIds {
+function Update-ODUExportAddExternalNameForId {
   #region Function parameters
   [CmdletBinding()]
   [OutputType([string])]
@@ -76,7 +76,7 @@ function Update-ODUExportAddExternalNamesForIds {
 
     # when fetching lookup data, drive off rest api call info (instead of existing folders) as need Name and ExternalIdToResolvePropertyName fields
     # note: there's no lookup data for Simple rest api calls, so skip them
-    Get-ODUStandardExportRestApiCalls | Where-Object { $_.ApiFetchType -ne $ApiFetchType_Simple } | ForEach-Object {
+    Get-ODUStandardExportRestApiCall | Where-Object { $_.ApiFetchType -ne $ApiFetchType_Simple } | ForEach-Object {
       $RestApiCall = $_
       if (($null -ne $RestApiCall.ExternalIdToResolvePropertyName) -and ($RestApiCall.ExternalIdToResolvePropertyName.Count -gt 0)) {
         $ItemExportFolder = Join-Path -Path $Path -ChildPath ($RestApiCall.RestName)

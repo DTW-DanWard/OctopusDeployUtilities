@@ -31,8 +31,8 @@ C:\> Get-Help <Command> -Full
 ## Configure Black and White Lists
 |Command|Purpose|Example|
 |---|---|---|
-|Get-ODURestApiTypeNames|Returns list of Type names used with Octopus Deploy REST API.|Get-ODURestApiTypeNames|
-|Get-ODUStandardExportRestApiCalls|Returns PSObjects with Octopus Deploy API call details.|Get-ODUStandardExportRestApiCalls|
+|Get-ODURestApiTypeName|Returns list of Type names used with Octopus Deploy REST API.|Get-ODURestApiTypeName|
+|Get-ODUStandardExportRestApiCall|Returns PSObjects with Octopus Deploy API call details.|Get-ODUStandardExportRestApiCall|
 |Get-ODUConfigTypeBlacklist|Gets type blacklist.|Get-ODUConfigTypeBlacklist|
 |Get-ODUConfigTypeWhitelist|Gets type whitelist.|Get-ODUConfigTypeWhitelist|
 |Set-ODUConfigTypeBlacklist|Sets type blacklist.|Set-ODUConfigTypeBlacklist -List @('Deployments', 'Events', 'Interruptions')|
@@ -74,8 +74,8 @@ C:\> Get-Help <Command> -Full
 ## Reporting
 |Command|Purpose|Example|
 |---|---|---|
-|oduobject|Returns PSObject containing all values of an export.  If no path parameter returns latest.  Alias of Read-ODUExportFromFiles.|oduobject<BR># returns object with latest export<BR>oduobject C:\OctoExports\MyOctoServer.octopus.app\20181213-183336<BR># returns object with data for that path|
-|Read-ODUExportFromFiles|Returns PSObject containing all values of an export.|Read-ODUExportFromFiles|
+|oduobject|Returns PSObject containing all values of an export.  If no path parameter returns latest.  Alias of Read-ODUExportFromFile.|oduobject<BR># returns object with latest export<BR>oduobject C:\OctoExports\MyOctoServer.octopus.app\20181213-183336<BR># returns object with data for that path|
+|Read-ODUExportFromFile|Returns PSObject containing all values of an export.|Read-ODUExportFromFile|
 |Test-ODUProjectDeployIISSite|Returns true if Project contains at least one deploy steps for an IIS Site (Octopus.IIS).|Test-ODUProjectDeployIISSite $Project|
 |Test-ODUProjectDeployWindowsService|Returns true if Project contains at least one deploy steps for a Windows Service (Octopus.WindowsService).|Test-ODUProjectDeployWindowsService $Project|
 |Select-ODUProjectDeployActionProperty|Retrieves deploy action property from a project.|Select-ODUProjectDeployActionProperty $Project 'Octopus.Action.Package.CustomInstallationDirectory'<BR>D:\Applications\TestService

@@ -24,7 +24,7 @@ Set-Variable ApiFetchTypeList -Value @($ApiFetchType_Simple, $ApiFetchType_Multi
 $AliasesToExport = @{
   odudiff   = 'Compare-ODUExportMostRecentWithOlder'
   oduexport = 'Export-ODUOctopusDeployConfig'
-  oduobject = 'Read-ODUExportFromFiles'
+  oduobject = 'Read-ODUExportFromFile'
   odutext   = 'Open-ODUExportTextEditor'
 }
 Set-Variable OfficialAliasExports -Value $AliasesToExport -Scope Script

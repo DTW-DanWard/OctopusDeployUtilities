@@ -28,8 +28,8 @@ function Update-ODUExportProjectAddDeploymentProcess {
     if ($false -eq (Test-Path -Path $Path)) { throw "No export found at: $Path" }
 
     # get project and deployment process folders
-    $ProjectExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Projects' }).RestName)
-    $DeploymentProcessExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'DeploymentProcesses' }).RestName)
+    $ProjectExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'Projects' }).RestName)
+    $DeploymentProcessExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'DeploymentProcesses' }).RestName)
 
     Get-ChildItem -Path $ProjectExportFolder -Recurse | ForEach-Object {
       $ExportFileProject = $_.FullName
@@ -43,7 +43,7 @@ function Update-ODUExportProjectAddDeploymentProcess {
 #endregion
 
 
-#region Function: Update-ODUExportProjectAddIncludedLibraryVariableSets
+#region Function: Update-ODUExportProjectAddIncludedLibraryVariableSet
 
 <#
 .SYNOPSIS
@@ -53,10 +53,10 @@ Adds included variable set(s) to projects
 .PARAMETER Path
 Path to export folder that contains folders exported values
 .EXAMPLE
-Update-ODUExportProjectAddIncludedLibraryVariableSets -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
+Update-ODUExportProjectAddIncludedLibraryVariableSet -Path c:\Exports\MyOctoServer.octopus.app\20181120-103152
 <adds variable set to projects>
 #>
-function Update-ODUExportProjectAddIncludedLibraryVariableSets {
+function Update-ODUExportProjectAddIncludedLibraryVariableSet {
   #region Function parameters
   [CmdletBinding()]
   [OutputType([string])]
@@ -70,8 +70,8 @@ function Update-ODUExportProjectAddIncludedLibraryVariableSets {
     if ($false -eq (Test-Path -Path $Path)) { throw "No export found at: $Path" }
 
     # get folder paths
-    $ProjectExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Projects' }).RestName)
-    $IncludedLibraryVariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'LibraryVariableSets' }).RestName)
+    $ProjectExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'Projects' }).RestName)
+    $IncludedLibraryVariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'LibraryVariableSets' }).RestName)
 
     # included library variable sets are used across multiple projects; if you have many projects it becomes very
     # file intensive (unnecessarily) to keep reading the same included library variable set, converting from JSON, etc.
@@ -132,8 +132,8 @@ function Update-ODUExportProjectAddVariableSet {
     if ($false -eq (Test-Path -Path $Path)) { throw "No export found at: $Path" }
 
     # get project and variable set folders
-    $ProjectExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Projects' }).RestName)
-    $VariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCalls | Where-Object { $_.RestName -eq 'Variables' }).RestName)
+    $ProjectExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'Projects' }).RestName)
+    $VariableSetExportFolder = Join-Path -Path $Path -ChildPath ((Get-ODUStandardExportRestApiCall | Where-Object { $_.RestName -eq 'Variables' }).RestName)
 
     Get-ChildItem -Path $ProjectExportFolder -Recurse | ForEach-Object {
       $ExportFileProject = $_.FullName
