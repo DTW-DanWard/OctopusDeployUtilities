@@ -40,8 +40,8 @@ run using multiple background jobs to complete more quickly.  Note: this value i
 limited to 1-9.  Also note: increasing this number to 9 DOES NOT necessarily speed up
 your exports - it might slow them down!  Testing on my machine shows that 5, the default,
 is the sweet spot.
-.PARAMETER Path
-Path to diff viewer
+.PARAMETER BackgroundJobsMax
+Max number of background jobs, range 1 - 9
 .EXAMPLE
 Set-ODUConfigBackgroundJobsMax
 .LINK
