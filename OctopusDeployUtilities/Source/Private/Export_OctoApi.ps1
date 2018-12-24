@@ -36,7 +36,7 @@ function Find-ODUInvalidRestApiTypeName {
 #endregion
 
 
-#region Function: Get-ODUFilteredExportRestApiCalls
+#region Function: Get-ODUFilteredExportRestApiCall
 
 <#
 .SYNOPSIS
@@ -44,10 +44,10 @@ Returns standard export rest api call info filtered based on user black / white 
 .DESCRIPTION
 Returns standard export rest api call info filtered based on user black / white list
 .EXAMPLE
-Get-ODUFilteredExportRestApiCalls
+Get-ODUFilteredExportRestApiCall
 <returns subset of rest api call objects>
 #>
-function Get-ODUFilteredExportRestApiCalls {
+function Get-ODUFilteredExportRestApiCall {
   [CmdletBinding()]
   param()
   process {

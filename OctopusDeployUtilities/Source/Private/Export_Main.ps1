@@ -35,7 +35,7 @@ function Export-ODUOctopusDeployConfigMain {
     $CurrentExportRootFolder = New-ODURootExportFolder -MainExportRoot (Get-ODUConfigExportRootFolder) -ServerName $ServerName -DateTime (Get-Date)
 
     # get filtered list of api call details to process
-    [object[]]$ApiCalls = Get-ODUFilteredExportRestApiCalls
+    [object[]]$ApiCalls = Get-ODUFilteredExportRestApiCall
     # create folders for each api call
     Write-Verbose "$($MyInvocation.MyCommand) :: Creating folder for api calls"
     New-ODUFolderForEachApiCall -ParentFolder $CurrentExportRootFolder -ApiCalls $ApiCalls
