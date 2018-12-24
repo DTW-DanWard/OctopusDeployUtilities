@@ -157,7 +157,6 @@ C:\> & (Get-ODUConfigTextEditor) (Get-ODUConfigFilePath)
 ```
 
 
-
 ## Schedule Exports
 To schedule exports: on Windows, use Task Scheduler; on Unix, use cron.
 
