@@ -60,7 +60,7 @@ C:\> ($Export.Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
 C:\> # what is the name of custom install folder for the first project?
 C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectory'
 D:\Applications\WebAuth
-C:\> 
+C:\>
 C:\> # what are all the teams and who is a member of each team?
 C:\> $Export.Teams | Select Name, MemberUserNames
 C:\> # (lots of team/member output here...)

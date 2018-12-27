@@ -45,16 +45,16 @@ If an project exists without the setting its name will get piped into `Should Be
 
 ## Example: Custom Installation Folder - Revisited
 
-A golden rule regarding unit tests: you get out of them what you put into them.  This most likely means a lot of work up front and ongoing maintenance as you encounter new issues - and come up with standards and rules to prevent them.
+A golden rule regarding unit tests: you get out of them what you put into them.  This most likely means a lot of work up front and ongoing maintenance as you encounter new issues - and come up with standards and rules to prevent these issues from re-occurring.
 
-That first rule we implemented for custom installation folder was nice but it's *just the start*.  Here are some additional rules that might come to mind after you create the first one:
-* What is the value of the root folder of the custom installation directory?  I.E. are you always installing your applications under, say, D:\Applications ?
+That first rule we implemented for custom installation folder was nice but it's *just the start*.  Here are some additional rules that might come to mind after you create the first rule:
+* Is there a particular root folder that you are installing all of your applications under?  I.E. do they all go in a sub-folder under, say, D:\Applications?
 * What is the name of the sub-folder being installed to (D:\Applications\AppFolder)?
 * Should that AppFolder name always have a special prefix?  Have or avoid certain characters?
 * Maybe that AppFolder name should always match the Octopus Project name for consistency?
 * Wait, maybe other values in the project settings should also just match the project name for consistency...?  IIS site/app pool name?  Windows Service Display Name?
 
-And that's how it gets started.  The more you realize how consistent or inconsistent your configuration is, the more you realize you can write rules to find the exceptions so you can fix them.  Searching your entire configuration becomes a question of running a fresh export and then running your unit tests.  And, of course, you can automate both those steps, saving you a lot of time and giving you (some?) peace of mind.
+And that's how it gets started.  The more you realize how consistent or inconsistent your configuration is, the more you realize you can write rules to find the exceptions so you can fix them.  Validating your entire configuration becomes a question of running a fresh export and then running your unit tests.  And, of course, you can automate both those steps, saving you a lot of time and giving you (some?) peace of mind.
 
 
 ### We Broke Prod
@@ -137,8 +137,10 @@ Describe "Octopus Deploy export configuration tests" {
 
 
     # What about tests based on a projects LifeCycle?  That's LifecycleName
-    # maybe every project should use a custom LifeCycle and shouldn't be set to 'Default Lifecycle'
-    # at this point you get the idea...
+    # maybe every project at your organization uses a custom LifeCycle and so nothing should be set
+    # shouldn't be set to 'Default Lifecycle'
+
+# at this point you get the idea...
   }
 }
 ```

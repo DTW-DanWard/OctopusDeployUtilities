@@ -317,7 +317,7 @@ But don't worry about any of that - just use `Select-ODUProjectDeployActionPrope
 ```PowerShell
 C:\> # first let's get a reference to a specific web project of ours named ProfileWeb
 C:\> $Project = $Export.Projects | Where { $_.Name -eq 'ProfileWeb' }
-C:\> 
+C:\>
 C:\> # what's the app pool name for ProfileWeb
 C:\> Select-ODUProjectDeployActionProperty $Project 'Octopus.Action.IISWebSite.WebApplication.ApplicationPoolName'
 ProfileWebAP
