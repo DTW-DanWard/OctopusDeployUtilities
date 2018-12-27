@@ -59,7 +59,7 @@ We don't know what those environment and machine ids map to (roles don't require
     "Machine": [ "Machines-42" ],
     "MachineName": [ "Staging-Web-3" ],
     "Role": [ "WebClientFacing" ],
-    "Breadth": [ "Prod-EU-1", "Prod-EU-2", "Staging-Web-3" "WebClientFacing", ]
+    "Breadth": [ "Prod-EU-1", "Prod-EU-2", "Staging-Web-3", "WebClientFacing" ]
   },
   ...
 }

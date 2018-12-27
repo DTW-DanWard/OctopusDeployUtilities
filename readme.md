@@ -48,9 +48,11 @@ C:\> $Export = oduobject
 C:\>
 C:\> # for that export, return all project-level variables *across all projects*, getting the names, values and scope
 C:\> $Export.Projects.VariableSet.Variables | Select Name, Value, @{n = 'Scope'; e = { $_.Scope.Breadth } }
+C:\> # (lots of variable output here...)
 C:\>
 C:\> # now return all project-level variables that are explicitly scoped for your EU production environment
 C:\> $Export.Projects.VariableSet.Variables | ? { $_.Scope.Breadth -contains 'Prod-EU' }
+C:\> # (lots of variable output here...)
 C:\>
 C:\> # how many projects deploy a Windows Service?
 C:\> ($Export.Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
@@ -58,12 +60,16 @@ C:\> ($Export.Projects | ? { Test-ODUProjectDeployWindowsService $_ }).Count
 C:\> # what is the name of custom install folder for the first project?
 C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectory'
 D:\Applications\WebAuth
+C:\> 
+C:\> # what are all the teams and who is a member of each team?
+C:\> $Export.Teams | Select Name, MemberUserNames
+C:\> # (lots of team/member output here...)
 ```
 
 Imagine the powerful **Pester** unit tests you could easily write!  Here's an excerpt:
 
 ```PowerShell
-# find any variables with 'password' or 'pwd' in their name that AREN'T encrypted
+# make sure there aren't any variables with 'password' or 'pwd' in their name that AREN'T encrypted
 It 'Confirm no plaintext *password* or *pwd* variables' { $Export.Projects.VariableSet.Variables |
   ? { $_.Name -match 'password|pwd' -and $_.IsSensitive -eq $false } | Should BeNullOrEmpty }
 

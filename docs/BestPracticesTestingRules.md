@@ -41,6 +41,7 @@ Create Octo template project with all settings
 ****Get implemented rules from old project - readme.txt
 
 
+
 Passwords
   if name match *Password*, *Pwd* - make sure IsSensitive
   Conversely, maybe you ought to check that all your password variables have Pwd extension
@@ -71,4 +72,6 @@ Lifecycles have retention policies defined, set at particular value
 Projects part of particular group (not default)
 
 
+
+certain projects based on what project group they are in
 

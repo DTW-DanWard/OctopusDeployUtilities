@@ -269,7 +269,7 @@ We don't know what those environment and machine ids map to (roles don't require
     "Machine": [ "Machines-42" ],
     "MachineName": [ "Staging-Web-3" ],
     "Role": [ "WebClientFacing" ],
-    "Breadth": [ "Prod-EU-1", "Prod-EU-2", "Staging-Web-3" "WebClientFacing", ]
+    "Breadth": [ "Prod-EU-1", "Prod-EU-2", "Staging-Web-3", "WebClientFacing" ]
   },
   ...
 }
@@ -315,17 +315,20 @@ There is a lot of room for growth with regard to filtering functions for ODU.  P
 But don't worry about any of that - just use `Select-ODUProjectDeployActionProperty`.  If you pass in a particular Property name it will return the value - if it exists - and return $null if it doesn't.  Some examples:
 
 ```PowerShell
-C:\> # what's the app pool name for project 0
-C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.IISWebSite.WebApplication.ApplicationPoolName'
-MyAppPool
+C:\> # first let's get a reference to a specific web project of ours named ProfileWeb
+C:\> $Project = $Export.Projects | Where { $_.Name -eq 'ProfileWeb' }
+C:\> 
+C:\> # what's the app pool name for ProfileWeb
+C:\> Select-ODUProjectDeployActionProperty $Project 'Octopus.Action.IISWebSite.WebApplication.ApplicationPoolName'
+ProfileWebAP
 C:\>
-C:\> # does project 0 specify that a custom install folder should be purged?
-C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectoryShouldBePurgedBeforeDeployment'
+C:\> # does ProfileWeb specify that a custom install folder should be purged?
+C:\> Select-ODUProjectDeployActionProperty $Project 'Octopus.Action.Package.CustomInstallationDirectoryShouldBePurgedBeforeDeployment'
 True
 C:\>
 C:\> # and what is the name of that custom install folder?
-C:\> Select-ODUProjectDeployActionProperty ($Export.Projects[0]) 'Octopus.Action.Package.CustomInstallationDirectory'
-D:\Applications\MyWebSite
+C:\> Select-ODUProjectDeployActionProperty $Project 'Octopus.Action.Package.CustomInstallationDirectory'
+D:\Applications\ProfileWeb
 ```
 
 Cool stuff.  Again: I think there is a lot of room for growth for filtering & selection functions so please contribute your own creations!
