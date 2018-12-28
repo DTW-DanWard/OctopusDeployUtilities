@@ -22,21 +22,21 @@ Examples?
 
 Instead of having to navigate a bunch of screens you can pretty much review just the project-level variables and see everything to need.  It'll make your unit testing rules for deploy steps much easier.
 
-This might seem like a lot of work but it's not if you also do recommendation #2 below.  If you do #2 you'll **also** benefit from MUCH faster and consistent project setup.
+**This might seem like a lot of work but** it's not if you also do recommendation #2 below.  If you do #2 you'll **also** benefit from MUCH faster and consistent project setup.
 
 
 ### Suggested Rules
 If you set up your projects this way, here are some *minimum* recommended unit-testing rules.
 * Confirm project deploy step individual value is a variable.  For example for a Windows Service project display name step has a value of #{DisplayName}.
 * Confirm project variable exists at project-level.  For example for a Windows Service make sure variable DisplayName exists
-* Confirm project variable at project-level has a value that *isn't* `UNDEFINED`.  (more below)
+* Confirm project variable at project-level has a value that *isn't* `UNDEFINED`.  (more below in next best practice)
 
 
 ## 2. Create Template Projects with Default Variable Deploy Settings and Clone Projects Instead of Creating from Scratch
 
 That long title pretty much describes it - create one or more base 'template' projects that implement all your default / best practice steps and create new projects by cloning these projects.  You would need one for each type of project you deploy (IIS, Windows Service, etc.).
 
-For example, to set up a project template:
+For example, to set up a project template for deploying Windows Services:
 * Create a base template project named Template-WinService.
 * Create project-level variables for all the deploy step settings that you change (ServiceName, DisplayName, ExecutablePath, etc.).
   * For a value of these new variables, set to `UNDEFINED`.
@@ -44,12 +44,12 @@ For example, to set up a project template:
 * Use those project-level variables in the deploy settings.
 * In standard project settings, or any place else, set your standard values (a particular included library set? a particular project group? release versioning? etc.).
 
-Now to set up, the process is fast:
+To set up a new project for a Windows Service, the process is fast:
 * Clone Template-WinService and give new name
 * Fill in values in project-level variables.  You know you're done when all the `UNDEFINED` values are gone.
 * Go back and change any other settings - if necessary.  Maybe you are already done!
 
-If you have resources who are new to Octopus or who just don't work often with it, they might miss some important settings when setting up.  Or they might miss standards that they don't know about.  Cloning a project for them to edit will save everyone a lot of time.
+If you have resources who are new to Octopus Deploy or who just don't work often with it, they might miss some important settings when setting up.  Or they might miss standards that they don't know about.  Cloning a project for them to edit will save everyone a lot of time.
 
 Also, if someone misses replacing an `UNDEFINED` value, it will be very visible after deployment in the process list, the IIS site names listing, etc.
 
@@ -69,15 +69,55 @@ For example, assume you have a library variable set for connection strings.  Thi
 * Make sure no other variables (project level or other library variable set) use this prefix in a name!  (Using in a value is OK!)
 
 
-## 4. Validate Naming Conventions
+## 4. Use the Same Name / Identifier **EVERYWHERE**
+
+This seems so obvious and yet I've seen a number of organizations that just don't do this!  For every application, come up with a specific name that does *not* include spaces or any special characters that might break the name anywhere (underscores and periods are probably safe).  And then use this name **exactly as-is** everywhere to identify this application!  Where?  Some examples:
+* The repository name.
+* The solution and project file names.
+* The project name in the build system.
+* The package name.
+* The project name in the deploy system.
+* Custom install folder name.
+* Logging: log folder name and log file prefix or as the identifier in a logging system.
+* IIS project: the site name and app pool name.
+* Windows Service: executable name, service name and display name.
+
+I'm sure there's a lot more locations missing here.
+
+**If you are currently *manually* managing applications and/or infrastructure but you want to start *programmatically* managing these, having a single, consistent identifier is absolutely critical!**  You do not want to have to waste your time creating and populating some type of naming lookup system (so you can map a single application across various systems) with all the exceptions because people were too lazy to consistently name the application.  "The repo name is this, in the build system it's name is that, in deploy it's a little different, but it's *installed* with *this* name, on those IIS servers the site name is this but on *these* IIS servers it's this, and the app pools sometimes are this but...."  (That was my last job; I can't even.).
+
+With regards to Octopus Deploy: every project could have a project-level variable `ApplicationName` and this one variable could be reused everywhere possible in your deploy settings: package id name, install folder name - all the places listed above.  The value for the `ApplicationName` variable could be the hard-coded text that you want to use.  However, if you want to get clever, you *could* have the value of `ApplicationName` be `#{Octopus.Project.Name}` - that's a built-in variable that returns the Octopus Deploy project name, which ensures that the Octopus Deploy project name itself *has* to be exact correct value it is supposed to be.  (If not, certain things like package id will definitely fail).
+
+### Suggested Rules
+* Check each project has a project-level variable ApplicationName.
+* Check the ApplicationName value is either `#{Octopus.Project.Name}` or some text that matches your naming conventions (see next best practice).
+* Check all deploy settings (package id, install folder name, service display name, etc.) and other locations to make sure #{ApplicationName} is the value.
+
+## 5. Validate Naming Conventions
 When you are managing multiple environments with hundreds or thousands of servers, naming conventions for those servers are important!  But naming conventions for other types of names are important, too.  Here are some data types for which you might want to implement rules to help maintain your naming conventions:
+* Project variable ApplicationName (especially if used across multiple settings).
 * Environments and deployment targets.
 * Project names - prefix for grouping?
 * Package names
+* Connection strings: particular naming convention or prefix (especially if using included library variable set).
+* Passwords: all have particular prefix or suffix like Password or Pwd?  Example: SalesDbAccountPwd
 
-Depending on your organization/requirements, there could be a lot of naming standard rules to implement.
+Depending on your organization/requirements, there could be *a lot* of naming standard rules to implement.
 
 
+## 6. Password-Related Rules
+As mentioned above, having a naming convention for your password variable names can be really helpful: like maybe a suffix of `Password` or `Pwd`.
+
+### Suggested Rules
+* All variables that match *Password or *Pwd are encrypted (IsSensitive = true).
+* All variables that are encrypted have the password suffix (find new password entries that don't match the standard).
+
+But what about variables that were created that store a password that *isn't* encrypted and the variable name *doesn't* have the password suffix - how do you find those?  Those can be harder to find, but it's not impossible.  Depending on the algorithm/settings you use for generating passwords, you might be able to create a rule that looks for variable whose contents match a certain pattern and that have a specific length.
+
+
+## 7. Other Random Rules
+
+Connection strings
 
 asdf - continue here
 
@@ -87,10 +127,6 @@ Check process settings SiteName and AppPool both equal to #{SiteName}
 
 
 
-Passwords
-  if name match *Password*, *Pwd* - make sure IsSensitive
-  Conversely, maybe you ought to check that all your password variables have Pwd extension
-  What about variables with no pwd and not secure? Perhaps rules based on length,
 
 
 Services:
