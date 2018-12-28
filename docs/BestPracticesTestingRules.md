@@ -59,17 +59,7 @@ If you set up template projects, you could use these rules:
 * Perhaps all template projects should be in their own project group Templates; confirm that with a rule.  Having them in their own group will make excluding them from the rule above - and other rules like it - easier.
 
 
-## 3. Prefix your Library Variable Set Variables
-Once you have a lot of variables and included library variable sets, it can be hard to know where an item is defined and used.  (Unless you use the [ODU variable search utility oduvar](SearchingVariables.md).  One easy thing you can do to help is add a prefix to your library variable set names.
-
-For example, assume you have a library variable set for connection strings.  This library variable set could be named `ConnStr` and every variable in the set could have `ConnStr.` as a prefix.  A sales database connection string might be named `ConnStr.Sales`.
-
-### Suggested Rules
-* Make sure every variable in each library variable set has a prefix that matches the library variable set name.
-* Make sure no other variables (project level or other library variable set) use this prefix in a name!  (Using in a value is OK!)
-
-
-## 4. Use the Same Name / Identifier **EVERYWHERE**
+## 3. Use the Same Name / Identifier **EVERYWHERE**
 
 This seems so obvious and yet I've seen a number of organizations that just don't do this!  For every application, come up with a specific name that does *not* include spaces or any special characters that might break the name anywhere (underscores and periods are probably safe).  And then use this name **exactly as-is** everywhere to identify this application!  Where?  Some examples:
 * The repository name.
@@ -81,19 +71,24 @@ This seems so obvious and yet I've seen a number of organizations that just don'
 * Logging: log folder name and log file prefix or as the identifier in a logging system.
 * IIS project: the site name and app pool name.
 * Windows Service: executable name, service name and display name.
+* Application name passed in SQL connection strings.
 
 I'm sure there's a lot more locations missing here.
 
-**If you are currently *manually* managing applications and/or infrastructure but you want to start *programmatically* managing these, having a single, consistent identifier is absolutely critical!**  You do not want to have to waste your time creating and populating some type of naming lookup system (so you can map a single application across various systems) with all the exceptions because people were too lazy to consistently name the application.  "The repo name is this, in the build system it's name is that, in deploy it's a little different, but it's *installed* with *this* name, on those IIS servers the site name is this but on *these* IIS servers it's this, and the app pools sometimes are this but...."  (That was my last job; I can't even.).
+**If you are currently *manually* managing applications and/or infrastructure but you want to start *programmatically* managing these, having a single, consistent identifier is absolutely critical!**  You do not want to have to waste your time creating and populating some type of naming lookup system so you can map a single application across various systems with all the exceptions because people were too lazy to consistently name the application.  "The repo name is this, in the build system it's name is that, in deploy it's a little different, but it's *installed* with *this* name, on those IIS servers the site name is this but on *these* IIS servers it's this, and the app pools sometimes are this but...."  (That was my last job; I can't even.).
 
 With regards to Octopus Deploy: every project could have a project-level variable `ApplicationName` and this one variable could be reused everywhere possible in your deploy settings: package id name, install folder name - all the places listed above.  The value for the `ApplicationName` variable could be the hard-coded text that you want to use.  However, if you want to get clever, you *could* have the value of `ApplicationName` be `#{Octopus.Project.Name}` - that's a built-in variable that returns the Octopus Deploy project name, which ensures that the Octopus Deploy project name itself *has* to be exact correct value it is supposed to be.  (If not, certain things like package id will definitely fail).
+
+Additionally, it can be helpful to have a short prefix on all your application names (and package ids, and display names, etc.).  Perhaps that prefix identifies your organization, maybe it's application subset type (and you only have a few different types), etc.  Having a consistent prefix can be really handy for identifying your applications amongst others running on that server: all sites/services are automatically sorted/displayed together, querying is easy: `Get-Service MyCo.*`
+
 
 ### Suggested Rules
 * Check each project has a project-level variable ApplicationName.
 * Check the ApplicationName value is either `#{Octopus.Project.Name}` or some text that matches your naming conventions (see next best practice).
 * Check all deploy settings (package id, install folder name, service display name, etc.) and other locations to make sure #{ApplicationName} is the value.
 
-## 5. Validate Naming Conventions
+
+## 4. Validate Naming Conventions
 When you are managing multiple environments with hundreds or thousands of servers, naming conventions for those servers are important!  But naming conventions for other types of names are important, too.  Here are some data types for which you might want to implement rules to help maintain your naming conventions:
 * Project variable ApplicationName (especially if used across multiple settings).
 * Environments and deployment targets.
@@ -103,6 +98,16 @@ When you are managing multiple environments with hundreds or thousands of server
 * Passwords: all have particular prefix or suffix like Password or Pwd?  Example: SalesDbAccountPwd
 
 Depending on your organization/requirements, there could be *a lot* of naming standard rules to implement.
+
+
+## 5. Prefix your Library Variable Set Variables
+Once you have a lot of variables and included library variable sets, it can be hard to know where an item is defined and used.  (Unless you use the [ODU variable search utility oduvar](SearchingVariables.md).  One easy thing you can do to help is add a prefix to your library variable set names.
+
+For example, assume you have a library variable set for all of your connection strings.  This library variable set could be named `ConnStr` and every variable in the set could have `ConnStr.` as a prefix.  A sales database connection string might be named `ConnStr.Sales`.
+
+### Suggested Rules
+* Make sure every variable in each library variable set has a prefix that matches the library variable set name.
+* Make sure no other variables (project level or other library variable set) use this prefix in a name!  (Using in a value is OK!)
 
 
 ## 6. Password-Related Rules
@@ -116,37 +121,16 @@ But what about variables that were created that store a password that *isn't* en
 
 
 ## 7. Other Random Rules
+A bunch of random thoughts/rules for your consideration:
 
-Connection strings
+* Teams: make sure only known users are in certain admin groups.
+* Connection strings: ensure you are using the same connection string pattern consistently with all the correct elements present.  This can also help lead to smaller, easer to read values:
+  * Short version: `server=#{Database.Server};database=SalesDb;uid=#{Database.User};pwd=#{Database.Password};app=#{ApplicationName}`
+  * Instead of: `Data Source=#{Database.Server};Initial Catalog=SalesDb;User Id=#{Database.User};Password=#{Database.Password};Application Name=#{ApplicationName}`
+* Included library variables sets: make sure all projects included any **required** library variable sets.
+* Other settings: ensure correct custom project life cycle, confirm correct custom life cycle retention policies, etc.
+* Project variables: make sure every project implements any custom variables you have that should be found in every project (`IsProductionReady`, etc.).
+* Project group: make sure every project is in a specific group and not general catch-all group.
+* Deploy settings name consistency: as mentioned earlier, try to use a single value everywhere (project-level variable ApplicationName).  Use it for IIS site names, application pool names, etc.
 
-asdf - continue here
-
-
-IIS projects
-Check process settings SiteName and AppPool both equal to #{SiteName}
-
-
-
-
-
-Services:
-Name convention - company prefix for service name
-Display name empty? Display name matches service name?  Does NOT match?
-
-Teams:
-Users should/should NOT be member of particular groups:
-  make sure no one accidentally added to admin groups!
-certain permissions?
-
-Misc:
-Projects should use a particular lifecycle
-Lifecycles have retention policies defined, set at particular value
-Projects part of particular group (not default)
-certain projects based on what project group they are in
-
-
-***Get implemented rules from old project - readme.txt
-
-***Search examples from readme, reporting, unit testing pages
-
-
+Obviously you will have a lot of rules that are specific to your organization and how you use Octopus Deploy.  But again - if you have any general rules, ideas, etc. please contribute!
