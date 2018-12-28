@@ -28,7 +28,8 @@ This might seem like a lot of work but it's not if you also do recommendation #2
 ### Suggested Rules
 If you set up your projects this way, here are some *minimum* recommended unit-testing rules.
 * Confirm project deploy step individual value is a variable.  For example for a Windows Service project display name step has a value of #{DisplayName}.
-* Confirm project variable exists at project-level.  For example for a Windows Service make sure variable DisplayName exists and has a variable that isn't `UNDEFINED`.  (more below)
+* Confirm project variable exists at project-level.  For example for a Windows Service make sure variable DisplayName exists
+* Confirm project variable at project-level has a value that *isn't* `UNDEFINED`.  (more below)
 
 
 ## 2. Create Template Projects with Default Variable Deploy Settings and Clone Projects Instead of Creating from Scratch
@@ -41,7 +42,7 @@ For example, to set up a project template:
   * For a value of these new variables, set to `UNDEFINED`.
 * In deploy settings enable whatever standard features you use.
 * Use those project-level variables in the deploy settings.
-* In standard project settings, or any place else, set you standard values (a particular included library set? a particular project group? release versioning? etc.).
+* In standard project settings, or any place else, set your standard values (a particular included library set? a particular project group? release versioning? etc.).
 
 Now to set up, the process is fast:
 * Clone Template-WinService and give new name
@@ -50,12 +51,12 @@ Now to set up, the process is fast:
 
 If you have resources who are new to Octopus or who just don't work often with it, they might miss some important settings when setting up.  Or they might miss standards that they don't know about.  Cloning a project for them to edit will save everyone a lot of time.
 
-Also, if someone misses replacing an `UNDEFINED` value, it will be very visible in the process list and/or IIS site names listing.
+Also, if someone misses replacing an `UNDEFINED` value, it will be very visible after deployment in the process list, the IIS site names listing, etc.
 
 ### Suggested Rules
 If you set up template projects, you could use these rules:
-* Check all variables making sure none of them have value `UNDEFINED`.  Of course you'll need to exclude checking variables in the Template-* projects.
-* All template projects should be in their own project group Templates.  That will make excluding them from the rule above - and other rules like it - easier.
+* Check all variables in your normal (implemented, non-template) projects making sure *none* of them has a value `UNDEFINED`.  Of course you'll need to exclude checking variables in your actual Template-* projects.
+* Perhaps all template projects should be in their own project group Templates; confirm that with a rule.  Having them in their own group will make excluding them from the rule above - and other rules like it - easier.
 
 
 ## 3. Prefix your Library Variable Set Variables
@@ -73,6 +74,12 @@ When you are managing multiple environments with hundreds or thousands of server
 * Environments and deployment targets.
 * Project names - prefix for grouping?
 * Package names
+
+Depending on your organization/requirements, there could be a lot of naming standard rules to implement.
+
+
+
+asdf - continue here
 
 
 IIS projects
