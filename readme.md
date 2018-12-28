@@ -64,6 +64,10 @@ C:\>
 C:\> # what are all the teams and who is a member of each team?
 C:\> $Export.Teams | Select Name, MemberUserNames
 C:\> # (lots of team/member output here...)
+C:\>
+C:\> # what are the names of the projects that DO NOT include the Important library variable set?
+C:\> $Export.Projects | ? { $_.IncludedLibraryVariableSetNames -notcontains 'Important' } | Select Name
+C:\> # (project names here...)
 ```
 
 Imagine the powerful **Pester** unit tests you could easily write!  Here's an excerpt:

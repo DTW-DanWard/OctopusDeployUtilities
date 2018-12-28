@@ -2,7 +2,7 @@
 # Unit Testing Your Octopus Deploy Configuration
 
 ## Intro
-I worked at a company managing the migration from an old, custom deploy system to Octopus Deploy.  There were 180+ services and thousand and thousands *and thousands* of variables.  Believe me when I tell you that organization and standards are critically important when setting up and maintaining your deployment system.  If you only have 3 projects with a handful of variables that never get edited then this might not seem important to you.  But as you grow it becomes *very* important; manually reviewing all your settings constantly for unexpected changes is just not an option.
+I worked at a company managing the migration from an old, custom deploy system to Octopus Deploy.  There were 180+ services and thousand *and thousands* of variables.  Believe me when I tell you that organization and standards are critically important when setting up and maintaining your deployment system.  If you only have 3 projects with a handful of variables that never get edited then this might not seem important to you.  But as you grow it becomes *very* important; manually reviewing all your settings constantly for unexpected changes is just not an option.
 
 My advice is to create [good solid standards and best practices](BestPracticesTestingRules.md) for your settings, document and share those standards *and* make sure they are maintained with [reporting](DetailsAndReporting.md) or unit testing.
 
@@ -138,9 +138,9 @@ Describe "Octopus Deploy export configuration tests" {
 
     # What about tests based on a projects LifeCycle?  That's LifecycleName
     # maybe every project at your organization uses a custom LifeCycle and so nothing should be set
-    # shouldn't be set to 'Default Lifecycle'
+    # to 'Default Lifecycle'
 
-# at this point you get the idea...
+    # at this point you get the idea...
   }
 }
 ```
