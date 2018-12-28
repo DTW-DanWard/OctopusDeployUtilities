@@ -26,6 +26,7 @@ $AliasesToExport = @{
   oduexport = 'Export-ODUOctopusDeployConfig'
   oduobject = 'Read-ODUExportFromFile'
   odutext   = 'Open-ODUExportTextEditor'
+  oduvar    = 'Find-ODUVariable'
 }
 Set-Variable OfficialAliasExports -Value $AliasesToExport -Scope Script
 

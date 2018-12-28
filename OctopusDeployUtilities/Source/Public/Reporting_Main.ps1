@@ -66,7 +66,7 @@ function Get-ODUExportOlderPath {
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [ValidateScript({$_ -ge 0})]
+    [ValidateScript( {$_ -ge 0})]
     [int]$Hours = 0
   )
   process {
@@ -154,12 +154,12 @@ function Read-ODUExportFromFile {
       $Results = @{ Name = $Directory.Name }
       Write-Verbose "Reading folder $TypeName"
       $Data = [System.Collections.ArrayList]@()
-      (Get-ChildItem -Path $Directory.FullName -Recurse -Include ('*' + $JsonExtension)).foreach({
-        $Content = Get-Content -Path $_ -Raw
-        if ($null -ne $Content) {
-          $null = $Data.Add((ConvertFrom-Json -InputObject $Content))
-        }
-      })
+      (Get-ChildItem -Path $Directory.FullName -Recurse -Include ('*' + $JsonExtension)).foreach( {
+          $Content = Get-Content -Path $_ -Raw
+          if ($null -ne $Content) {
+            $null = $Data.Add((ConvertFrom-Json -InputObject $Content))
+          }
+        })
       # add Data to results object and return
       $Results.Data = $Data
       $Results
