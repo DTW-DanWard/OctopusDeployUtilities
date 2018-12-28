@@ -12,6 +12,10 @@ Add function to search across all variables (project and included library variab
 
 Once you automate exports they can pile up.  If no changes exist between two exports the second export is unnecessary.  Add function to programmatically compare/delete identical exports.
 
+## Add Custom Types to Objects and Provide Console Output Formatting
+
+Add type names (ODU.<FolderName>, etc.) to export in oduobject processing.  Will allow for better filtering/processing and console output (PS1XML) formatting.
+
 
 ## Compare Releases
 

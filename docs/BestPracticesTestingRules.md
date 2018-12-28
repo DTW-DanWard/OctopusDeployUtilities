@@ -32,7 +32,7 @@ If you set up your projects this way, here are some *minimum* recommended unit-t
 * Confirm project variable at project-level has a value that *isn't* `UNDEFINED`.  (more below in next best practice)
 
 
-## 2. Create Template Projects with Default Variable Deploy Settings and Clone Projects Instead of Creating from Scratch
+## 2. Create Template Projects with Default Variable Deploy Settings and Best Practice Settings and Clone Projects Instead of Creating from Scratch
 
 That long title pretty much describes it - create one or more base 'template' projects that implement all your default / best practice steps and create new projects by cloning these projects.  You would need one for each type of project you deploy (IIS, Windows Service, etc.).
 

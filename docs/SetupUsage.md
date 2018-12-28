@@ -43,6 +43,10 @@ C:\> Install-Module OctopusDeployUtilities
 ```
 Installing it has the additional benefit that you never need to manually import the module afterwards.
 
+Note: installing OctopusDeployUtilities also installs these modules:
+* [Configuration](https://www.powershellgallery.com/packages/Configuration/1.3.1) - provides configuration support;
+* [PoshRSJob](https://www.powershellgallery.com/packages/PoshRSJob/1.7.4.4) - speeds up exports via parallel jobs.
+
 
 The other option is you can clone or download the module from GitHub.  In that case you need to manually import the module each time you use it (or add the import statement to your $profile).
 ```PowerShell
