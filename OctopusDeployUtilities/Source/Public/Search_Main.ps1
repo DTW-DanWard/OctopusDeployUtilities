@@ -46,24 +46,31 @@ function Find-ODUVariable {
     }
     #endregion
 
-
-    $Export = oduobject
-
-    # asdf old cache code below; needs update
-    # #region Specify export to use (for now just use latest export)
-    # if (($false -eq (Test-Path variable:global:OD_LatestExport)) -or ($null -eq $global:OD_LatestExport)) {
-    #   Write-Host ''
-    #   Write-Host 'Find script uses latest export in memory.  Make sure your PowerShell profile contains a line like:'
-    #   Write-Host '$global:OD_LatestExport = Get-ODExportObjectFromFile' -ForegroundColor Cyan
-    #   Write-Host 'or your profile calls alias: '  -NoNewline
-    #   Write-Host 'odmemoryupdate' -ForegroundColor Cyan
-    #   Write-Host ''
-    #   return
-    # }
-    # # use latest export in memory
-    # # this could be modified to pass in a export reference or a path to an export
-    # $Export = $global:OD_LatestExport
-    # #endregion
+    #region Get export to use; fetch and store in memory
+    $Export = $null
+    $ExportLatestPath = Get-ODUExportLatestPath
+    Write-Verbose "$($MyInvocation.MyCommand) :: Latest export path: $ExportLatestPath"
+    # check if export cached in memory; if none found, capture latest, store it
+    # also capturing file path so we know which one was used (in case newer becomes available)
+    if (($false -eq (Test-Path variable:global:ODU_Export)) -or ($null -eq $global:ODU_Export)) {
+      Write-Verbose "$($MyInvocation.MyCommand) :: No export found in memory; reading latest and storing"
+      $Export = Read-ODUExportFromFile -Path $ExportLatestPath
+      $global:ODU_Export = $Export
+      $global:ODU_ExportLatestPath = $ExportLatestPath
+    } else {
+      # export exists in memory - but is it latest?  check if latest
+      # no need to test if exists; if export exists, so does path
+      if ($ExportLatestPath -eq $global:ODU_ExportLatestPath) {
+        Write-Verbose "$($MyInvocation.MyCommand) :: Export found in memory and is latest; using that"
+        $Export = $global:ODU_Export
+      } else {
+        Write-Verbose "$($MyInvocation.MyCommand) :: Export found in memory but is NOT latest; updating"
+        $Export = Read-ODUExportFromFile -Path $ExportLatestPath
+        $global:ODU_Export = $Export
+        $global:ODU_ExportLatestPath = $ExportLatestPath
+      }
+    }
+    #endregion
 
     # do initial search with cmdline param
     $Results = Find-ODUVariableInExport -Export $Export -SearchText $SearchText -Exact:$Exact

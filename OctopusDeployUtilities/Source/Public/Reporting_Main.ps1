@@ -152,7 +152,7 @@ function Read-ODUExportFromFile {
       Param($Directory)
       # return results in hash table with Directory name and objects
       $Results = @{ Name = $Directory.Name }
-      Write-Verbose "Reading folder $TypeName"
+      Write-Verbose "$($MyInvocation.MyCommand) :: Reading folder $TypeName"
       $Data = [System.Collections.ArrayList]@()
       (Get-ChildItem -Path $Directory.FullName -Recurse -Include ('*' + $JsonExtension)).foreach( {
           $Content = Get-Content -Path $_ -Raw

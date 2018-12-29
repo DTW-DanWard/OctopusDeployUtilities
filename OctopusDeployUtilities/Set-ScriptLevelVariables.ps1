@@ -1,7 +1,7 @@
 
 Set-StrictMode -Version Latest
 
-Write-Verbose "Creating script-level variables"
+Write-Verbose "$($MyInvocation.MyCommand) :: Creating script-level variables"
 
 # script-level variables
 # web site url
