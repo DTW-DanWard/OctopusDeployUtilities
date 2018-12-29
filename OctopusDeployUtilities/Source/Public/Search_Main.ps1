@@ -42,21 +42,12 @@ function Find-ODUVariable {
     }
     #endregion
 
-    #region Global variables
-    $ScriptName = Split-Path $PSCommandPath -Leaf
-    $ScriptFolder = Split-Path $PSCommandPath -Parent
-    $Column1Width = 20
-    $Column2Width = 40
-    #endregion
-
 
     $Export = oduobject
 
-
-
     # asdf old cache code below; needs update
     # #region Specify export to use (for now just use latest export)
-    # if (($false -eq (Test-Path variable:global:OD_LatestExport)) -or ($global:OD_LatestExport -eq $null)) {
+    # if (($false -eq (Test-Path variable:global:OD_LatestExport)) -or ($null -eq $global:OD_LatestExport)) {
     #   Write-Host ''
     #   Write-Host 'Find script uses latest export in memory.  Make sure your PowerShell profile contains a line like:'
     #   Write-Host '$global:OD_LatestExport = Get-ODExportObjectFromFile' -ForegroundColor Cyan

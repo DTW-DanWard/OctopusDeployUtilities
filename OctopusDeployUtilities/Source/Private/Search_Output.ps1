@@ -59,26 +59,20 @@ function Out-ODUSearchResultsText {
       Write-Host $SearchResults.SearchText -ForegroundColor Cyan
     }
 
-    if ($WriteOutput) {
-      Write-Output "`nMatches in Octopus Deploy"
-    } else {
-      Write-Host "`nMatches in Octopus Deploy" -ForegroundColor Yellow
-    }
-
     #region Output matching info from Octopus
-    if ($SearchResults.LibraryVariableSetDefined -ne $null -and $SearchResults.LibraryVariableSetDefined.Count -gt 0) {
+    if ($null -ne $SearchResults.LibraryVariableSetDefined -and $SearchResults.LibraryVariableSetDefined.Count -gt 0) {
       Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.LibraryVariableSetDefined
     }
 
-    if ($SearchResults.LibraryVariableSetUsed -ne $null -and $SearchResults.LibraryVariableSetUsed.Count -gt 0) {
+    if ($null -ne $SearchResults.LibraryVariableSetUsed -and $SearchResults.LibraryVariableSetUsed.Count -gt 0) {
       Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.LibraryVariableSetUsed
     }
 
-    if ($SearchResults.ProjectDefined -ne $null -and $SearchResults.ProjectDefined.Count -gt 0) {
+    if ($null -ne $SearchResults.ProjectDefined -and $SearchResults.ProjectDefined.Count -gt 0) {
       Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.ProjectDefined
     }
 
-    if ($SearchResults.ProjectUsed -ne $null -and $SearchResults.ProjectUsed.Count -gt 0) {
+    if ($null -ne $SearchResults.ProjectUsed -and $SearchResults.ProjectUsed.Count -gt 0) {
       Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.ProjectUsed
     }
     #endregion
@@ -102,6 +96,10 @@ function Out-ODUSearchResultsTextSection {
   )
   #endregion
   process {
+
+    $Column1Width = 30
+    $Column2Width = 40
+
     $ContainerName = ''
     # loop through all containers, output container name only once
     $Section | ForEach-Object {
@@ -129,11 +127,14 @@ function Out-ODUSearchResultsTextSection {
           }
           # variable value could be null (ood; would have thought it would be empty string); so gr
           $VariableValue = "".PadRight($Column2Width)
-          if ($Variable.Value -ne $null) {
+          if ($null -ne $Variable.Value) {
             $VariableValue = $Variable.Value.Trim().PadRight($Column2Width)
           }
           Out-ODUHostStringHighlightMatchText -Line $VariableValue -MatchingText $SearchText
-          Write-Host ("  " + $Variable.ScopeNames.Breadth)
+          Write-Host '  '
+          if ($null -ne $Variable.Scope -and ($null -ne (Get-Member -InputObject $Variable.Scope -Name 'Breadth' -MemberType NoteProperty))) {
+            Write-Host $Variable.Scope.Breadth
+          }
         }
       }
     }
