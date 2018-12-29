@@ -61,19 +61,19 @@ function Out-ODUSearchResultsText {
 
     #region Output matching info from Octopus
     if ($null -ne $SearchResults.LibraryVariableSetDefined -and $SearchResults.LibraryVariableSetDefined.Count -gt 0) {
-      Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.LibraryVariableSetDefined
+      Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.LibraryVariableSetDefined -Exact:($SearchResults.Exact)
     }
 
     if ($null -ne $SearchResults.LibraryVariableSetUsed -and $SearchResults.LibraryVariableSetUsed.Count -gt 0) {
-      Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.LibraryVariableSetUsed
+      Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.LibraryVariableSetUsed -Exact:($SearchResults.Exact)
     }
 
     if ($null -ne $SearchResults.ProjectDefined -and $SearchResults.ProjectDefined.Count -gt 0) {
-      Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.ProjectDefined
+      Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.ProjectDefined -Exact:($SearchResults.Exact)
     }
 
     if ($null -ne $SearchResults.ProjectUsed -and $SearchResults.ProjectUsed.Count -gt 0) {
-      Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.ProjectUsed
+      Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.ProjectUsed -Exact:($SearchResults.Exact)
     }
     #endregion
   }
@@ -92,15 +92,18 @@ function Out-ODUSearchResultsTextSection {
     [string]$SearchText,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [object]$Section
+    [object]$Section,
+    [Parameter(Mandatory = $false)]
+    [switch]$Exact
   )
   #endregion
   process {
 
-    $Column1Width = 30
+    $Column1Width = 20
     $Column2Width = 40
 
     $ContainerName = ''
+    $HeaderRow = "$('Name'.PadRight($Column1Width))  $('Value'.PadRight($Column2Width))  Scope"
     # loop through all containers, output container name only once
     $Section | ForEach-Object {
       $Item = $_
@@ -109,15 +112,34 @@ function Out-ODUSearchResultsTextSection {
         Write-Output ''
         if ($WriteOutput) {
           Write-Output $ContainerName
+          Write-Output $HeaderRow
         } else {
           Write-Host $ContainerName -ForegroundColor Green
+          Write-Host $HeaderRow -ForegroundColor Yellow
         }
       }
+
       # loop through all variable matches in container
       $Item.Variable | ForEach-Object {
         $Variable = $_
+
+        # variable value could be null because it's empty or because it's Sensitive (and thus not exported)
+        $VariableValue = ''
+        if ($null -ne $Variable.Value) {
+          $VariableValue = $Variable.Value.Trim()
+        } elseif ($true -eq $Variable.IsSensitive) {
+          $VariableValue = '[Sensitive]'
+        }
+        $VariableValue = $VariableValue.PadRight($Column2Width)
+        
+        # ScopeBreadth might not exist if no Scope values set; determine value first
+        $VariableScopeBreadth = ''
+        if ($null -ne $Variable.Scope -and ($null -ne (Get-Member -InputObject $Variable.Scope -Name 'Breadth' -MemberType NoteProperty))) {
+          $VariableScopeBreadth = $Variable.Scope.Breadth
+        }
+
         if ($WriteOutput) {
-          Write-Output ($Variable.Name.PadRight($Column1Width) + "  " + $Variable.Value.PadRight($Column2Width) + "  " + $Variable.ScopeNames.Breadth)
+          Write-Output ($Variable.Name.PadRight($Column1Width) + "  " + $VariableValue + "  " + $VariableScopeBreadth)
         } else {
           # if variable name matches search text highlight it
           if (($Exact -and ($Variable.Name -eq $SearchText)) -or (!$Exact -and ($Variable.Name -match $SearchText))) {
@@ -125,16 +147,10 @@ function Out-ODUSearchResultsTextSection {
           } else {
             Write-Host ($Variable.Name.PadRight($Column1Width) + "  ") -NoNewline
           }
-          # variable value could be null (ood; would have thought it would be empty string); so gr
-          $VariableValue = "".PadRight($Column2Width)
-          if ($null -ne $Variable.Value) {
-            $VariableValue = $Variable.Value.Trim().PadRight($Column2Width)
-          }
+
           Out-ODUHostStringHighlightMatchText -Line $VariableValue -MatchingText $SearchText
-          Write-Host '  '
-          if ($null -ne $Variable.Scope -and ($null -ne (Get-Member -InputObject $Variable.Scope -Name 'Breadth' -MemberType NoteProperty))) {
-            Write-Host $Variable.Scope.Breadth
-          }
+
+          Write-Output "  $VariableScopeBreadth"
         }
       }
     }

@@ -76,6 +76,7 @@ function Find-ODUVariableInExport {
     # construct object to return
     [PSCustomObject]@{
       SearchText                = $SearchText
+      Exact                     = $Exact
       LibraryVariableSetDefined = $LibraryVariableSetDefined
       LibraryVariableSetUsed    = $LibraryVariableSetUsed
       ProjectDefined            = $ProjectDefined
