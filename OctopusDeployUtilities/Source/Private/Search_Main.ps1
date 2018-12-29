@@ -3,6 +3,22 @@ Set-StrictMode -Version Latest
 
 #region Function: Find-ODUVariableInExport
 
+<#
+.SYNOPSIS
+Find variables by name or value in export PSObject, returns results in PSObject
+.DESCRIPTION
+Find variables by name or value in export PSObject, returns results in PSObject.
+Matches either partial text or Exact.
+.PARAMETER Export
+Export data in PSObject created by call to Read-ODUExportFromFile
+.PARAMETER SearchText
+Variable name or value to search for; can be partial text
+.PARAMETER Exact
+Return only exact matches
+.EXAMPLE
+Find-ODUVariableInExport $Export SalesDb
+<create PSObject with search results of 'SalesDb' found in $Export>
+#>
 function Find-ODUVariableInExport {
   #region Function parameters
   [CmdletBinding()]

@@ -6,9 +6,9 @@ Set-StrictMode -Version Latest
 
 <#
 .SYNOPSIS
-Find variables in Octopus Deploy configuration by name or value
+Find variables by name or value in Octopus Deploy latest export
 .DESCRIPTION
-Find variables in Octopus Deploy configuration by name or value.  Matches either partial
+Find variables by name or value in Octopus Deploy latest export.  Matches either partial
 text or Exact.  Uses latest available export for searching.  When first running, captures
 oduobject and stores it in global scope variable $ODU_Export.  Future searches will use the
 $ODU_Export to speed up the search process.  If a new export becomes available after 
@@ -23,6 +23,23 @@ Instead of using Write-Host to produced highlightened content, use only Write-Ou
 .PARAMETER PSObject
 Instead of writing any output to host, return search results as a PSObject.  Useful
 for programmatic usage of search results.
+.EXAMPLE
+Find-ODUVariable SalesDb
+<outputs to host all variables that contain 'SalesDb' in name and / or value>
+.EXAMPLE
+oduvar SalesDb
+<same as previous example but uses alias>
+.EXAMPLE
+Find-ODUVariable SalesDb -Exact
+<outputs to host all variables with exact name and / or exact value of 'SalesDb'>
+.EXAMPLE
+Find-ODUVariable SalesDb -WriteOutput > c:\temp\Results.txt
+<outputs to standard output all variables that contain 'SalesDb' in name and / or value, save to file>
+.EXAMPLE
+Find-ODUVariable SalesDb -PSObject
+<returns PSObject with search results, can be used for more detailed analyis or a part of another search tool>
+.LINK
+https://github.com/DTW-DanWard/OctopusDeployUtilities
 #>
 function Find-ODUVariable {
   #region Function parameters

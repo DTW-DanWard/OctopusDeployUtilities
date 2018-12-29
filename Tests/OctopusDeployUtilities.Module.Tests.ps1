@@ -93,8 +93,8 @@ $SourceScripts | Where-Object { ($null -ne (Get-Content $_)) -and ((Get-Content 
         $Function = $_
         $Function.GetHelpContent().Parameters.Keys | ForEach-Object {
           $Key = $_
-          if ($null -eq $Function.GetHelpContent().Parameters.$Key -or
-            $Function.GetHelpContent().Parameters.$Key.Trim() -eq '') {
+          if ($null -eq ($Function.GetHelpContent().Parameters.$Key) -or
+            ($Function.GetHelpContent().Parameters.$Key) -eq '') {
             $Function.Name + ':' + $Key
           }
         }

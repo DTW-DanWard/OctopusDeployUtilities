@@ -3,6 +3,19 @@ Set-StrictMode -Version Latest
 
 #region Function: Out-ODUHostStringHighlightMatchText
 
+<#
+.SYNOPSIS
+Outputs Line of text to host (no new line), highlighting MatchingText if found
+.DESCRIPTION
+Outputs Line of text to host (no new line), highlighting MatchingText if found.
+.PARAMETER Line
+Line of text to output
+.PARAMETER MatchingText
+Text to highlight in Line
+.EXAMPLE
+Out-ODUHostStringHighlightMatchText 'This is only a test.' 'only'
+<writes sentence to host, highlighting 'only'>
+#>
 function Out-ODUHostStringHighlightMatchText {
   #region Function parameters
   [CmdletBinding()]
@@ -41,6 +54,17 @@ function Out-ODUHostStringHighlightMatchText {
 
 #region Function: Out-ODUSearchResultsText
 
+<#
+.SYNOPSIS
+Outputs search results - header text and each section (high-level)
+.DESCRIPTION
+Outputs search results - header text and each section (high-level)
+.PARAMETER SearchResults
+PSObject with search results
+.EXAMPLE
+Out-ODUSearchResultsText $SearchResults
+<outputs the search results>
+#>
 function Out-ODUSearchResultsText {
   #region Function parameters
   [CmdletBinding()]
@@ -83,6 +107,21 @@ function Out-ODUSearchResultsText {
 
 #region Function: Out-ODUSearchResultsTextSection
 
+<#
+.SYNOPSIS
+Outputs the search results for a single section
+.DESCRIPTION
+Outputs Line of text to host (no new line), highlighting MatchingText if found.
+.PARAMETER SearchText
+Search text
+.PARAMETER Section
+Search results section to output
+.PARAMETER Exact
+Partial or exact match
+.EXAMPLE
+Out-ODUSearchResultsTextSection 'only' $SectionResults
+<writes section results>
+#>
 function Out-ODUSearchResultsTextSection {
   #region Function parameters
   [CmdletBinding()]
