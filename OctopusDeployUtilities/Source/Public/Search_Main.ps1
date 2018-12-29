@@ -11,7 +11,7 @@ Find variables by name or value in Octopus Deploy latest export
 Find variables by name or value in Octopus Deploy latest export.  Matches either partial
 text or Exact.  Uses latest available export for searching.  When first running, captures
 oduobject and stores it in global scope variable $ODU_Export.  Future searches will use the
-$ODU_Export to speed up the search process.  If a new export becomes available after 
+$ODU_Export to speed up the search process.  If a new export becomes available after
 $ODU_Export was captured, it loads that new export into memory and caches it.
 .PARAMETER SearchText
 Variable name or value to search for; can be partial text

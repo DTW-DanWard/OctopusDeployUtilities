@@ -170,7 +170,7 @@ function Out-ODUSearchResultsTextSection {
           $VariableValue = '[Sensitive]'
         }
         $VariableValue = $VariableValue.PadRight($Column2Width)
-        
+
         # ScopeBreadth might not exist if no Scope values set; determine value first
         $VariableScopeBreadth = ''
         if ($null -ne $Variable.Scope -and ($null -ne (Get-Member -InputObject $Variable.Scope -Name 'Breadth' -MemberType NoteProperty))) {
