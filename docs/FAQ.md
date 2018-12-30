@@ -38,7 +38,7 @@ The JSON for an exported Sensitive variable will look something like:
 ```JSON
 {
   "Id": "a4946c21-d9b7-4e71-b981-ac6a32440dd6",
-  "Name": "SalesDbSqlPassword",
+  "Name": "SalesDbAcctPwd",
   "Value": null,
   ...
   "Type": "Sensitive",

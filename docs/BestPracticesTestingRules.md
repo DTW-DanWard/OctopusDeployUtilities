@@ -95,7 +95,7 @@ When you are managing multiple environments with hundreds or thousands of server
 * Project names - prefix for grouping?
 * Package names
 * Connection strings: particular naming convention or prefix (especially if using included library variable set).
-* Passwords: all have particular prefix or suffix like Password or Pwd?  Example: SalesDbAccountPwd
+* Passwords: all have particular prefix or suffix like Password or Pwd?  Example: SalesDbAcctPwd
 
 Depending on your organization/requirements, there could be *a lot* of naming standard rules to implement.
 

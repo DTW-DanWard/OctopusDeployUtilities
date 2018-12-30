@@ -215,9 +215,9 @@ C:\> # (lots more details...)
 ```
 
 ### Tips on Using Each - And Another Thing to Know
-If you are interested in looking / evaluating / searching / reporting at a particular project level, you probably want to check both the projects's VariableSet and IncludedLibraryVariableSets contents.  However, if you want to search across *all* projects searching for a particular variable (local and global) and it's usage, you probably do NOT want to check the contents of a *project's* IncludedLibraryVariableSets.  Why?  You'll have multiple hits at the project level when checking included library variable sets.
+If you are interested in looking / evaluating / searching / reporting at a particular project level, you probably want to check both the project's VariableSet and IncludedLibraryVariableSets contents.  However, if you want to search across *all* projects searching for a particular variable (local and global) and it's usage, you probably do NOT want to check the contents of a *project's* IncludedLibraryVariableSets.  Why?  You'll have multiple hits at the project level when checking included library variable sets.
 
-Imagine you have an Included Library Variable Set named *ConnectionStrings* and this contains a variable *SalesDbCnString*.  Included Library Variable Set *ConnectionStrings* is included in 30 projects.  If you were to search for *SalesDbCnString*, at a project-level, through every IncludedLibraryVariableSets you'd get 30 matches.  And none of these is the source variable!  So where is the source?
+Imagine you have an Included Library Variable Set named *ConnStr* and this contains a variable *ConnStr.SalesDb*.  Included Library Variable Set *ConnStr* is included in 30 projects.  If you were to search for *ConnStr.SalesDb*, at a project-level, through every IncludedLibraryVariableSets you'd get 30 matches.  And none of these is the source variable!  So where is the source?
 
 Under the **export's** LibraryVariableSets property:
 

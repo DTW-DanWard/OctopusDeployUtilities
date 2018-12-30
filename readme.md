@@ -15,7 +15,7 @@ Fortunately Octopus Deploy provides a great REST API that can be used for export
 * *Easily* search across your entire configuration.
 * *Easily* see all changes to the entire system over time.
 * *Easily* get details on anything you can think of: How many projects do you have?  Which ones are Windows Services?  How many variables do you have; which ones are encrypted?  Which projects are using a particular Library Variable Set?
-* **Implement standards/best practices in your Octopus Deploy setup and then automatically confirm these standards by unit testing your configuration export.**  You will save countless hours and ensure quality by automating it.
+* **Implement standards/best practices in your Octopus Deploy setup and then automatically confirm compliance with these standards by unit testing your configuration export.**  You will save countless hours and ensure quality by automating it.
 * Compare releases (coming soon - on [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
 
 There is a lot you can do with an export; you might want to read the [full rationale here](docs/Rationale.md) for exporting your data.  But trust me: once you've started exporting your configuration data you'll wonder how you've been living without it.
@@ -30,8 +30,8 @@ Octopus Deploy does not provide a good out-of-the-box solution for getting all y
 * It exports all data to local JSON files so you can process the data with any language.
 * It comes with fun helper tools written in PowerShell.
   * Aggregates all  data in an export into a single object for easy parsing.
-  * Test/filter your projects based on deploy process type.
   * Search your variables by name or value across all projects & included variable sets.
+  * Test/filter your projects based on deploy process type.
   * And more!
 
 ## You are Getting Curious...?

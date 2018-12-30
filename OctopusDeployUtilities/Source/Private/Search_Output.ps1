@@ -139,7 +139,7 @@ function Out-ODUSearchResultsTextSection {
   process {
 
     $Column1Width = 20
-    $Column2Width = 40
+    $Column2Width = 50
 
     $ContainerName = ''
     $HeaderRow = "$('Name'.PadRight($Column1Width))  $('Value'.PadRight($Column2Width))  Scope"
