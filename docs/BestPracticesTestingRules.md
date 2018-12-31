@@ -125,8 +125,8 @@ A bunch of random thoughts/rules for your consideration:
 
 * Teams: make sure only known users are in certain admin groups.
 * Connection strings: ensure you are using the same connection string pattern consistently with all the correct elements present.  This can also help lead to smaller, easer to read values:
-  * Short version: `server=#{Database.Server};database=SalesDb;uid=#{Database.User};pwd=#{Database.Password};app=#{ApplicationName}`
-  * Instead of: `Data Source=#{Database.Server};Initial Catalog=SalesDb;User Id=#{Database.User};Password=#{Database.Password};Application Name=#{ApplicationName}`
+  * Short version: `server=#{DB.Server};database=SalesDb;uid=#{DB.User};pwd=#{DB.Password};app=#{ApplicationName}`
+  * Instead of: `Data Source=#{DB.Server};Initial Catalog=SalesDb;User Id=#{DB.User};Password=#{DB.Password};Application Name=#{ApplicationName}`
 * Included library variables sets: make sure all projects included any **required** library variable sets.
 * Other settings: ensure correct custom project life cycle, confirm correct custom life cycle retention policies, etc.
 * Project variables: make sure every project implements any custom variables you have that should be found in every project (`IsProductionReady`, etc.).

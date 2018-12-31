@@ -84,12 +84,24 @@ function Out-ODUSearchResultsText {
     }
 
     #region Output matching info from Octopus
+    # output library variable set header if results
+    if (($null -ne $SearchResults.LibraryVariableSetDefined -and $SearchResults.LibraryVariableSetDefined.Count -gt 0) -or
+      ($null -ne $SearchResults.LibraryVariableSetUsed -and $SearchResults.LibraryVariableSetUsed.Count -gt 0)) {
+      Write-Output "`nLibrary Variable Set variable results:"
+    }
+
     if ($null -ne $SearchResults.LibraryVariableSetDefined -and $SearchResults.LibraryVariableSetDefined.Count -gt 0) {
       Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.LibraryVariableSetDefined -Exact:($SearchResults.Exact)
     }
 
     if ($null -ne $SearchResults.LibraryVariableSetUsed -and $SearchResults.LibraryVariableSetUsed.Count -gt 0) {
       Out-ODUSearchResultsTextSection -SearchText $SearchResults.SearchText -Section $SearchResults.LibraryVariableSetUsed -Exact:($SearchResults.Exact)
+    }
+
+    # output project header if results
+    if (($null -ne $SearchResults.LibraryVariableSetDefined -and $SearchResults.LibraryVariableSetDefined.Count -gt 0) -or
+      ($null -ne $SearchResults.LibraryVariableSetUsed -and $SearchResults.LibraryVariableSetUsed.Count -gt 0)) {
+      Write-Output "`n`nProject-level variable results:"
     }
 
     if ($null -ne $SearchResults.ProjectDefined -and $SearchResults.ProjectDefined.Count -gt 0) {

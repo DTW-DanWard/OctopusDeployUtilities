@@ -4,12 +4,17 @@ master: [![Build status](https://ci.appveyor.com/api/projects/status/ql47p2y1rel
 
 # Octopus Deploy Utilities
 
-Utilities to help you export, search, measure, see changes over time and unit test your Octopus Deploy configuration.  All your configuration data in local JSON files.  Test your deployments *before* production!
+Utilities to help you export, search, measure, see changes over time and unit test your Octopus Deploy configuration.  All your configuration data in local JSON files.  Test your deployment configuration *before* deploying to production!
 
 
 ## Why Export Your Data?
 
-Octopus Deploy is a great product but it has a one limitation: it hides your configuration behind many screens.  This makes it time-consuming to manually search your configuration, review it for quality and consistency, fix problems, etc.  And this manual searching does not scale once you have many projects.  How many clicks are required to check your IIS conditional bindings in just *one* project - and what if you have 20 IIS projects to check?  What if you have 80 projects and you want to make sure all your project-level database password variables are stored encrypted (Sensitive)?  Double-checking your settings can take hours; it's something you really should be doing every so often but all those Octopus Deploy admin screens will slow you down.
+Octopus Deploy is a great product but it has a one limitation: it hides your configuration information behind many screens in a web application where you can't directly access the data.  This makes it time-consuming to manually search your configuration, review it for quality and consistency, get reporting details, fix problems, etc.  And this does not scale:
+* How many clicks are required to check your IIS conditional bindings in just *one* project - and what if you have 20 IIS projects to check?
+* You have 80 projects and you want to confirm every project-level password variable is stored encrypted (Sensitive)?
+* You just want to get a report of every Team and who is in it.
+
+Checking your settings can take hours; it's something you really should be doing every so often but all those Octopus Deploy admin screens will slow you down.
 
 Fortunately Octopus Deploy provides a great REST API that can be used for exporting your configuration data.  And once you can export the data, you can do all sorts of awesome stuff:
 * *Easily* search across your entire configuration.
@@ -23,13 +28,13 @@ There is a lot you can do with an export; you might want to read the [full ratio
 
 ## Why Use *This* Set Of Tools?
 
-Octopus Deploy does not provide a good out-of-the-box solution for getting all your configuration settings so I created Octopus Deploy Utilities.  It has a lot of cool and unexpected features:
+Octopus Deploy does not provide a good out-of-the-box solution for getting all your configuration settings so I created **Octopus Deploy Utilities**.  ODU has a lot of cool and unexpected features:
 * It exports all your data or can selectively export particular types using a whitelist or blacklist.  Properties for a particular type can also be whitelisted or blacklisted.
-* **It post-processes your export data to simplify and improve usage.**  For example it automatically adds id -> name lookup information so you can view/work with a variable scope with its user-friendly name, i.e. `EnvironmentName = 'Production-West'` instead of only by Id, i.e. `Environment = 'Environments-37'`.  It also adds deploy process and all variable values **directly** to each project file.  And a lot more!
+* **It post-processes your export data to simplify and improve usage.**  For example it automatically adds id -> name lookup information so you can view/work with its user-friendly name, i.e. `EnvironmentName = 'Production-West'` instead of only by Id, i.e. `Environment = 'Environments-37'`.  It also adds the deploy process and all variable values **directly** to each project file.  And a lot more!
 * It is written in [PowerShell Core](https://github.com/PowerShell/PowerShell) so it runs on any OS - but also runs great in Windows PowerShell 5.  (Docker container version is on the [road map](docs/OctopusDeployUtilitiesRoadmap.md)).
 * It exports all data to local JSON files so you can process the data with any language.
 * It comes with fun helper tools written in PowerShell.
-  * Aggregates all  data in an export into a single object for easy parsing.
+  * Aggregates all data in an export into a single object for easy parsing.
   * Search your variables by name or value across all projects & included variable sets.
   * Test/filter your projects based on deploy process type.
   * And more!
