@@ -50,13 +50,13 @@ C:\> Get-Help <Command> -Full
 |Export-ODUOctopusDeployConfig|Runs a fresh export.|Export-ODUOctopusDeployConfig|
 |Update-ODUExportJoinData|Runs data post-processing on a export folder.  Note: this is done automatically by the export process.|Update-ODUExportJoinData C:\OctoExports\MyOctoServer.octopus.app\20181213-183336|
 |Get-ODUExportLatestPath|Gets full path of most recent export.|Get-ODUExportLatestPath|
-|Get-ODUExportOlderPath|Gets full path of an export from *before* most recent.|Get-ODUExportOlderPath<BR># gets export full path from before most recent<BR>Get-ODUExportOlderPath 48<BR># gets export full path from first export that occurred more than 48 hours before the latest|
+|Get-ODUExportOlderPath|Gets full path of an export from *before* most recent.|# gets export full path from before most recent<BR>Get-ODUExportOlderPath<BR><BR># gets export full path from first export that occurred more than 48 hours before the latest<BR>Get-ODUExportOlderPath 48|
 
 
 ## Text Editor
 |Command|Purpose|Example|
 |---|---|---|
-|Set-ODUConfigTextEditor|Sets the path to your text editor. Supply full path.|# use Sublime text<BR>Set-ODUConfigTextEditor 'C:\Program Files\Sublime Text 3\sublime_text.exe'<BR># use VS Code<BR>Set-ODUConfigTextEditor ((Get-Command code.cmd).Source)|
+|Set-ODUConfigTextEditor|Sets the path to your text editor. Supply full path.|# use Sublime text<BR>Set-ODUConfigTextEditor 'C:\Program Files\Sublime Text 3\sublime_text.exe'<BR><BR># use VS Code<BR>Set-ODUConfigTextEditor ((Get-Command code.cmd).Source)|
 |Get-ODUConfigTextEditor|Gets the path to your text editor.|Get-ODUConfigTextEditor|
 |odutext|Opens latest export in your text editor; alias of Open-ODUExportTextEditor.|odutext|
 |Open-ODUExportTextEditor|Opens latest export in your text editor.|Open-ODUExportTextEditor|
@@ -67,20 +67,21 @@ C:\> Get-Help <Command> -Full
 |---|---|---|
 |Set-ODUConfigDiffViewer|Sets the path to your diff viewer. Supply full path.|# use KDiff3<BR>Set-ODUConfigDiffViewer 'C:\Program Files (x86)\KDiff3\kdiff3.exe'|
 |Get-ODUConfigDiffViewer|Gets the path to your diff viewer.|Get-ODUConfigDiffViewer|
-|odudiff|Opens your diff viewer comparing most recent export with an older one; alias of Compare-ODUExportMostRecentWithOlder.|# diff 2 most recent exports<BR>odudiff<BR># diff most recent with one 48 hours older than most recent<BR>odudiff 48<BR>|
+|odudiff|Opens your diff viewer comparing most recent export with an older one; alias of Compare-ODUExportMostRecentWithOlder.|# diff 2 most recent exports<BR>odudiff<BR><BR># diff most recent with one 48 hours older than most recent<BR>odudiff 48<BR>|
 |Compare-ODUExportMostRecentWithOlder|Opens your diff viewer comparing most recent export with an older one.|Open-ODUExportTextEditor<BR>Open-ODUExportTextEditor 48|
 
 
 ## Reporting
 |Command|Purpose|Example|
 |---|---|---|
-|oduobject|Returns PSObject containing all values of an export.  If no path parameter returns latest.  Alias of Read-ODUExportFromFile.|oduobject<BR># returns object with latest export<BR>oduobject C:\OctoExports\MyOctoServer.octopus.app\20181213-183336<BR># returns object with data for that path|
+|oduobject|Returns PSObject containing all values of an export.  If no path parameter returns latest.  Alias of Read-ODUExportFromFile.|# returns object with latest export<BR>oduobject<BR><BR># returns object with data for that path<BR>oduobject C:\OctoExports\MyOctoServer.octopus.app\20181213-183336|
 |Read-ODUExportFromFile|Returns PSObject containing all values of an export.|Read-ODUExportFromFile|
 |Test-ODUProjectDeployIISSite|Returns true if Project contains at least one deploy steps for an IIS Site (Octopus.IIS).|Test-ODUProjectDeployIISSite $Project|
 |Test-ODUProjectDeployWindowsService|Returns true if Project contains at least one deploy steps for a Windows Service (Octopus.WindowsService).|Test-ODUProjectDeployWindowsService $Project|
-|Select-ODUProjectDeployActionProperty|Retrieves deploy action property from a project.|Select-ODUProjectDeployActionProperty $Project 'Octopus.Action.Package.CustomInstallationDirectory'<BR>D:\Applications\TestService
+|Select-ODUProjectDeployActionProperty|Retrieves deploy action property from a project.|# get custom installation directory setting for project<BR>Select-ODUProjectDeployActionProperty $Project 'Octopus.Action.Package.CustomInstallationDirectory'<BR>D:\Applications\TestService
 
 ## Variable Search
 |Command|Purpose|Example|
 |---|---|---|
-|FILL_IN|FILL_IN|FILL_IN|
+|oduvar|Search for text in variable name and/or value.  Alias of Find-ODUVariable.|# Search for 'Sales' in all variable names and values<BR>oduvar Sales<BR><BR># Search, matching whole exact variable name and/or value<BR>oduvar Sales -Exact<BR><BR># search, return results via standard output and save to file<BR>oduvar Sales -WriteOutput > SearchResults.txt|
+|Find-ODUVariable|Search for text in variable name and/or value.|# Search for 'Sales' in all variable names and values<BR>Find-ODUVariable Sales|

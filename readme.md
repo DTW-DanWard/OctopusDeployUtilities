@@ -110,6 +110,7 @@ It 'Confirm only dave, janet and lee are admins' {
 
 * [What does the post-processing step do?](docs/PostProcessing.md)
 * [Road map for Octopus Deploy Utilities](docs/OctopusDeployUtilitiesRoadmap.md)
+* [Change log](docs/ChangeLog.md)
 * [Rationale for exporting](docs/Rationale.md)
 * [License - it's MIT, don't worry](LICENSE)
 
