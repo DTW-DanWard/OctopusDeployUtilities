@@ -4,7 +4,7 @@ master: [![Build status](https://ci.appveyor.com/api/projects/status/ql47p2y1rel
 
 # Octopus Deploy Utilities
 
-Utilities to help you export, search, measure, see changes over time and unit test your Octopus Deploy configuration.  All your configuration data in local JSON files.  Test your deployment configuration *before* deploying to production!
+Utilities to help you export, search, report, see changes over time and unit test your Octopus Deploy configuration.  All your configuration data in local JSON files.  Test your deployment configuration *before* deploying to production!
 
 
 ## Why Export Your Data?
