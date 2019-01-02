@@ -147,8 +147,8 @@ Task Build Test, Analyze, {
   }
 
   # Load the module, read the exported functions/aliases and update the psd1 *ToExport fields
-  Set-ModuleFunctions @Verbose
-  Set-ModuleAliases @Verbose
+  Set-ModuleFunction @Verbose
+  Set-ModuleAlias @Verbose
 
   # Bump the module version if we didn't manually bump it
   try {
