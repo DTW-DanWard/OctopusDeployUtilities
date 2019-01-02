@@ -3,11 +3,6 @@
 A Brief Road Map of Upcoming Enhancements
 
 
-## Search Variable Utility
-
-Add function to search across all variables (project and included library variable sets) matching partial variable name and/or value.  Also search across code files.
-
-
 ## Purge Duplicate Exports
 
 Once you automate exports they can pile up.  If no changes exist between two exports the second export is unnecessary.  Add function to programmatically compare/delete identical exports.
