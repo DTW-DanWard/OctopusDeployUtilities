@@ -1,4 +1,7 @@
 # Change Log
 
-## v 1.0.0
+## v1.0.0
 Initial version released - woo-hoo!
+
+## v1.1.0
+Added variable search utility oduvar
