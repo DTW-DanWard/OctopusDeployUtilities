@@ -6,7 +6,7 @@ I worked at a company managing the migration from an old, custom deploy system t
 
 My advice is to create [good solid standards and best practices](BestPracticesTestingRules.md) for your settings, document and share those standards *and* make sure they are maintained with [reporting](DetailsAndReporting.md) or unit testing.
 
-And just what is unit testing with regard to Octopus Deploy configuration?  It's a way of writing reporting that alerts you if a setting is incorrect.  Let's walk through an example.
+And just what is unit testing with regard to Octopus Deploy configuration?  It's a way of writing reporting that alerts you if a setting is incorrect.  Let's walk through an example.  But first:
 
 ### Learn Pester
 If you are looking for a resource to learn Pester I highly recommend [The Pester Book](https://leanpub.com/pesterbook).  For testing your Octopus Deploy data you will learn most of what you need in the first 22 pages.
@@ -26,19 +26,19 @@ C:\>
 C:\> # loop through projects and return the projects with NO custom install folder (i.e. it returns $null)
 C:\> $Export.Projects | Where { $null -eq (Select-ODUProjectDeployActionProperty $_ 'Octopus.Action.Package.CustomInstallationDirectory') }
 C:\>
-C:\> # this might return project without that setting - if there are any - but the key thing to note
+C:\> # this might return projects without that setting - if there are any - but the key thing to note
 C:\> # is it returns the ENTIRE project object when really all you care about is the name
-C:\> # so let's just get the name
+C:\> # so let's just Select the name
 C:\> $Export.Projects | Where { $null -eq (Select-ODUProjectDeployActionProperty $_ 'Octopus.Action.Package.CustomInstallationDirectory') } | Select Name
 ```
 
-That last line is a simple report or query: tell me the names of the projects that don't have custom installation folder set.
+That last line is a simple report or query: tell me the names of the projects that **don't** have custom installation folder set.
 
-If you were to write a unit test for this, basically you are writing that same query but telling the unit test that there *shouldn't* be any results.  If there are, it's an error!  Here's an excerpt of a unit test file:
+If you were to write a unit test for this, basically you are writing that same query but telling the unit test that there *shouldn't* be any results - because all your projects *should* have that setting.  If there are projects listed then they don't have that setting - and that's bad!  Here's an excerpt of a unit test file:
 
 ```PowerShell
 # make sure there aren't any projects without custom installation folder set
-It 'Confirm no projects missing: CustomInstallationDirectory' { $Export.Projects | Where { $null -eq (Select-ODUProjectDeployActionProperty $_ 'Octopus.Action.Package.CustomInstallationDirectory') } | Select Name } | Should BeNullOrEmpty }
+It 'Confirm no projects missing setting: CustomInstallationDirectory' { $Export.Projects | Where { $null -eq (Select-ODUProjectDeployActionProperty $_ 'Octopus.Action.Package.CustomInstallationDirectory') } | Select Name } | Should BeNullOrEmpty }
 ```
 If an project exists without the setting its name will get piped into `Should BeNullOrEmpty` that that will throw an error saying something like "was expecting null but got `MyNewProject` instead.  That error message - with just the project name - is nice, short and specific.  That should be a goal for your tests *and* error messages; readability really helps maintainability.
 
@@ -54,16 +54,16 @@ That first rule we implemented for custom installation folder was nice but it's 
 * Maybe that AppFolder name should always match the Octopus Project name for consistency?
 * Wait, maybe other values in the project settings should also just match the project name for consistency...?  IIS site/app pool name?  Windows Service Display Name?
 
-And that's how it gets started.  The more you realize how consistent or inconsistent your configuration is, the more you realize you can write rules to find the exceptions so you can fix them.  Validating your entire configuration becomes a question of running a fresh export and then running your unit tests.  And, of course, you can automate both those steps, saving you a lot of time and giving you (some?) peace of mind.
+And that's how it gets started.  The more you realize how consistent or inconsistent your configuration is, the more you realize you can write rules to find the exceptions so you can fix them in your Octopus Deploy configuration.  Validating your entire configuration becomes a question of running a fresh export and then running your unit tests.  And, of course, you can automate both those steps, saving you a lot of time and giving you (some?) peace of mind.
 
 
 ### We Broke Prod
 
 In spite of all your rules stuff will still sneak through the cracks.  Here's an actual example from my experience of when an application deployed to prod and broke stuff.  (OK, it was just *one* server and that server was out of the load balancer pool... but still it was no fun.)
-* Developers added new Octopus Deploy project-level variable, scoped only to dev environments.  That project variable matched to a new configuration setting in the application's config file.
-* The default value in the app config file worked on dev machines and on staging but, turns out, not on production.
-* Developers did not notify DevOps (me!) of the new variable and I missed it.  That project had over 100 Octopus Deploy project variables plus a huge included library variable set.  Needle in the haystack... and I'm human, I screwed up.
-* Project is deployed to staging, variable replacement doesn't occur BUT default value in file happens to work fine so QA passes it.
+* Developers added a new Octopus Deploy project-level variable to a preexisting project, scoped only to dev environments.  That project variable matched to a new configuration setting in the application's config file.
+* The default value in the application's config file worked on dev machines and on staging but, turns out, not on production.
+* Developers did not notify DevOps (me!) of the new project-level variable and I missed it.  That project had over 100 Octopus Deploy project variables plus a huge included library variable set.  Needle in the haystack... and I'm human, I screwed up.
+* Project is deployed to staging, variable replacement doesn't occur BUT default value in application config file happens to work fine so QA passes it.
 * Project is deployed to production and KA-BOOM!  (OK, less dramatic than that).
 
 Doh!  However, using exports the problem was really easily to find: the last time this project was deployed to production it worked fine so I diff'd an export from that time frame to the latest export.  The new project variable - with its *dev-environment-only* scope - stood out like a sore thumb.  We quickly added the staging and production-scoped values to that project in Octopus Deploy, updated the release and redeployed.  All done!
