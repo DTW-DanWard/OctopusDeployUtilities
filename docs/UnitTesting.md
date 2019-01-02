@@ -52,7 +52,7 @@ That first rule we implemented for custom installation folder was nice but it's 
 * What is the name of the sub-folder being installed to (D:\Applications\AppFolder)?
 * Should that AppFolder name always have a special prefix?  Have or avoid certain characters?
 * Maybe that AppFolder name should always match the Octopus Project name for consistency?
-* Wait, maybe other values in the project settings should also just match the project name for consistency...?  IIS site/app pool name?  Windows Service Display Name?
+* Wait, maybe other values in the project settings should also just match the project name for consistency...?  IIS site/app pool name?  Windows Service Display Name?  Logging settings like folder and file name prefix???
 
 And that's how it gets started.  The more you realize how consistent or inconsistent your configuration is, the more you realize you can write rules to find the exceptions so you can fix them in your Octopus Deploy configuration.  Validating your entire configuration becomes a question of running a fresh export and then running your unit tests.  And, of course, you can automate both those steps, saving you a lot of time and giving you (some?) peace of mind.
 
