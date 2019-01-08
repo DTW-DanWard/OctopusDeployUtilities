@@ -67,6 +67,9 @@ Once the root export folder has been set you can now register your Octopus Deplo
 C:\> Add-ODUConfigOctopusServer 'https://MyOctoServer.octopus.app' 'API-ABCDEFGH01234567890ABCDEFGH'
 ```
 
+When you enter the `Add-ODUConfigOctopusServer` command it first attempts to communicate with your Octopus Deploy server, calling a sample REST API on your server.  If that sample works correctly, the server and API key are stored in the configuration file (API key is encrypted on Windows machines).  However if that test call *fails* it means Octopus Deploy Utilities could not communicate correctly with your server.  In this case see the bottom of this document for [tips debugging your setup](#debug-server-communication-setup).
+
+
 ## Run Your First Manual Export
 At this point you can run an export without needing to change anything else.  Running `oduexport` will do this.  Here's an example:
 ```PowerShell
@@ -174,3 +177,33 @@ To schedule exports: on Windows, use Task Scheduler; on Unix, use cron.
 * Add arguments:
   * If you installed the module: -c "oduexport"
   * If you cloned & manually import the module: -c "Import-Module C:\path\to\OctopusDeployUtilities\OctopusDeployUtilities\OctopusDeployUtilities.psd1; oduexport"
+
+
+## Debug Server Communication Setup
+
+Normally you register your Octopus Deploy server with a call like this:
+```PowerShell
+C:\> Add-ODUConfigOctopusServer 'https://MyOctoServer.octopus.app' 'API-ABCDEFGH01234567890ABCDEFGH'
+```
+
+If your Octopus Deploy install is *not* installed to the root of the web server but is down a level, you can specify that:
+```PowerShell
+C:\> Add-ODUConfigOctopusServer 'https://MyOctoServer.octopus.app/OctoRoot' 'API-ABCDEFGH01234567890ABCDEFGH'
+```
+
+If neither of these work, take a closer look at the server url.  Make sure you **don't** add the `/app` at the end of the server name.
+
+Here's a sample you can try running on your machine to test your REST API directly.
+```PowerShell
+C:\> # set the server name - no trailing slash!
+C:\> $Server = 'https://MyOctoServer.octopus.app'
+C:\> $ApiKey = 'API-ABCDEFGH01234567890ABCDEFGH'
+C:\>
+C:\> # try calling a REST API directly
+C:\> Invoke-RestMethod -Uri ($Server + "/api/machineroles/all") -Headers @{ 'X-Octopus-ApiKey' = $ApiKey }
+C:\> # there might be results or it might return nothing - depends on your setup
+C:\> # but it should NOT throw an error
+C:\>
+C:\> # if Invoke-RestMethod doesn't throw an error, this should work:
+C:\> Add-ODUConfigOctopusServer $Server $ApiKey
+```

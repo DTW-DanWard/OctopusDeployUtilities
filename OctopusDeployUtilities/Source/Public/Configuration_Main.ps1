@@ -26,7 +26,6 @@ function Add-ODUConfigOctopusServer {
   param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [ValidatePattern("^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}\/?$")]
     [string]$Url,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
