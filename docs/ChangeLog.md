@@ -8,3 +8,4 @@ Added variable search utility oduvar.
 
 ## v1.1.1
 Removed registration server url validation to support non-root installations.
+
