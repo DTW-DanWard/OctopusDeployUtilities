@@ -120,8 +120,7 @@ Task Analyze Init, {
 
   # run script analyzer on all files EXCEPT build files in project root
   Get-ChildItem -Path $ProjectRoot -Recurse | Where-Object { @('.ps1', '.psm1') -contains $_.Extension -and $_.DirectoryName -ne $ProjectRoot } | ForEach-Object {
-    # Write-Host is *rarely* if at all used in Octopus Deploy Utilities and everything. is going. to be. O.K.
-    # API key has to be decrypted and stored as plain text in order to be used
+    # don't worry: Write-Host is *barely* used in Octopus Deploy Utilities
     $Results = Invoke-ScriptAnalyzer -Path $_.FullName -ExcludeRule PSAvoidUsingWriteHost,PSAvoidUsingConvertToSecureStringWithPlainText,PSUseShouldProcessForStateChangingFunctions,PSAvoidGlobalVars
     if ($null -ne $Results) {
       Write-Build Red "PSScriptAnalyzer found issues in: $($_.Name)"

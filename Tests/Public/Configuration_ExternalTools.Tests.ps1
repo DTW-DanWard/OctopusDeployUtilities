@@ -5,7 +5,6 @@ $ScriptLevelVariables = Join-Path -Path $env:BHModulePath -ChildPath 'Set-Script
 . $ScriptLevelVariables
 #endregion
 
-
 #region Dot-source Source file associated with this test file
 # if no value returned just exit; specific error is already written in Get-SourceScriptFilePath call
 . (Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath Get-SourceScriptFilePath.ps1)
