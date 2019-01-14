@@ -6,6 +6,9 @@ image: Visual Studio 2017
 environment:
   NugetApiKey:
     secure: LdLID7s09cfdn/RnP63uPqcfVAC6jANTKnbCiUUw737IQ8wV95zx2SzDLkaVWVNR
+  GitToken:
+    secure: nyjiIuUkEkbCOXSnDs76VJyFMaQGwhZMAHI9pfwPiBLVp+TsbRswx6oPobo/8+AH
+  UpdateCoverageBadge: false
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5
@@ -20,3 +23,19 @@ build: false
 # Kick off the CI/CD pipeline
 test_script:
   - ps: . .\build.ps1 -Task 'Deploy'
+
+on_success:
+  - ps: |
+      if ($env:UpdateCoverageBadge -eq $true) {
+        "Updating readme.md file as code coverage percentage has changed"
+        git config --global credential.helper store
+        Add-Content "$HOME\.git-credentials" "https://$($env:GitToken):x-oauth-basic@github.com`n"
+        git config --global user.email "build@appveyor.com"
+        git config --global user.name "Appveyor"
+        # try to suppress CRLF warnings in stderr during git add
+        git config --global core.safecrlf false
+        git checkout -q $env:APPVEYOR_REPO_BRANCH
+        $Suppress = git add README.md 2>&1
+        git commit -q -m "[skip ci] AppVeyor Build $env:APPVEYOR_BUILD_VERSION"
+        git push -q
+      }
