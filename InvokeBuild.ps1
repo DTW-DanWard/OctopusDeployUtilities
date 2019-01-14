@@ -22,7 +22,7 @@ function Update-CodeCoveragePercent {
   [cmdletbinding(supportsshouldprocess)]
   param(
     [int]$CodeCoverage = 0,
-    [string]$TextFilePath = "$Env:BHProjectPath\Readme.md"
+    [string]$TextFilePath = "$Env:BHProjectPath\readme.md"
   )
 
   $BadgeColor = switch ($CodeCoverage) {
@@ -44,7 +44,7 @@ function Test-CodeCoveragePercentUpdated {
   [cmdletbinding(supportsshouldprocess)]
   param(
     [int]$NewCodeCoverage = 0,
-    [string]$TextFilePath = "$Env:BHProjectPath\Readme.md"
+    [string]$TextFilePath = "$Env:BHProjectPath\readme.md"
   )
   $Updated = $false
   if ($PSCmdlet.ShouldProcess($TextFilePath)) {
