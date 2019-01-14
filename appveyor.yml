@@ -35,7 +35,7 @@ on_success:
         # try to suppress CRLF warnings in stderr during git add
         git config --global core.safecrlf false
         git checkout -q $env:APPVEYOR_REPO_BRANCH
-        $Suppress = git add README.md 2>&1
+        $Suppress = git add readme.md 2>&1
         git commit -q -m "[skip ci] AppVeyor Build $env:APPVEYOR_BUILD_VERSION"
         git push -q
       }
