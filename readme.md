@@ -1,5 +1,5 @@
 
-[![Build status](https://ci.appveyor.com/api/projects/status/ql47p2y1relp1dng/branch/master?svg=true)](https://ci.appveyor.com/api/projects/status/ql47p2y1relp1dng/branch/master)   ![Test Coverage](https://img.shields.io/badge/coverage-98%25-brightgreen.svg?maxAge=60)
+[![Build status](https://ci.appveyor.com/api/projects/status/ql47p2y1relp1dng/branch/master?svg=true)](https://ci.appveyor.com/api/projects/status/ql47p2y1relp1dng/branch/master)   ![Test Coverage](https://img.shields.io/badge/coverage-9%25-red.svg?maxAge=60)
 
 
 # Octopus Deploy Utilities
