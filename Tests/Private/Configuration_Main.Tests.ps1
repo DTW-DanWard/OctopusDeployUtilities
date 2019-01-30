@@ -103,11 +103,11 @@ Describe 'Configuration: Octopus Server initialized' {
     $OctoServerApiKey = 'API-ABCDEFGH01234567890ABCDEFGH'
 
     # encryption tests only run on Windows
-    $Windows = $false
+    $script:Windows = $false
     # encrypt key they test decrypt with Convert-ODUDecryptApiKey
     $OctoServerApiKeyEncrypted = $OctoServerApiKey
     if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
-     $Windows = $true
+     $script:Windows = $true
       $OctoServerApiKeyEncrypted = ConvertTo-SecureString -String $OctoServerApiKey -AsPlainText -Force | ConvertFrom-SecureString
     }
 

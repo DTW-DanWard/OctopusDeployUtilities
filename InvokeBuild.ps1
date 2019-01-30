@@ -142,7 +142,7 @@ task Test Init, {
     Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
   } elseif ($env:BHBuildSystem -ne 'Unknown' -and $env:BHBranchName -eq 'master') {
     # update code coverage badge on readme.md
-    $CoveragePercent = [math]::floor(100 - (($TestResults.CodeCoverage.NumberOfCommandsMissed / $TestResults.CodeCoverage.NumberOfCommandsAnalyzed) * 100))
+    $CoveragePercent = [math]::Round(100 - (($TestResults.CodeCoverage.NumberOfCommandsMissed / $TestResults.CodeCoverage.NumberOfCommandsAnalyzed) * 100))
 
     # determine if update needs to be made
     if ($true -eq (Test-CodeCoveragePercentUpdated -NewCodeCoverage $CoveragePercent)) {

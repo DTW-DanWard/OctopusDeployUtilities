@@ -15,7 +15,7 @@ Describe "Re/loading: $SourceScript" { }
 #endregion
 
 #region Function: Read-ExportFromFile
-# Reads all export files from one export into single object; simplified version of Read-ODUExportFromFile 
+# Reads all export files from one export into single object; simplified version of Read-ODUExportFromFile
 # used for testing. No validation of parameters, directory structure, etc.
 function Read-ExportFromFile {
   param([string]$Path)
@@ -40,15 +40,24 @@ function Read-ExportFromFile {
 # root folder containing various exports
 $SourceDataRootFolder = (Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath TestData)
 
-#region Join/post process data - high level
-Describe 'Post-process: - high level' {
+#region Join/post-process/join-data data - high level
+Describe 'Post-process/join-data: - high level' {
 
   BeforeAll {
     # source path of standard export to post-process
     $SourceExportFolderName = 'Export-NoPostProcessing1'
-    $SourceExportFolder = Join-Path -Path $SourceDataRootFolder -ChildPath $SourceExportFolderName
+    $script:SourceExportFolder = Join-Path -Path $SourceDataRootFolder -ChildPath $SourceExportFolderName
     $TestExportRootPath = Join-Path -Path $TestDrive -ChildPath Export
-    $TestExportPath = Join-Path -Path $TestExportRootPath -ChildPath $SourceExportFolderName
+    $script:TestExportPath = Join-Path -Path $TestExportRootPath -ChildPath $SourceExportFolderName
+    function New-ODUIdToNameLookup { }
+    function Update-ODUExportAddExternalNameForId { }
+    function Update-ODUExportAddMachinesToEnvironment { }
+    function Update-ODUExportAddScopeNamesToVariable { }
+    function Update-ODUExportIncludedVariableSetsAddVariable { }
+    function Update-ODUExportProjectAddDeploymentProcess { }
+    function Update-ODUExportProjectAddVariableSet { }
+    function Update-ODUExportProjectAddIncludedLibraryVariableSet { }
+
   }
 
   BeforeEach {
@@ -59,8 +68,31 @@ Describe 'Post-process: - high level' {
     Copy-Item -Path $SourceExportFolder -Destination $TestExportRootPath -Recurse -Container -Force
   }
 
-  It 'confirm sample export found and containing data' {
+  It 'sample export found and contains data' {
     $Export = Read-ExportFromFile $TestExportPath
     $Export.Projects.Count | Should BeGreaterThan 0
+  }
+
+  It 'throws error if no path' {
+    { Update-ODUExportJoinData } | Should throw
+  }
+
+  It 'throws error if bad path' {
+    { Update-ODUExportJoinData -Path (Join-Path -Path $TestExportRootPath -ChildPath ExportDoesNotExist) } | Should throw
+  }
+
+  It 'produces output and does not throw error for valid export' {
+    $Output = Update-ODUExportJoinData -Path $TestExportPath
+    $Output.Count | Should BeGreaterThan 0
+  }
+
+  It 'produces output and does not throw error for valid export run multiple times on same' {
+    $Output = Update-ODUExportJoinData -Path $TestExportPath
+    $Output = Update-ODUExportJoinData -Path $TestExportPath
+    $Output.Count | Should BeGreaterThan 0
+  }
+
+  It 'produces no output with -Quiet and does not throw error for valid export' {
+    Update-ODUExportJoinData -Path $TestExportPath -Quiet | Should BeNullOrEmpty
   }
 }
