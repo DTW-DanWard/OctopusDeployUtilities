@@ -1,0 +1,65 @@
+{
+  "Id": "deploymentprocess-Projects-70",
+  "ProjectId": "Projects-70",
+  "Steps": [
+    {
+      "Id": "18f77856-ea5e-480c-9c90-4002226c0e37",
+      "Name": "Deploy Service",
+      "PackageRequirement": "LetOctopusDecide",
+      "Properties": {
+        "Octopus.Action.TargetRoles": "MessageQueue"
+      },
+      "Condition": "Success",
+      "StartTrigger": "StartAfterPrevious",
+      "Actions": [
+        {
+          "Id": "f2e31352-07f1-4dc6-a7c3-f4e52aaf8211",
+          "Name": "Deploy Service",
+          "ActionType": "Octopus.WindowsService",
+          "IsDisabled": false,
+          "CanBeUsedForProjectVersioning": true,
+          "IsRequired": false,
+          "WorkerPoolId": null,
+          "Environments": [],
+          "ExcludedEnvironments": [],
+          "Channels": [],
+          "TenantTags": [],
+          "Packages": [
+            {
+              "Id": "1a430f73-8ac9-4525-95e9-e0a05927dd08",
+              "Name": "",
+              "PackageId": "Contoso.Utility.UsefulStuff",
+              "FeedId": "feeds-builtin",
+              "AcquisitionLocation": "Server",
+              "Properties": {}
+            }
+          ],
+          "Properties": {
+            "Octopus.Action.WindowsService.CreateOrUpdateService": "True",
+            "Octopus.Action.WindowsService.ServiceAccount": "LocalSystem",
+            "Octopus.Action.WindowsService.StartMode": "auto",
+            "Octopus.Action.Package.AutomaticallyRunConfigurationTransformationFiles": "True",
+            "Octopus.Action.Package.AutomaticallyUpdateAppSettingsAndConnectionStrings": "True",
+            "Octopus.Action.EnabledFeatures": "Octopus.Features.WindowsService,Octopus.Features.CustomDirectory,Octopus.Features.ConfigurationVariables,Octopus.Features.ConfigurationTransforms",
+            "Octopus.Action.WindowsService.ServiceName": "TestService",
+            "Octopus.Action.WindowsService.DisplayName": "TestService",
+            "Octopus.Action.WindowsService.ExecutablePath": "TestService.exe",
+            "Octopus.Action.Package.PackageId": "Contoso.Utility.UsefulStuff",
+            "Octopus.Action.Package.FeedId": "feeds-builtin",
+            "Octopus.Action.Package.DownloadOnTentacle": "False",
+            "Octopus.Action.Package.CustomInstallationDirectory": "D:\\Applications\\TestService",
+            "Octopus.Action.Package.CustomInstallationDirectoryShouldBePurgedBeforeDeployment": "True"
+          },
+          "Links": {}
+        }
+      ]
+    }
+  ],
+  "Version": 0,
+  "LastSnapshotId": null,
+  "Links": {
+    "Self": "/api/deploymentprocesses/deploymentprocess-Projects-70",
+    "Project": "/api/projects/Projects-70",
+    "Template": "/api/deploymentprocesses/deploymentprocess-Projects-70/template{?channel,releaseId}"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "Id": "variableset-Projects-70",
+  "OwnerId": "Projects-70",
+  "Version": 9,
+  "Variables": [
+    {
+      "Id": "d77dd7f4-5455-2c21-a040-a2e42631814e",
+      "Name": "AppConString",
+      "Value": "#{ConnStr.SalesDb};MultipleActiveResultSets=True",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "515670db-3d76-6af0-3296-395fee056842",
+      "Name": "ApplicationName",
+      "Value": "FinancePortal",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "6b43a717-ab35-2ce2-e909-354a2ee0d8b1",
+      "Name": "DB.Password",
+      "Value": null,
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "Sensitive",
+      "IsSensitive": true
+    },
+    {
+      "Id": "3a859967-211d-488c-0ae9-f05df16a92b3",
+      "Name": "DB.User",
+      "Value": "DBFINANCEPORTAL",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "7f6f8c5c-f34e-ef55-7fe3-9514d014f946",
+      "Name": "ReplyEmail",
+      "Value": "Sales@MyCo.com",
+      "Description": null,
+      "Scope": {
+        "Role": [
+          "Production"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    }
+  ],
+  "Links": {
+    "Self": "/api/variables/variableset-Projects-70"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "Id": "deploymentprocess-Projects-1",
+  "ProjectId": "Projects-1",
+  "Steps": [
+    {
+      "Id": "c3e5cc13-32d6-4c54-932f-1c8d6727887a",
+      "Name": "Hello World",
+      "PackageRequirement": "LetOctopusDecide",
+      "Properties": {
+        "Octopus.Action.TargetRoles": "TestRole"
+      },
+      "Condition": "Success",
+      "StartTrigger": "StartAfterPrevious",
+      "Actions": [
+        {
+          "Id": "cce42be1-911d-415f-8965-3e9fed55dfd8",
+          "Name": "Hello World",
+          "ActionType": "Octopus.Script",
+          "IsDisabled": false,
+          "CanBeUsedForProjectVersioning": false,
+          "IsRequired": false,
+          "WorkerPoolId": null,
+          "Environments": [],
+          "ExcludedEnvironments": [],
+          "Channels": [],
+          "TenantTags": [],
+          "Packages": [],
+          "Properties": {
+            "Octopus.Action.RunOnServer": "false",
+            "Octopus.Action.Script.ScriptSource": "Inline",
+            "Octopus.Action.Script.Syntax": "PowerShell",
+            "Octopus.Action.Script.ScriptBody": "Write-Output \"Hello, world!\""
+          },
+          "Links": {}
+        }
+      ]
+    }
+  ],
+  "Version": 1,
+  "LastSnapshotId": null,
+  "Links": {
+    "Self": "/api/deploymentprocesses/deploymentprocess-Projects-1",
+    "Project": "/api/projects/Projects-1",
+    "Template": "/api/deploymentprocesses/deploymentprocess-Projects-1/template{?channel,releaseId}"
+  }
+}

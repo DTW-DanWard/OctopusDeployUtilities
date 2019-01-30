@@ -1,0 +1,7 @@
+{
+  "Id": "builtinrepositoryconfigurations-single",
+  "DeleteUnreleasedPackagesAfterDays": null,
+  "Links": {
+    "Self": "/api/repository/configuration"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "Id": "Projects-41",
+  "VariableSetId": "variableset-Projects-41",
+  "DeploymentProcessId": "deploymentprocess-Projects-41",
+  "ClonedFromProjectId": null,
+  "DiscreteChannelRelease": false,
+  "IncludedLibraryVariableSetIds": [],
+  "DefaultToSkipIfAlreadyInstalled": false,
+  "TenantedDeploymentMode": "Untenanted",
+  "DefaultGuidedFailureMode": "EnvironmentDefault",
+  "VersioningStrategy": {
+    "Template": "#{Octopus.Version.LastMajor}.#{Octopus.Version.LastMinor}.#{Octopus.Version.NextPatch}",
+    "DonorPackage": null,
+    "DonorPackageStepId": null
+  },
+  "ReleaseCreationStrategy": {
+    "ChannelId": null,
+    "ReleaseCreationPackage": null,
+    "ReleaseCreationPackageStepId": null
+  },
+  "Templates": [],
+  "AutoDeployReleaseOverrides": [],
+  "Name": "SalesTaxEngine",
+  "Slug": "salestaxengine",
+  "Description": "",
+  "IsDisabled": false,
+  "ProjectGroupId": "ProjectGroups-1",
+  "LifecycleId": "Lifecycles-1",
+  "AutoCreateRelease": false,
+  "ProjectConnectivityPolicy": {
+    "SkipMachineBehavior": "None",
+    "TargetRoles": [],
+    "AllowDeploymentsToNoTargets": false
+  },
+  "Links": {
+    "Self": "/api/projects/Projects-41",
+    "Releases": "/api/projects/Projects-41/releases{/version}{?skip,take,searchByVersion}",
+    "Channels": "/api/projects/Projects-41/channels{?skip,take,partialName}",
+    "Triggers": "/api/projects/Projects-41/triggers{?skip,take,partialName,triggerActionType}",
+    "ScheduledTriggers": "/api/projects/Projects-41/scheduledtriggers{?skip,take,partialName}",
+    "OrderChannels": "/api/projects/Projects-41/channels/order",
+    "Variables": "/api/variables/variableset-Projects-41",
+    "Progression": "/api/progression/Projects-41{?aggregate}",
+    "DeploymentProcess": "/api/deploymentprocesses/deploymentprocess-Projects-41",
+    "Web": "/app#/projects/Projects-41",
+    "Logo": "/api/projects/Projects-41/logo?cb=2018.11.2"
+  }
+}

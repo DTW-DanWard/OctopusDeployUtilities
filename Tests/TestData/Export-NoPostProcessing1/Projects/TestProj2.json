@@ -1,0 +1,48 @@
+{
+  "Id": "Projects-22",
+  "VariableSetId": "variableset-Projects-22",
+  "DeploymentProcessId": "deploymentprocess-Projects-22",
+  "ClonedFromProjectId": null,
+  "DiscreteChannelRelease": false,
+  "IncludedLibraryVariableSetIds": [],
+  "DefaultToSkipIfAlreadyInstalled": false,
+  "TenantedDeploymentMode": "TenantedOrUntenanted",
+  "DefaultGuidedFailureMode": "EnvironmentDefault",
+  "VersioningStrategy": {
+    "Template": "#{Octopus.Version.LastMajor}.#{Octopus.Version.LastMinor}.#{Octopus.Version.NextPatch}",
+    "DonorPackage": null,
+    "DonorPackageStepId": null
+  },
+  "ReleaseCreationStrategy": {
+    "ChannelId": null,
+    "ReleaseCreationPackage": null,
+    "ReleaseCreationPackageStepId": null
+  },
+  "Templates": [],
+  "AutoDeployReleaseOverrides": [],
+  "Name": "TestProj2",
+  "Slug": "testproj2",
+  "Description": "Dan's second test project",
+  "IsDisabled": false,
+  "ProjectGroupId": "ProjectGroups-1",
+  "LifecycleId": "Lifecycles-1",
+  "AutoCreateRelease": false,
+  "ProjectConnectivityPolicy": {
+    "SkipMachineBehavior": "None",
+    "TargetRoles": [],
+    "AllowDeploymentsToNoTargets": false
+  },
+  "Links": {
+    "Self": "/api/projects/Projects-22",
+    "Releases": "/api/projects/Projects-22/releases{/version}{?skip,take,searchByVersion}",
+    "Channels": "/api/projects/Projects-22/channels{?skip,take,partialName}",
+    "Triggers": "/api/projects/Projects-22/triggers{?skip,take,partialName,triggerActionType}",
+    "ScheduledTriggers": "/api/projects/Projects-22/scheduledtriggers{?skip,take,partialName}",
+    "OrderChannels": "/api/projects/Projects-22/channels/order",
+    "Variables": "/api/variables/variableset-Projects-22",
+    "Progression": "/api/progression/Projects-22{?aggregate}",
+    "DeploymentProcess": "/api/deploymentprocesses/deploymentprocess-Projects-22",
+    "Web": "/app#/projects/Projects-22",
+    "Logo": "/api/projects/Projects-22/logo?cb=2018.11.2"
+  }
+}

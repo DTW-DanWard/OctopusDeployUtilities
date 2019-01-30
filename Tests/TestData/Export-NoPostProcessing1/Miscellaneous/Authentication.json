@@ -1,0 +1,15 @@
+{
+  "AuthenticationProviders": [
+    {
+      "Name": "Octopus",
+      "IdentityType": "UsernamePassword",
+      "FormsLoginEnabled": true,
+      "Links": {},
+      "JavascriptLinks": null,
+      "CSSLinks": null
+    }
+  ],
+  "AutoLoginEnabled": false,
+  "AnyAuthenticationProvidersSupportPasswordManagement": true,
+  "Links": {}
+}

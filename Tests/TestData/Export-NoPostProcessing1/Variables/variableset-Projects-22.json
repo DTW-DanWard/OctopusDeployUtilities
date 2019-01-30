@@ -1,0 +1,47 @@
+{
+  "Id": "variableset-Projects-22",
+  "OwnerId": "Projects-22",
+  "Version": 3,
+  "Variables": [
+    {
+      "Id": "a0907db9-667d-6416-d0d5-e084e63f2c39",
+      "Name": "TP2-Proj-Var1",
+      "Value": "Meow meow again",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "75bdd574-c3c1-2349-dadb-f30b33ec351e",
+      "Name": "TP2-Proj-Var1",
+      "Value": "No meow here",
+      "Description": "",
+      "Scope": {
+        "Environment": [
+          "Environments-24"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "946833b7-c602-dcfc-ec57-ddd9d9b0d675",
+      "Name": "TP2-Sensitive",
+      "Value": null,
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "Sensitive",
+      "IsSensitive": true
+    }
+  ],
+  "Links": {
+    "Self": "/api/variables/variableset-Projects-22"
+  }
+}

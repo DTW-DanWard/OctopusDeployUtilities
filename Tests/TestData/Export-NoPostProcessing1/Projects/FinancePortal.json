@@ -1,0 +1,48 @@
+{
+  "Id": "Projects-70",
+  "VariableSetId": "variableset-Projects-70",
+  "DeploymentProcessId": "deploymentprocess-Projects-70",
+  "ClonedFromProjectId": "Projects-41",
+  "DiscreteChannelRelease": false,
+  "IncludedLibraryVariableSetIds": [],
+  "DefaultToSkipIfAlreadyInstalled": false,
+  "TenantedDeploymentMode": "Untenanted",
+  "DefaultGuidedFailureMode": "EnvironmentDefault",
+  "VersioningStrategy": {
+    "Template": "#{Octopus.Version.LastMajor}.#{Octopus.Version.LastMinor}.#{Octopus.Version.NextPatch}",
+    "DonorPackage": null,
+    "DonorPackageStepId": null
+  },
+  "ReleaseCreationStrategy": {
+    "ChannelId": null,
+    "ReleaseCreationPackage": null,
+    "ReleaseCreationPackageStepId": null
+  },
+  "Templates": [],
+  "AutoDeployReleaseOverrides": [],
+  "Name": "FinancePortal",
+  "Slug": "financeportal",
+  "Description": "",
+  "IsDisabled": false,
+  "ProjectGroupId": "ProjectGroups-1",
+  "LifecycleId": "Lifecycles-1",
+  "AutoCreateRelease": false,
+  "ProjectConnectivityPolicy": {
+    "SkipMachineBehavior": "None",
+    "TargetRoles": [],
+    "AllowDeploymentsToNoTargets": false
+  },
+  "Links": {
+    "Self": "/api/projects/Projects-70",
+    "Releases": "/api/projects/Projects-70/releases{/version}{?skip,take,searchByVersion}",
+    "Channels": "/api/projects/Projects-70/channels{?skip,take,partialName}",
+    "Triggers": "/api/projects/Projects-70/triggers{?skip,take,partialName,triggerActionType}",
+    "ScheduledTriggers": "/api/projects/Projects-70/scheduledtriggers{?skip,take,partialName}",
+    "OrderChannels": "/api/projects/Projects-70/channels/order",
+    "Variables": "/api/variables/variableset-Projects-70",
+    "Progression": "/api/progression/Projects-70{?aggregate}",
+    "DeploymentProcess": "/api/deploymentprocesses/deploymentprocess-Projects-70",
+    "Web": "/app#/projects/Projects-70",
+    "Logo": "/api/projects/Projects-70/logo?cb=2018.11.2"
+  }
+}

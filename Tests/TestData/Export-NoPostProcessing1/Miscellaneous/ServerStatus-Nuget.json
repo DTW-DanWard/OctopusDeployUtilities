@@ -1,0 +1,8 @@
+{
+  "TotalPackages": 1,
+  "Links": {
+    "Self": "/api/serverstatus/nuget",
+    "NuGetPush": "/nuget/packages",
+    "ApiPush": "/api/packages/raw{?replace}"
+  }
+}

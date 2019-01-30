@@ -1,0 +1,13 @@
+{
+  "Id": "Environments-24",
+  "Name": "Test-1",
+  "Description": "Test-1 environment description",
+  "SortOrder": 1,
+  "UseGuidedFailure": false,
+  "AllowDynamicInfrastructure": false,
+  "Links": {
+    "Self": "/api/environments/Environments-24",
+    "Machines": "/api/environments/Environments-24/machines{?skip,take,partialName,roles,isDisabled,healthStatuses,commStyles,tenantIds,tenantTags}",
+    "SinglyScopedVariableDetails": "/api/environments/Environments-24/singlyScopedVariableDetails"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "Id": "teams-everyone",
+  "Name": "Everyone",
+  "MemberUserIds": [
+    "Users-1",
+    "Users-21"
+  ],
+  "ExternalSecurityGroups": [],
+  "UserRoleIds": [],
+  "ProjectIds": [],
+  "EnvironmentIds": [],
+  "TenantIds": [],
+  "TenantTags": [],
+  "ProjectGroupIds": [],
+  "CanBeDeleted": false,
+  "CanBeRenamed": false,
+  "CanChangeRoles": true,
+  "CanChangeMembers": false,
+  "Links": {
+    "Self": "/api/teams/teams-everyone"
+  }
+}

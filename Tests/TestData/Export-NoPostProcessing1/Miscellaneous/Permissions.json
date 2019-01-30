@@ -1,0 +1,614 @@
+{
+  "AccountCreate": {
+    "Description": "Create accounts",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "AccountDelete": {
+    "Description": "Delete accounts",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "AccountEdit": {
+    "Description": "Edit accounts",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "AccountView": {
+    "Description": "View accounts",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "ActionTemplateCreate": {
+    "Description": "Create step templates",
+    "SupportedRestrictions": []
+  },
+  "ActionTemplateDelete": {
+    "Description": "Delete step templates",
+    "SupportedRestrictions": []
+  },
+  "ActionTemplateEdit": {
+    "Description": "Edit step templates",
+    "SupportedRestrictions": []
+  },
+  "ActionTemplateView": {
+    "Description": "View step templates",
+    "SupportedRestrictions": []
+  },
+  "AdministerSystem": {
+    "Description": "Perform system-level functions like configuring HTTP web hosting, the public URL, server nodes, maintenance mode, and server diagnostics",
+    "SupportedRestrictions": []
+  },
+  "ArtifactCreate": {
+    "Description": "Manually create artifacts",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "ArtifactDelete": {
+    "Description": "Delete artifacts",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "ArtifactEdit": {
+    "Description": "Edit the details describing artifacts",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "ArtifactView": {
+    "Description": "View the artifacts created manually and during deployment",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "AuditView": {
+    "Description": "View audit logs",
+    "SupportedRestrictions": []
+  },
+  "BuiltInFeedAdminister": {
+    "Description": "Replace or delete packages in the built-in package repository",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "BuiltInFeedDownload": {
+    "Description": "Retrieve the contents of packages in the built-in package repository",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "BuiltInFeedPush": {
+    "Description": "Push new packages to the built-in package repository",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "CertificateCreate": {
+    "Description": "Create certificates",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "CertificateDelete": {
+    "Description": "Delete certificates",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "CertificateEdit": {
+    "Description": "Edit certificates",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "CertificateExportPrivateKey": {
+    "Description": "Export certificate private-keys",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "CertificateView": {
+    "Description": "View certificates",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "ConfigureServer": {
+    "Description": "Configure server settings like Authentication, SMTP, and HTTP Security Headers",
+    "SupportedRestrictions": []
+  },
+  "DefectReport": {
+    "Description": "Block a release from progressing to the next lifecycle phase",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "DefectResolve": {
+    "Description": "Unblock a release so it can progress to the next phase",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "DeploymentCreate": {
+    "Description": "Deploy releases to target environments",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "DeploymentDelete": {
+    "Description": "Delete deployments",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "DeploymentView": {
+    "Description": "View deployments",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "EnvironmentCreate": {
+    "Description": "Create environments",
+    "SupportedRestrictions": [
+      "environments"
+    ]
+  },
+  "EnvironmentDelete": {
+    "Description": "Delete environments",
+    "SupportedRestrictions": [
+      "environments"
+    ]
+  },
+  "EnvironmentEdit": {
+    "Description": "Edit environments",
+    "SupportedRestrictions": [
+      "environments"
+    ]
+  },
+  "EnvironmentView": {
+    "Description": "View environments",
+    "SupportedRestrictions": [
+      "environments"
+    ]
+  },
+  "EventView": {
+    "Description": "View release and deployment events",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "FeedEdit": {
+    "Description": "Edit feeds",
+    "SupportedRestrictions": []
+  },
+  "FeedView": {
+    "Description": "View package feeds and the packages in them",
+    "SupportedRestrictions": []
+  },
+  "InterruptionSubmit": {
+    "Description": "Take responsibility for and submit interruptions generated during deployments",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "InterruptionView": {
+    "Description": "View interruptions generated during deployments",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "InterruptionViewSubmitResponsible": {
+    "Description": "Take responsibility for and submit interruptions generated during deployments when the user is in a designated responsible team",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "LibraryVariableSetCreate": {
+    "Description": "Create library variable sets",
+    "SupportedRestrictions": []
+  },
+  "LibraryVariableSetDelete": {
+    "Description": "Delete library variable sets",
+    "SupportedRestrictions": []
+  },
+  "LibraryVariableSetEdit": {
+    "Description": "Edit library variable sets",
+    "SupportedRestrictions": []
+  },
+  "LibraryVariableSetView": {
+    "Description": "View library variable sets",
+    "SupportedRestrictions": []
+  },
+  "LifecycleCreate": {
+    "Description": "Create lifecycles",
+    "SupportedRestrictions": []
+  },
+  "LifecycleDelete": {
+    "Description": "Delete lifecycles",
+    "SupportedRestrictions": []
+  },
+  "LifecycleEdit": {
+    "Description": "Edit lifecycles",
+    "SupportedRestrictions": []
+  },
+  "LifecycleView": {
+    "Description": "View lifecycles",
+    "SupportedRestrictions": []
+  },
+  "MachineCreate": {
+    "Description": "Create machines",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "MachineDelete": {
+    "Description": "Delete machines",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "MachineEdit": {
+    "Description": "Edit machines",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "MachinePolicyCreate": {
+    "Description": "Create health check policies",
+    "SupportedRestrictions": []
+  },
+  "MachinePolicyDelete": {
+    "Description": "Delete health check policies",
+    "SupportedRestrictions": []
+  },
+  "MachinePolicyEdit": {
+    "Description": "Edit health check policies",
+    "SupportedRestrictions": []
+  },
+  "MachinePolicyView": {
+    "Description": "View health check policies",
+    "SupportedRestrictions": []
+  },
+  "MachineView": {
+    "Description": "View machines",
+    "SupportedRestrictions": [
+      "environments",
+      "tenants"
+    ]
+  },
+  "ProcessEdit": {
+    "Description": "Edit the deployment process and channels associated with a project",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "ProcessView": {
+    "Description": "View the deployment process and channels associated with a project",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "ProjectCreate": {
+    "Description": "Create projects",
+    "SupportedRestrictions": [
+      "projectgroups"
+    ]
+  },
+  "ProjectDelete": {
+    "Description": "Delete projects",
+    "SupportedRestrictions": [
+      "projects",
+      "tenants"
+    ]
+  },
+  "ProjectEdit": {
+    "Description": "Edit project details",
+    "SupportedRestrictions": [
+      "projects",
+      "tenants"
+    ]
+  },
+  "ProjectGroupCreate": {
+    "Description": "Create project groups",
+    "SupportedRestrictions": [
+      "projectgroups"
+    ]
+  },
+  "ProjectGroupDelete": {
+    "Description": "Delete project groups",
+    "SupportedRestrictions": [
+      "projectgroups"
+    ]
+  },
+  "ProjectGroupEdit": {
+    "Description": "Edit project groups",
+    "SupportedRestrictions": [
+      "projectgroups"
+    ]
+  },
+  "ProjectGroupView": {
+    "Description": "View project groups",
+    "SupportedRestrictions": [
+      "projectgroups"
+    ]
+  },
+  "ProjectView": {
+    "Description": "View the details of projects",
+    "SupportedRestrictions": [
+      "projects",
+      "tenants"
+    ]
+  },
+  "ProxyCreate": {
+    "Description": "Create proxies",
+    "SupportedRestrictions": []
+  },
+  "ProxyDelete": {
+    "Description": "Delete proxies",
+    "SupportedRestrictions": []
+  },
+  "ProxyEdit": {
+    "Description": "Edit proxies",
+    "SupportedRestrictions": []
+  },
+  "ProxyView": {
+    "Description": "View proxies",
+    "SupportedRestrictions": []
+  },
+  "ReleaseCreate": {
+    "Description": "Create a release for a project",
+    "SupportedRestrictions": [
+      "projects",
+      "tenants"
+    ]
+  },
+  "ReleaseDelete": {
+    "Description": "Delete a release of a project",
+    "SupportedRestrictions": [
+      "projects",
+      "tenants"
+    ]
+  },
+  "ReleaseEdit": {
+    "Description": "Edit a release of a project",
+    "SupportedRestrictions": [
+      "projects",
+      "tenants"
+    ]
+  },
+  "ReleaseView": {
+    "Description": "View a release of a project",
+    "SupportedRestrictions": [
+      "projects",
+      "tenants"
+    ]
+  },
+  "SubscriptionCreate": {
+    "Description": "Create subscriptions",
+    "SupportedRestrictions": []
+  },
+  "SubscriptionDelete": {
+    "Description": "Delete subscriptions",
+    "SupportedRestrictions": []
+  },
+  "SubscriptionEdit": {
+    "Description": "Edit subscriptions",
+    "SupportedRestrictions": []
+  },
+  "SubscriptionView": {
+    "Description": "View subscriptions",
+    "SupportedRestrictions": []
+  },
+  "TagSetCreate": {
+    "Description": "Create tag sets",
+    "SupportedRestrictions": []
+  },
+  "TagSetDelete": {
+    "Description": "Delete tag sets",
+    "SupportedRestrictions": []
+  },
+  "TagSetEdit": {
+    "Description": "Edit tag sets",
+    "SupportedRestrictions": []
+  },
+  "TaskCancel": {
+    "Description": "Cancel server tasks",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "TaskCreate": {
+    "Description": "Explicitly create (run) server tasks",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "TaskEdit": {
+    "Description": "Edit server tasks",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "TaskView": {
+    "Description": "View summary-level information associated with a task",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "TaskViewLog": {
+    "Description": "View detailed information about the execution of a task, including the task log output",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "TeamCreate": {
+    "Description": "Create teams",
+    "SupportedRestrictions": []
+  },
+  "TeamDelete": {
+    "Description": "Delete teams",
+    "SupportedRestrictions": []
+  },
+  "TeamEdit": {
+    "Description": "Edit teams",
+    "SupportedRestrictions": []
+  },
+  "TeamView": {
+    "Description": "View teams",
+    "SupportedRestrictions": []
+  },
+  "TenantCreate": {
+    "Description": "Create tenants",
+    "SupportedRestrictions": [
+      "tenants"
+    ]
+  },
+  "TenantDelete": {
+    "Description": "Delete tenants",
+    "SupportedRestrictions": [
+      "tenants"
+    ]
+  },
+  "TenantEdit": {
+    "Description": "Edit tenants",
+    "SupportedRestrictions": [
+      "tenants"
+    ]
+  },
+  "TenantView": {
+    "Description": "View tenants",
+    "SupportedRestrictions": [
+      "tenants"
+    ]
+  },
+  "TriggerCreate": {
+    "Description": "Create triggers",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "TriggerDelete": {
+    "Description": "Delete triggers",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "TriggerEdit": {
+    "Description": "Edit triggers",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "TriggerView": {
+    "Description": "View triggers",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "UserEdit": {
+    "Description": "Edit users",
+    "SupportedRestrictions": []
+  },
+  "UserInvite": {
+    "Description": "Invite users to register accounts",
+    "SupportedRestrictions": []
+  },
+  "UserRoleEdit": {
+    "Description": "Edit user role definitions",
+    "SupportedRestrictions": []
+  },
+  "UserRoleView": {
+    "Description": "View other user's roles",
+    "SupportedRestrictions": []
+  },
+  "UserView": {
+    "Description": "View users",
+    "SupportedRestrictions": []
+  },
+  "VariableEdit": {
+    "Description": "Edit variables belonging to a project",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "VariableEditUnscoped": {
+    "Description": "Edit non-environment scoped variables belonging to a project or library variable set",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "VariableView": {
+    "Description": "View variables belonging to a project or library variable set",
+    "SupportedRestrictions": [
+      "projects",
+      "environments",
+      "tenants"
+    ]
+  },
+  "VariableViewUnscoped": {
+    "Description": "View non-environment scoped variables belonging to a project or library variable set",
+    "SupportedRestrictions": [
+      "projects"
+    ]
+  },
+  "WorkerEdit": {
+    "Description": "Edit workers and worker pools",
+    "SupportedRestrictions": []
+  },
+  "WorkerView": {
+    "Description": "View the workers in worker pools",
+    "SupportedRestrictions": []
+  }
+}

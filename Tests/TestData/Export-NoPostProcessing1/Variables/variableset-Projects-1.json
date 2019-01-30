@@ -1,0 +1,76 @@
+{
+  "Id": "variableset-Projects-1",
+  "OwnerId": "Projects-1",
+  "Version": 6,
+  "Variables": [
+    {
+      "Id": "54655063-a823-fa09-7801-767a2b212bda",
+      "Name": "Var1",
+      "Value": "ABC",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "ad1227ba-525b-4ff7-db9c-f688d0543cda",
+      "Name": "Var2",
+      "Value": "123",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "4c8683af-aef9-1c78-365d-8142d07c9607",
+      "Name": "Var3",
+      "Value": "#{Test-Var-3}",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "96e2bf67-ad34-75a7-bd3e-851aab6fb3cd",
+      "Name": "Var4-Escape",
+      "Value": "Dan's Value\" needs escape!",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "8bc71031-7400-a161-cc91-cd98ff578279",
+      "Name": "Var5-Sensi",
+      "Value": null,
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "Sensitive",
+      "IsSensitive": true
+    },
+    {
+      "Id": "60144a7e-4da2-998f-b211-5f253c1be60d",
+      "Name": "SqlPwd",
+      "Value": "Ooops - not encrypted!",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    }
+  ],
+  "Links": {
+    "Self": "/api/variables/variableset-Projects-1"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "Id": "teams-administrators",
+  "Name": "Octopus Administrators",
+  "MemberUserIds": [
+    "Users-1"
+  ],
+  "ExternalSecurityGroups": [],
+  "UserRoleIds": [
+    "userroles-systemadministrator"
+  ],
+  "ProjectIds": [],
+  "EnvironmentIds": [],
+  "TenantIds": [],
+  "TenantTags": [],
+  "ProjectGroupIds": [],
+  "CanBeDeleted": false,
+  "CanBeRenamed": false,
+  "CanChangeRoles": false,
+  "CanChangeMembers": true,
+  "Links": {
+    "Self": "/api/teams/teams-administrators"
+  }
+}

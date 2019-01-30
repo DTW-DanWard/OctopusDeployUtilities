@@ -1,0 +1,17 @@
+{
+  "Id": "Users-21",
+  "Username": "testuser",
+  "DisplayName": "testuser",
+  "IsActive": true,
+  "IsService": false,
+  "EmailAddress": "testuser@someemail.com",
+  "CanPasswordBeEdited": true,
+  "IsRequestor": true,
+  "Identities": [],
+  "Links": {
+    "Self": "/api/users/Users-21",
+    "Permissions": "/api/users/Users-21/permissions",
+    "ApiKeys": "/api/users/Users-21/apikeys{/id}{?skip,take}",
+    "Avatar": "https://www.gravatar.com/avatar/5662c11267782a4f84198e68487858de?d=blank"
+  }
+}

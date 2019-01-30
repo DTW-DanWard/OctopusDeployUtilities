@@ -1,0 +1,48 @@
+{
+  "Id": "Projects-1",
+  "VariableSetId": "variableset-Projects-1",
+  "DeploymentProcessId": "deploymentprocess-Projects-1",
+  "ClonedFromProjectId": null,
+  "DiscreteChannelRelease": false,
+  "IncludedLibraryVariableSetIds": [],
+  "DefaultToSkipIfAlreadyInstalled": false,
+  "TenantedDeploymentMode": "Untenanted",
+  "DefaultGuidedFailureMode": "EnvironmentDefault",
+  "VersioningStrategy": {
+    "Template": "#{Octopus.Version.LastMajor}.#{Octopus.Version.LastMinor}.#{Octopus.Version.NextPatch}",
+    "DonorPackage": null,
+    "DonorPackageStepId": null
+  },
+  "ReleaseCreationStrategy": {
+    "ChannelId": null,
+    "ReleaseCreationPackage": null,
+    "ReleaseCreationPackageStepId": null
+  },
+  "Templates": [],
+  "AutoDeployReleaseOverrides": [],
+  "Name": "TestProj1",
+  "Slug": "testproj1",
+  "Description": "",
+  "IsDisabled": false,
+  "ProjectGroupId": "ProjectGroups-1",
+  "LifecycleId": "Lifecycles-1",
+  "AutoCreateRelease": false,
+  "ProjectConnectivityPolicy": {
+    "SkipMachineBehavior": "None",
+    "TargetRoles": [],
+    "AllowDeploymentsToNoTargets": false
+  },
+  "Links": {
+    "Self": "/api/projects/Projects-1",
+    "Releases": "/api/projects/Projects-1/releases{/version}{?skip,take,searchByVersion}",
+    "Channels": "/api/projects/Projects-1/channels{?skip,take,partialName}",
+    "Triggers": "/api/projects/Projects-1/triggers{?skip,take,partialName,triggerActionType}",
+    "ScheduledTriggers": "/api/projects/Projects-1/scheduledtriggers{?skip,take,partialName}",
+    "OrderChannels": "/api/projects/Projects-1/channels/order",
+    "Variables": "/api/variables/variableset-Projects-1",
+    "Progression": "/api/progression/Projects-1{?aggregate}",
+    "DeploymentProcess": "/api/deploymentprocesses/deploymentprocess-Projects-1",
+    "Web": "/app#/projects/Projects-1",
+    "Logo": "/api/projects/Projects-1/logo?cb=2018.11.2"
+  }
+}

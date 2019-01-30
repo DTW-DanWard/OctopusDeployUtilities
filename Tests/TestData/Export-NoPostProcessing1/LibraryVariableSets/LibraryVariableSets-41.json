@@ -1,0 +1,12 @@
+{
+  "Id": "LibraryVariableSets-41",
+  "Name": "ConnStr",
+  "Description": "",
+  "VariableSetId": "variableset-LibraryVariableSets-41",
+  "ContentType": "Variables",
+  "Templates": [],
+  "Links": {
+    "Self": "/api/libraryvariablesets/LibraryVariableSets-41",
+    "Variables": "/api/variables/variableset-LibraryVariableSets-41"
+  }
+}

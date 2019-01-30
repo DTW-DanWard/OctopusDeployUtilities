@@ -1,0 +1,21 @@
+{
+  "Id": "Lifecycles-1",
+  "Phases": [],
+  "Name": "Default Lifecycle",
+  "ReleaseRetentionPolicy": {
+    "Unit": "Items",
+    "QuantityToKeep": 0,
+    "ShouldKeepForever": true
+  },
+  "TentacleRetentionPolicy": {
+    "Unit": "Items",
+    "QuantityToKeep": 0,
+    "ShouldKeepForever": true
+  },
+  "Description": null,
+  "Links": {
+    "Self": "/api/lifecycles/Lifecycles-1",
+    "Preview": "/api/lifecycles/Lifecycles-1/preview",
+    "Projects": "/api/lifecycles/Lifecycles-1/projects"
+  }
+}
