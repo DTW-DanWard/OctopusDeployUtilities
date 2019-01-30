@@ -18,31 +18,33 @@ Describe "Re/loading: $SourceScript" { }
 #region Configuration external tools initialized
 Describe 'Configuration: external tools initialized' {
 
-  # ensure config file DOES exist
-  $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
-  $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
-  $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
+  BeforeAll {
+    # ensure config file DOES exist
+    $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
+    $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
+    $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
 
-  $null = New-Item -Path $ExportRootFolder -ItemType Directory
-  $null = New-Item -Path $ConfigFolderPath -ItemType Directory
+    $null = New-Item -Path $ExportRootFolder -ItemType Directory
+    $null = New-Item -Path $ConfigFolderPath -ItemType Directory
 
-  $DiffViewerPath = Join-Path -Path $TestDrive 'ADiffViewer.exe'
-  $TextEditorPath = Join-Path -Path $TestDrive 'ATextEditor.exe'
+    $DiffViewerPath = Join-Path -Path $TestDrive 'ADiffViewer.exe'
+    $TextEditorPath = Join-Path -Path $TestDrive 'ATextEditor.exe'
 
-  $Config = @{
-    ExportRootFolder = $ExportRootFolder
-    OctopusServers = @()
-    ExternalTools = @{
-      DiffViewerPath = $DiffViewerPath
-      TextEditorPath = $TextEditorPath
+    $Config = @{
+      ExportRootFolder  = $ExportRootFolder
+      OctopusServers    = @()
+      ExternalTools     = @{
+        DiffViewerPath = $DiffViewerPath
+        TextEditorPath = $TextEditorPath
+      }
+      BackgroundJobsMax = 1
     }
-    BackgroundJobsMax = 1
-  }
-  Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
+    Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
 
-  function Get-ODUConfigFilePath { $ConfigFilePath }
-  function Confirm-ODUConfig { $true }
-  function Get-ODUConfig { $Config }
+    function Get-ODUConfigFilePath { $ConfigFilePath }
+    function Confirm-ODUConfig { $true }
+    function Get-ODUConfig { $Config }
+  }
 
   It 'Get-ODUConfigDiffViewer returns correct value' { Get-ODUConfigDiffViewer | Should Be $DiffViewerPath }
 

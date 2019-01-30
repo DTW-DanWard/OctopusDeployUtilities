@@ -18,15 +18,16 @@ Describe "Re/loading: $SourceScript" { }
 #region Configuration export root folder accessible
 Describe 'Configuration: export root folder initialized' {
 
-  # ensure config file DOES exist
-  $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
-  $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
-  $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
+  BeforeAll {
+    # ensure config file DOES exist
+    $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
+    $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
+    $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
 
-  $null = New-Item -Path $ExportRootFolder -ItemType Directory
-  $null = New-Item -Path $ConfigFolderPath -ItemType Directory
+    $null = New-Item -Path $ExportRootFolder -ItemType Directory
+    $null = New-Item -Path $ConfigFolderPath -ItemType Directory
 
-  $ConfigString = @"
+    $ConfigString = @"
 @{
 ExportRootFolder = $ExportRootFolder
 OctopusServers = @()
@@ -37,21 +38,22 @@ ExternalTools = @{
 BackgroundJobsMax = 1
 }
 "@
-  Set-Content -Path $ConfigFilePath -Value $ConfigString
-  Mock -CommandName 'Get-ODUConfigFilePath' -MockWith { $ConfigFilePath }
+    Set-Content -Path $ConfigFilePath -Value $ConfigString
+    Mock -CommandName 'Get-ODUConfigFilePath' -MockWith { $ConfigFilePath }
 
-  $Config = @{
-    ExportRootFolder  = $ExportRootFolder
-    OctopusServers    = @()
-    ExternalTools     = @{
-      DiffViewerPath = 'UNDEFINED'
-      TextEditorPath = 'UNDEFINED'
+    $Config = @{
+      ExportRootFolder  = $ExportRootFolder
+      OctopusServers    = @()
+      ExternalTools     = @{
+        DiffViewerPath = 'UNDEFINED'
+        TextEditorPath = 'UNDEFINED'
+      }
+      BackgroundJobsMax = 1
     }
-    BackgroundJobsMax = 1
-  }
 
-  function Confirm-ODUConfig { $true }
-  function Get-ODUConfig { $Config }
+    function Confirm-ODUConfig { $true }
+    function Get-ODUConfig { $Config }
+  }
 
   It 'Get-ODUConfigExportRootFolder returns correct value' { Get-ODUConfigExportRootFolder | Should Be $ExportRootFolder }
 }

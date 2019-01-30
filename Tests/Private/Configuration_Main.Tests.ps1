@@ -18,10 +18,12 @@ Describe "Re/loading: $SourceScript" { }
 #region Configuration not initialized
 Describe 'Configuration: not initialized' {
 
-  # ensure config file does not exist
-  Mock -CommandName 'Save-ODUConfig' -MockWith { }
-  function Test-ODUConfigFilePath { $false }
-  function Get-ODUConfigFilePath { 'Test:\No\File\Found.txt' }
+  BeforeAll {
+    # ensure config file does not exist
+    Mock -CommandName 'Save-ODUConfig' -MockWith { }
+    function Test-ODUConfigFilePath { $false }
+    function Get-ODUConfigFilePath { 'Test:\No\File\Found.txt' }
+  }
 
   It 'Confirm-ODUConfig throws error' { { Confirm-ODUConfig } | Should throw }
 
@@ -42,30 +44,32 @@ Describe 'Configuration: not initialized' {
 #region Configuration export root folder initialized
 Describe 'Configuration: export root folder initialized' {
 
-  # ensure config file DOES exist
-  $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
-  $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
-  $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
+  BeforeAll {
+    # ensure config file DOES exist
+    $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
+    $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
+    $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
 
-  $null = New-Item -Path $ExportRootFolder -ItemType Directory
-  $null = New-Item -Path $ConfigFolderPath -ItemType Directory
+    $null = New-Item -Path $ExportRootFolder -ItemType Directory
+    $null = New-Item -Path $ConfigFolderPath -ItemType Directory
 
-  $Config = @{
-    ExportRootFolder = $ExportRootFolder
-    OctopusServers = @()
-    ExternalTools = @{
-      DiffViewerPath = 'UNDEFINED'
-      TextEditorPath = 'UNDEFINED'
+    $Config = @{
+      ExportRootFolder  = $ExportRootFolder
+      OctopusServers    = @()
+      ExternalTools     = @{
+        DiffViewerPath = 'UNDEFINED'
+        TextEditorPath = 'UNDEFINED'
+      }
+      BackgroundJobsMax = 1
     }
-    BackgroundJobsMax = 1
+    Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
+
+    Mock -CommandName 'Save-ODUConfig' -MockWith { }
+    Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
+    function Test-ODUConfigFilePath { $true }
+
+    function Get-ODUConfigFilePath { $ConfigFilePath }
   }
-  Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
-
-  Mock -CommandName 'Save-ODUConfig' -MockWith { }
-  Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
-  function Test-ODUConfigFilePath { $true }
-
-  function Get-ODUConfigFilePath { $ConfigFilePath }
 
   It 'Test-ODUConfigFilePath returns $true' { Test-ODUConfigFilePath | Should Be $true }
 
@@ -85,56 +89,59 @@ Describe 'Configuration: export root folder initialized' {
 #region Configuration Octopus Server initialized
 Describe 'Configuration: Octopus Server initialized' {
 
-  # ensure config file DOES exist
-  $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
-  $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
-  $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
+  BeforeAll {
+    # ensure config file DOES exist
+    $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
+    $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
+    $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
 
-  $null = New-Item -Path $ExportRootFolder -ItemType Directory
-  $null = New-Item -Path $ConfigFolderPath -ItemType Directory
+    $null = New-Item -Path $ExportRootFolder -ItemType Directory
+    $null = New-Item -Path $ConfigFolderPath -ItemType Directory
 
-  $OctoServerName = 'test.com'
-  $OctoServerUrl = 'https://test.com'
-  $OctoServerApiKey = 'API-ABCDEFGH01234567890ABCDEFGH'
+    $OctoServerName = 'test.com'
+    $OctoServerUrl = 'https://test.com'
+    $OctoServerApiKey = 'API-ABCDEFGH01234567890ABCDEFGH'
 
-  # encryption tests only run on Windows
-  $Windows = $false
-  # encrypt key they test decrypt with Convert-ODUDecryptApiKey
-  $OctoServerApiKeyEncrypted = $OctoServerApiKey
-  if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
-    $Windows = $true
-    $OctoServerApiKeyEncrypted = ConvertTo-SecureString -String $OctoServerApiKey -AsPlainText -Force | ConvertFrom-SecureString
-  }
-
-  $Config = @{
-    ExportRootFolder = $ExportRootFolder
-    OctopusServers = @(
-      @{
-        Name = $OctoServerName
-        Url = $OctoServerUrl
-        ApiKey = $OctoServerApiKeyEncrypted
-        TypeBlacklist = @('CommunityActionTemplates','Deployments','Events','Interruptions','Releases','Reporting','Tasks','Packages')
-        TypeWhitelist = @()
-        PropertyBlacklist = @{ }
-        PropertyWhitelist = @{ }
-        LastPurgeCompareFolder = 'UNDEFINED'
-        Search = @{
-          CodeSearchPattern = 'UNDEFINED'
-          CodeRootPaths = 'UNDEFINED'
-        }
-      }
-    )
-    ExternalTools = @{
-      DiffViewerPath = 'UNDEFINED'
-      TextEditorPath = 'UNDEFINED'
+    # encryption tests only run on Windows
+    $Windows = $false
+    # encrypt key they test decrypt with Convert-ODUDecryptApiKey
+    $OctoServerApiKeyEncrypted = $OctoServerApiKey
+    if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
+     $Windows = $true
+      $OctoServerApiKeyEncrypted = ConvertTo-SecureString -String $OctoServerApiKey -AsPlainText -Force | ConvertFrom-SecureString
     }
-    BackgroundJobsMax = 1
-  }
-  Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
 
-  Mock -CommandName 'Save-ODUConfig' -MockWith { }
-  Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
-  # simple mock for now
+    $Config = @{
+      ExportRootFolder  = $ExportRootFolder
+      OctopusServers    = @(
+        @{
+          Name                   = $OctoServerName
+          Url                    = $OctoServerUrl
+          ApiKey                 = $OctoServerApiKeyEncrypted
+          TypeBlacklist          = @('CommunityActionTemplates', 'Deployments', 'Events', 'Interruptions', 'Releases', 'Reporting', 'Tasks', 'Packages')
+          TypeWhitelist          = @()
+          PropertyBlacklist      = @{ }
+          PropertyWhitelist      = @{ }
+          LastPurgeCompareFolder = 'UNDEFINED'
+          Search                 = @{
+            CodeSearchPattern = 'UNDEFINED'
+            CodeRootPaths     = 'UNDEFINED'
+          }
+        }
+      )
+     ExternalTools     = @{
+       DiffViewerPath = 'UNDEFINED'
+        TextEditorPath = 'UNDEFINED'
+      }
+      BackgroundJobsMax = 1
+    }
+    Export-Metadata -Path $ConfigFilePath -InputObject $Config -AsHashtable
+
+    # simple mock for now
+    Mock -CommandName 'Save-ODUConfig' -MockWith { }
+    Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
+  }
+
   function Convert-ODUDecryptApiKey { $OctoServerApiKey }
 
   function Test-ODUConfigFilePath { $true }
