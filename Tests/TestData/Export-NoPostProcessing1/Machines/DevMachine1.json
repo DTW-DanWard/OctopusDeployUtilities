@@ -1,0 +1,39 @@
+{
+  "Id": "Machines-1",
+  "EnvironmentIds": [
+    "Environments-24"
+  ],
+  "Roles": [],
+  "TenantedDeploymentParticipation": "Untenanted",
+  "TenantIds": [],
+  "TenantTags": [],
+  "Name": "DevMachine1",
+  "Thumbprint": "0000000000000000000000000000000000000000",
+  "Uri": null,
+  "IsDisabled": false,
+  "MachinePolicyId": "MachinePolicies-1",
+  "Status": "NeedsUpgrade",
+  "IsInProcess": false,
+  "Endpoint": {
+    "CommunicationStyle": "TentacleActive",
+    "Uri": "poll://00000000000000000000/",
+    "Thumbprint": "0000000000000000000000000000000000000000",
+    "TentacleVersionDetails": {
+      "UpgradeLocked": false,
+      "Version": "3.17.0",
+      "UpgradeSuggested": true,
+      "UpgradeRequired": false
+    },
+    "CertificateSignatureAlgorithm": "sha256RSA",
+    "Id": null,
+    "LastModifiedOn": null,
+    "LastModifiedBy": null,
+    "Links": {}
+  },
+  "Links": {
+    "Self": "/api/machines/Machines-1",
+    "Connection": "/api/machines/Machines-1/connection",
+    "TasksTemplate": "/api/machines/Machines-1/tasks{?skip,take}"
+  },
+  "MachinePolicyName": "Default Machine Policy"
+}
