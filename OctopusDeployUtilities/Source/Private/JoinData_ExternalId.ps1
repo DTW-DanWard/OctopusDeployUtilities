@@ -33,7 +33,7 @@ function Get-ODUIdToNameLookupValue {
     # else return value
     $Result = $null
     if ($null -ne $Key -and $Key.Trim() -ne '') {
-      $Result = $Key + "_NOT_FOUND"
+      $Result = $Key + '_NOT_FOUND'
       if ($null -ne (Get-Member -InputObject $Lookup -Name $Key)) {
         $Result = $Lookup.$Key
       }
