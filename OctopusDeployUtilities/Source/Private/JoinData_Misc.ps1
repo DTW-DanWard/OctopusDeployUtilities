@@ -24,12 +24,10 @@ function Add-ODUOrUpdateMember {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [object]$InputObject,
-    [Parameter(Mandatory = $true)]
+    [object]$InputObject = $(throw "$($MyInvocation.MyCommand) : missing parameter InputObject"),
     [ValidateNotNullOrEmpty()]
-    [string]$PropertyName,
+    [string]$PropertyName = $(throw "$($MyInvocation.MyCommand) : missing parameter PropertyName"),
     $Value
   )
   #endregion
