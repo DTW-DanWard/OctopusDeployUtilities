@@ -99,8 +99,8 @@ function Read-ExportFromFile {
 # root folder containing various exports
 $SourceDataRootFolder = (Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath TestData)
 
-#region Update environment add machines
-Describe 'Update environment add machines' {
+#region Update variable sets add variables
+Describe 'Update variable sets add variables' {
 
   BeforeAll {
     # source path of standard export to post-process
