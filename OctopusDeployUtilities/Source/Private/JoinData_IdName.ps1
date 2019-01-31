@@ -19,9 +19,8 @@ function Get-ODUIdToNameLookup {
   [CmdletBinding()]
   [OutputType([hashtable])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$Path
+    [string]$Path = $(throw "$($MyInvocation.MyCommand) : missing parameter Path")
   )
   #endregion
   process {
@@ -69,9 +68,8 @@ function New-ODUIdToNameLookup {
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$Path
+    [string]$Path = $(throw "$($MyInvocation.MyCommand) : missing parameter Path")
   )
   #endregion
   process {
@@ -81,7 +79,7 @@ function New-ODUIdToNameLookup {
     [string[]]$StandardExportFolders = @('DeploymentProcesses','Environments','LibraryVariableSets','Machines','Projects','Variables')
     $FoundCount = ($StandardExportFolders | Where-Object { Test-Path -Path (Join-Path -Path $Path -ChildPath $_) } | Measure-Object).Count
     if ($FoundCount -lt ([math]::Floor(($StandardExportFolders.Count) / 2))) {
-      Write-Warning "Less than half of the standard folders ($StandardExportFolders) were found at $Path - is this the correct location?"
+      throw "This does not appear to be a proper export folder - less than half of the standard folders ($StandardExportFolders) were found at $Path - is this a proper export?"
     }
 
     # save lookup info in root of export instance folder

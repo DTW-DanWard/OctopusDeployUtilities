@@ -194,8 +194,6 @@ Describe 'Update export add external Name for Id' {
       $Export = Read-ExportFromFile -Path $TestExportPath
       # property does not exist yet
       $Export.Projects[0] | Get-Member -Name LifecycleName | Should BeNullOrEmpty
-      Update-ODUExportAddExternalNameForId -Path $TestExportPath
-      1 | Should Be 1
     }
 
     It 'confirm external Name property exists after' {
