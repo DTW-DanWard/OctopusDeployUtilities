@@ -4,7 +4,9 @@
   "DeploymentProcessId": "deploymentprocess-Projects-70",
   "ClonedFromProjectId": "Projects-41",
   "DiscreteChannelRelease": false,
-  "IncludedLibraryVariableSetIds": [],
+  "IncludedLibraryVariableSetIds": [
+    "LibraryVariableSets-41"
+  ],
   "DefaultToSkipIfAlreadyInstalled": false,
   "TenantedDeploymentMode": "Untenanted",
   "DefaultGuidedFailureMode": "EnvironmentDefault",

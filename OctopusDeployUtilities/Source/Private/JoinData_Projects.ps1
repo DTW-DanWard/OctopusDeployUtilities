@@ -19,9 +19,8 @@ function Update-ODUExportProjectAddDeploymentProcess {
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$Path
+    [string]$Path = $(throw "$($MyInvocation.MyCommand) : missing parameter Path")
   )
   #endregion
   process {
@@ -61,9 +60,8 @@ function Update-ODUExportProjectAddIncludedLibraryVariableSet {
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$Path
+    [string]$Path = $(throw "$($MyInvocation.MyCommand) : missing parameter Path")
   )
   #endregion
   process {
@@ -123,9 +121,8 @@ function Update-ODUExportProjectAddVariableSet {
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$Path
+    [string]$Path = $(throw "$($MyInvocation.MyCommand) : missing parameter Path")
   )
   #endregion
   process {
