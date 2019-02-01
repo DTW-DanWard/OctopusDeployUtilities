@@ -15,11 +15,20 @@ Describe "Re/loading: $SourceScript" { }
 #endregion
 
 
+
+#region Load OctopusDeployUtilities\Source\Public\Export_OctoApi.ps1 into memory
+# it's all hard-coded values needed for processing; not going to just cut & paste hard-code here
+$ScriptToLoad = Join-Path -Path $env:BHModulePath -ChildPath 'Source'
+$ScriptToLoad = Join-Path -Path $ScriptToLoad -ChildPath 'Public'
+$ScriptToLoad = Join-Path -Path $ScriptToLoad -ChildPath 'Export_OctoApi.ps1'
+. $ScriptToLoad
+#endregion
+
+
 #region Find invalid rest api type name
 Describe 'find invalid rest api type name' {
 
   BeforeAll {
-
     $GoodValue1 = 'GoodValue1'
     $GoodValue2 = 'GoodValue2'
     $GoodValue3 = 'GoodValue3'
@@ -44,6 +53,72 @@ Describe 'find invalid rest api type name' {
 
   It 'multiple good values does not throw error' {
     { Find-ODUInvalidRestApiTypeName -TypeName @($GoodValue1, $GoodValue2) } | Should Not throw
+  }
+}
+#endregion
+
+
+#region Get filtered export rest api call
+Describe 'get filtered export rest api call' {
+
+  Context 'both blacklist and whitelist have values throws error' {
+
+    BeforeAll {
+      function Get-ODUConfigTypeBlacklist { 'value1' }
+      function Get-ODUConfigTypeWhitelist { 'value2' }
+    }
+
+    It 'both blacklist and whitelist have values throws error' {
+      { Get-ODUFilteredExportRestApiCall } | Should throw
+    }
+  }
+
+  Context 'filtered list does not contain blacklist items' {
+
+    BeforeAll {
+      $BlackList1 = 'Authentication'
+      $BlackList2 = 'BuiltInRepository'
+      function Get-ODUConfigTypeBlacklist { @($BlackList1, $BlackList2) }
+      function Get-ODUConfigTypeWhitelist { }
+    }
+
+    It 'filtered list does not contain blacklist items' {
+      $FilteredObjects = Get-ODUFilteredExportRestApiCall
+      $FilteredObjects.RestName -notcontains $BlackList1 | Should Be $true
+      $FilteredObjects.RestName -notcontains $BlackList2 | Should Be $true
+    }
+  }
+
+  Context 'filtered list only contains whitelist items' {
+
+    BeforeAll {
+      $WhiteList1 = 'Authentication'
+      $WhiteList2 = 'BuiltInRepository'
+      function Get-ODUConfigTypeBlacklist { }
+      function Get-ODUConfigTypeWhitelist { @($WhiteList1, $WhiteList2) }
+    }
+
+    It 'filtered list only contains whitelist items' {
+      $FilteredObjects = Get-ODUFilteredExportRestApiCall
+      $FilteredObjects.RestName -contains $WhiteList1 | Should Be $true
+      $FilteredObjects.RestName -contains $WhiteList2 | Should Be $true
+      $FilteredObjects.Count | Should Be 2
+    }
+  }
+
+  Context 'unfiltered list has original items' {
+
+    BeforeAll {
+      $AllRestApiCalls = Get-ODUStandardExportRestApiCall
+      function Get-ODUConfigTypeBlacklist { }
+      function Get-ODUConfigTypeWhitelist { }
+    }
+
+    It 'filtered list does not contain blacklist items' {
+      $FilteredObjects = Get-ODUFilteredExportRestApiCall
+      $FilteredObjects.Count | Should Be $AllRestApiCalls.Count
+      Compare-Object -ReferenceObject ($FilteredObjects.RestName) -DifferenceObject ($AllRestApiCalls.RestName) | Should BeNullOrEmpty
+    }
   }
 }
 #endregion
@@ -84,11 +159,11 @@ Describe 'new export rest api call' {
     $ApiFetchType = 'Simple' # must be a value in ApiFetchTypeList
     $FileNamePropertyName = 'value4'
     $IdToNamePropertyName = 'Name1'
-    $ExternalIdToResolvePropertyName = @('A','B','C')
+    $ExternalIdToResolvePropertyName = @('A', 'B', 'C')
     $ItemIdOnlyReferencePropertyName = 'Name2'
 
     $Object = New-ODUExportRestApiCall -RestName $RestName -RestMethod $RestMethod -ApiFetchType $ApiFetchType -FileNamePropertyName $FileNamePropertyName `
-     -IdToNamePropertyName $IdToNamePropertyName -ExternalIdToResolvePropertyName $ExternalIdToResolvePropertyName -ItemIdOnlyReferencePropertyName $ItemIdOnlyReferencePropertyName
+      -IdToNamePropertyName $IdToNamePropertyName -ExternalIdToResolvePropertyName $ExternalIdToResolvePropertyName -ItemIdOnlyReferencePropertyName $ItemIdOnlyReferencePropertyName
     $Object | Should Not BeNullOrEmpty
     $Object.RestName | Should Be $RestName
     $Object.RestMethod | Should Be $RestMethod
@@ -106,7 +181,6 @@ Describe 'new export rest api call' {
 Describe 'Test validate rest api type name' {
 
   BeforeAll {
-
     $GoodValue1 = 'GoodValue1'
     $GoodValue2 = 'GoodValue2'
     $GoodValue3 = 'GoodValue3'
