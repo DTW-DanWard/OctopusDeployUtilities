@@ -15,6 +15,40 @@ Describe "Re/loading: $SourceScript" { }
 #endregion
 
 
+#region Find invalid rest api type name
+Describe 'find invalid rest api type name' {
+
+  BeforeAll {
+
+    $GoodValue1 = 'GoodValue1'
+    $GoodValue2 = 'GoodValue2'
+    $GoodValue3 = 'GoodValue3'
+    function Get-ODURestApiTypeName { @($GoodValue1, $GoodValue2, $GoodValue3) }
+  }
+
+  It 'single bad value throws error' {
+    { Find-ODUInvalidRestApiTypeName -TypeName 'BadValue' } | Should throw
+  }
+
+  It 'multiple bad values throws error' {
+    { Find-ODUInvalidRestApiTypeName -TypeName @('BadValue1', 'BadValue2') } | Should throw
+  }
+
+  It 'bad value with good values throws error' {
+    { Find-ODUInvalidRestApiTypeName -TypeName @('BadValue1', $GoodValue1, $GoodValue1) } | Should throw
+  }
+
+  It 'single good value does not throw error' {
+    { Find-ODUInvalidRestApiTypeName -TypeName $GoodValue1 } | Should Not throw
+  }
+
+  It 'multiple good values does not throw error' {
+    { Find-ODUInvalidRestApiTypeName -TypeName @($GoodValue1, $GoodValue2) } | Should Not throw
+  }
+}
+#endregion
+
+
 #region new export rest api call
 Describe 'new export rest api call' {
 
