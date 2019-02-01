@@ -90,3 +90,33 @@ Describe 'New export item folder' {
   }
 }
 #endregion
+
+
+#region New folder for each Api Call
+Describe 'New folder for each Api Call' {
+
+  It 'no parameters throws error' {
+    { New-ODUFolderForEachApiCall } | Should throw
+  }
+
+  It 'null parameters throws error' {
+    { $BadParam1 = $BadParam2 = $null; New-ODUFolderForEachApiCall -ParentFolder $BadParam1 -ApiCalls $BadParam2} | Should throw
+  }
+
+  It 'valid params get folders created' {
+    function Get-ODUFolderNameForApiCall { param([object]$ApiCall) $ApiCall.RestName }
+
+    $RootFolder = Join-Path -Path $TestDrive -ChildPath RootFolder
+    $null = New-ODUExportItemFolder -FolderPath $RootFolder
+    $Names = 'Val1','Val2'
+    [object[]]$ApiCalls = $Names | ForEach-Object {
+      [PSCustomObject]@{ RestName = $_ }
+    }
+    New-ODUFolderForEachApiCall -ParentFolder $RootFolder -ApiCalls $ApiCalls
+    # verify each created
+    $Names | ForEach-Object {
+      Test-Path -Path (Join-Path -Path $RootFolder -ChildPath $_) | Should Be $true
+    }
+  }
+}
+#endregion

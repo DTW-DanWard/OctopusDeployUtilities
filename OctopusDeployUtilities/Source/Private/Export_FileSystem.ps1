@@ -86,12 +86,10 @@ New-ODUFolderForEachApiCall -ParentFolder c:\Temp -ApiCallInfo <PSObjects with a
 function New-ODUFolderForEachApiCall {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$ParentFolder,
-    [Parameter(Mandatory = $true)]
+    [string]$ParentFolder = $(throw "$($MyInvocation.MyCommand) : missing parameter ParentFolder"),
     [ValidateNotNullOrEmpty()]
-    [object[]]$ApiCalls
+    [object[]]$ApiCalls = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiCalls")
   )
   process {
     Write-Verbose "$($MyInvocation.MyCommand) :: Parent folder is: $ParentFolder"
