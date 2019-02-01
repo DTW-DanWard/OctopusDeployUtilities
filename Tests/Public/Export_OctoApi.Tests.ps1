@@ -55,10 +55,33 @@ Describe 'get rest api type names' {
     $ApiTypeNames -contains 'Teams' | Should Be $true
   }
 
-  It 'unknown names are found in results' {
+  It 'unknown names are not found in results' {
     [string[]]$ApiTypeNames = Get-ODURestApiTypeName
     $ApiTypeNames -contains 'JunkValue1' | Should Be $false
     $ApiTypeNames -contains 'JunkValue2' | Should Be $false
+  }
+}
+#endregion
+
+
+#region get rest api call info
+Describe 'get rest api call info' {
+
+  It 'api call details are returned' {
+    (Get-ODUStandardExportRestApiCall).Count | Should BeGreaterThan 0
+  }
+
+  It 'known api calls are found in results' {
+    [object[]]$ApiCalls = Get-ODUStandardExportRestApiCall
+    $ApiCalls.RestName -contains 'Authentication' | Should Be $true
+    $ApiCalls.RestName -contains 'Projects' | Should Be $true
+    $ApiCalls.RestName -contains 'Teams' | Should Be $true
+  }
+
+  It 'unknown api calls are not found in results' {
+    [object[]]$ApiCalls = Get-ODUStandardExportRestApiCall
+    $ApiCalls.RestName -contains 'JunkValue1' | Should Be $false
+    $ApiCalls.RestName -contains 'JunkValue2' | Should Be $false
   }
 }
 #endregion
