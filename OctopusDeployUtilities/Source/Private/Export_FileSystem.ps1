@@ -1,7 +1,7 @@
 
 Set-StrictMode -Version Latest
 
-#region Function: Format-ODUSanitizedFileName
+#region Function: Format-ODUSanitizeFileName
 
 <#
 .SYNOPSIS
@@ -13,26 +13,29 @@ Trims as well
 .PARAMETER FileName
 File name to review and clean
 .EXAMPLE
-Format-ODUSanitizedFileName -FileName " Test#File  /4QQ "
+Format-ODUSanitizeFileName -FileName " Test#File  /4QQ "
 <returns (no quotes): "TestFile 4QQ"
 #>
-function Format-ODUSanitizedFileName {
+function Format-ODUSanitizeFileName {
   #region Function parameters
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$FileName
+    [string]$FileName = $(throw "$($MyInvocation.MyCommand) : missing parameter FileName")
   )
   #endregion
   process {
+    if ($FileName.Trim() -eq '') { throw 'FileName value is only spaces' }
     # clean out characters non alpha-numeric, space, dash
     $FileName = $FileName -replace '[^a-z0-9 -]', ''
     # replace any multiple spaces with a single space
     $FileName = $FileName -replace ' +', ' '
     # and trim spaces as well
-    $FileName.Trim()
+    $FileName = $FileName.Trim()
+    # if resulting value is empty, throw error
+    if ($FileName.Length -eq 0) { throw "$($MyInvocation.MyCommand) : Sanitized version of $FileName has no remaining characters" }
+    $FileName
   }
 }
 #endregion
@@ -135,7 +138,7 @@ function New-ODURootExportFolder {
     [ValidateNotNullOrEmpty()]
     [datetime]$DateTime
 
-    )
+  )
   #endregion
   process {
     # root folder was tested/created when initially set so no need to test if $MainExportRoot exists or create it

@@ -94,7 +94,7 @@ function Export-ODUJob {
       # simple references have a single item which does not have ItemIdOnly references; just save it
       # same is true of items fetched by IdOnly
       if (($ExportJobDetail.ApiCall.ApiFetchType -eq $ApiFetchType_Simple) ) {
-        $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((Format-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItems)) + $JsonExtension)
+        $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((Format-ODUSanitizeFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItems)) + $JsonExtension)
         Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
         Out-ODUFileJson -FilePath $FilePath -Data (Remove-ODUFilterPropertiesFromExportItem -RestName ($ExportJobDetail.ApiCall.RestName) -ExportItem $ExportItems)
       } else {
@@ -115,7 +115,7 @@ function Export-ODUJob {
             $ItemIdOnlyReferenceValues.$_ += $ItemIdOnlyReferenceValuesOnItem.$_
           }
 
-          $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((Format-ODUSanitizedFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItem)) + $JsonExtension)
+          $FilePath = Join-Path -Path ($ExportJobDetail.ExportFolder) -ChildPath ((Format-ODUSanitizeFileName -FileName (Get-ODUExportItemFileName -ApiCall $ExportJobDetail.ApiCall -ExportItem $ExportItem)) + $JsonExtension)
           Write-Verbose "$($MyInvocation.MyCommand) :: Saving content to: $FilePath"
           Out-ODUFileJson -FilePath $FilePath -Data (Remove-ODUFilterPropertiesFromExportItem -RestName ($ExportJobDetail.ApiCall.RestName) -ExportItem $ExportItem)
         }
