@@ -23,13 +23,10 @@ function Find-ODUVariableInExport {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [object]$Export,
-    [Parameter(Mandatory = $true)]
+    [object]$Export = $(throw "$($MyInvocation.MyCommand) : missing parameter Export"),
     [ValidateNotNullOrEmpty()]
-    [string]$SearchText,
-    [Parameter(Mandatory = $false)]
+    [string]$SearchText = $(throw "$($MyInvocation.MyCommand) : missing parameter SearchText"),
     [switch]$Exact
   )
   #endregion

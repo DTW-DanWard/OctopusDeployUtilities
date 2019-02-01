@@ -1,0 +1,11 @@
+{
+  "Id": "features",
+  "IsMultiTenancyEnabled": true,
+  "IsBuiltInWorkerEnabled": true,
+  "IsCommunityActionTemplatesEnabled": true,
+  "IsBuiltInRepoSyncEnabled": true,
+  "IsKubernetesEnabled": false,
+  "Links": {
+    "Self": "/api/featuresconfiguration"
+  }
+}

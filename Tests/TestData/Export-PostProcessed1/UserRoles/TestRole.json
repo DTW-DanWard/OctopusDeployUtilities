@@ -1,0 +1,32 @@
+{
+  "Id": "UserRoles-1",
+  "Name": "TestRole",
+  "Description": "TestRole",
+  "SupportedRestrictions": null,
+  "PermissionDescriptions": [
+    "Create step templates",
+    "Delete deployments (restrictable to projects, environments, tenants)",
+    "Delete step templates",
+    "Edit certificates (restrictable to environments, tenants)",
+    "Edit step templates",
+    "Export certificate private-keys (restrictable to environments, tenants)",
+    "View certificates (restrictable to environments, tenants)",
+    "View deployments (restrictable to projects, environments, tenants)",
+    "View step templates"
+  ],
+  "GrantedPermissions": [
+    "ActionTemplateView",
+    "CertificateView",
+    "DeploymentView",
+    "ActionTemplateCreate",
+    "ActionTemplateDelete",
+    "ActionTemplateEdit",
+    "CertificateExportPrivateKey",
+    "CertificateEdit",
+    "DeploymentDelete"
+  ],
+  "CanBeDeleted": true,
+  "Links": {
+    "Self": "/api/userroles/UserRoles-1"
+  }
+}

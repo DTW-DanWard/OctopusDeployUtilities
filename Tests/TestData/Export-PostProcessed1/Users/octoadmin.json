@@ -1,0 +1,16 @@
+{
+  "Id": "Users-1",
+  "Username": "octoadmin",
+  "DisplayName": "octoadmin",
+  "IsActive": true,
+  "IsService": false,
+  "EmailAddress": null,
+  "CanPasswordBeEdited": true,
+  "IsRequestor": false,
+  "Identities": [],
+  "Links": {
+    "Self": "/api/users/Users-1",
+    "Permissions": "/api/users/Users-1/permissions",
+    "ApiKeys": "/api/users/Users-1/apikeys{/id}{?skip,take}"
+  }
+}

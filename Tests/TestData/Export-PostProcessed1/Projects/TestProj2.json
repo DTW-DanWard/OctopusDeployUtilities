@@ -1,0 +1,155 @@
+{
+  "Id": "Projects-22",
+  "VariableSetId": "variableset-Projects-22",
+  "DeploymentProcessId": "deploymentprocess-Projects-22",
+  "ClonedFromProjectId": null,
+  "DiscreteChannelRelease": false,
+  "IncludedLibraryVariableSetIds": [],
+  "DefaultToSkipIfAlreadyInstalled": false,
+  "TenantedDeploymentMode": "TenantedOrUntenanted",
+  "DefaultGuidedFailureMode": "EnvironmentDefault",
+  "VersioningStrategy": {
+    "Template": "#{Octopus.Version.LastMajor}.#{Octopus.Version.LastMinor}.#{Octopus.Version.NextPatch}",
+    "DonorPackage": null,
+    "DonorPackageStepId": null
+  },
+  "ReleaseCreationStrategy": {
+    "ChannelId": null,
+    "ReleaseCreationPackage": null,
+    "ReleaseCreationPackageStepId": null
+  },
+  "Templates": [],
+  "AutoDeployReleaseOverrides": [],
+  "Name": "TestProj2",
+  "Slug": "testproj2",
+  "Description": "Dan's second test project",
+  "IsDisabled": false,
+  "ProjectGroupId": "ProjectGroups-1",
+  "LifecycleId": "Lifecycles-1",
+  "AutoCreateRelease": false,
+  "ProjectConnectivityPolicy": {
+    "SkipMachineBehavior": "None",
+    "TargetRoles": [],
+    "AllowDeploymentsToNoTargets": false
+  },
+  "Links": {
+    "Self": "/api/projects/Projects-22",
+    "Releases": "/api/projects/Projects-22/releases{/version}{?skip,take,searchByVersion}",
+    "Channels": "/api/projects/Projects-22/channels{?skip,take,partialName}",
+    "Triggers": "/api/projects/Projects-22/triggers{?skip,take,partialName,triggerActionType}",
+    "ScheduledTriggers": "/api/projects/Projects-22/scheduledtriggers{?skip,take,partialName}",
+    "OrderChannels": "/api/projects/Projects-22/channels/order",
+    "Variables": "/api/variables/variableset-Projects-22",
+    "Progression": "/api/progression/Projects-22{?aggregate}",
+    "DeploymentProcess": "/api/deploymentprocesses/deploymentprocess-Projects-22",
+    "Web": "/app#/projects/Projects-22",
+    "Logo": "/api/projects/Projects-22/logo?cb=2018.11.2"
+  },
+  "ClonedFromProjectName": null,
+  "IncludedLibraryVariableSetNames": [],
+  "LifecycleName": "Default Lifecycle",
+  "ProjectGroupName": "Default Project Group",
+  "DeploymentProcess": {
+    "Id": "deploymentprocess-Projects-22",
+    "ProjectId": "Projects-22",
+    "Steps": [
+      {
+        "Id": "557370d3-ef08-47ac-a251-84f5a4552450",
+        "Name": "Hello world again",
+        "PackageRequirement": "LetOctopusDecide",
+        "Properties": {
+          "Octopus.Action.TargetRoles": "TestRole"
+        },
+        "Condition": "Success",
+        "StartTrigger": "StartAfterPrevious",
+        "Actions": [
+          {
+            "Id": "6bce4124-2427-46fa-8547-f8a36c8935be",
+            "Name": "Hello world again",
+            "ActionType": "Octopus.Script",
+            "IsDisabled": false,
+            "CanBeUsedForProjectVersioning": false,
+            "IsRequired": false,
+            "WorkerPoolId": null,
+            "Environments": [],
+            "ExcludedEnvironments": [],
+            "Channels": [],
+            "TenantTags": [],
+            "Packages": [],
+            "Properties": {
+              "Octopus.Action.RunOnServer": "false",
+              "Octopus.Action.Script.ScriptSource": "Inline",
+              "Octopus.Action.Script.Syntax": "PowerShell",
+              "Octopus.Action.Script.ScriptBody": "Write-Host \"Hello, hello again!\""
+            },
+            "Links": {}
+          }
+        ]
+      }
+    ],
+    "Version": 1,
+    "LastSnapshotId": null,
+    "Links": {
+      "Self": "/api/deploymentprocesses/deploymentprocess-Projects-22",
+      "Project": "/api/projects/Projects-22",
+      "Template": "/api/deploymentprocesses/deploymentprocess-Projects-22/template{?channel,releaseId}"
+    },
+    "LastSnapshotName": null,
+    "ProjectName": "TestProj2"
+  },
+  "VariableSet": {
+    "Id": "variableset-Projects-22",
+    "OwnerId": "Projects-22",
+    "Version": 3,
+    "Variables": [
+      {
+        "Id": "a0907db9-667d-6416-d0d5-e084e63f2c39",
+        "Name": "TP2-Proj-Var1",
+        "Value": "Meow meow again",
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      },
+      {
+        "Id": "75bdd574-c3c1-2349-dadb-f30b33ec351e",
+        "Name": "TP2-Proj-Var1",
+        "Value": "No meow here",
+        "Description": "",
+        "Scope": {
+          "Environment": [
+            "Environments-24"
+          ],
+          "EnvironmentName": [
+            "Test-1"
+          ],
+          "Breadth": [
+            "Test-1"
+          ]
+        },
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      },
+      {
+        "Id": "946833b7-c602-dcfc-ec57-ddd9d9b0d675",
+        "Name": "TP2-Sensitive",
+        "Value": null,
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "Sensitive",
+        "IsSensitive": true
+      }
+    ],
+    "Links": {
+      "Self": "/api/variables/variableset-Projects-22"
+    },
+    "OwnerName": "TestProj2"
+  },
+  "IncludedLibraryVariableSets": []
+}

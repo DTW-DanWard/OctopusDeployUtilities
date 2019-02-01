@@ -1,0 +1,178 @@
+{
+  "Id": "Projects-1",
+  "VariableSetId": "variableset-Projects-1",
+  "DeploymentProcessId": "deploymentprocess-Projects-1",
+  "ClonedFromProjectId": null,
+  "DiscreteChannelRelease": false,
+  "IncludedLibraryVariableSetIds": [],
+  "DefaultToSkipIfAlreadyInstalled": false,
+  "TenantedDeploymentMode": "Untenanted",
+  "DefaultGuidedFailureMode": "EnvironmentDefault",
+  "VersioningStrategy": {
+    "Template": "#{Octopus.Version.LastMajor}.#{Octopus.Version.LastMinor}.#{Octopus.Version.NextPatch}",
+    "DonorPackage": null,
+    "DonorPackageStepId": null
+  },
+  "ReleaseCreationStrategy": {
+    "ChannelId": null,
+    "ReleaseCreationPackage": null,
+    "ReleaseCreationPackageStepId": null
+  },
+  "Templates": [],
+  "AutoDeployReleaseOverrides": [],
+  "Name": "TestProj1",
+  "Slug": "testproj1",
+  "Description": "",
+  "IsDisabled": false,
+  "ProjectGroupId": "ProjectGroups-1",
+  "LifecycleId": "Lifecycles-1",
+  "AutoCreateRelease": false,
+  "ProjectConnectivityPolicy": {
+    "SkipMachineBehavior": "None",
+    "TargetRoles": [],
+    "AllowDeploymentsToNoTargets": false
+  },
+  "Links": {
+    "Self": "/api/projects/Projects-1",
+    "Releases": "/api/projects/Projects-1/releases{/version}{?skip,take,searchByVersion}",
+    "Channels": "/api/projects/Projects-1/channels{?skip,take,partialName}",
+    "Triggers": "/api/projects/Projects-1/triggers{?skip,take,partialName,triggerActionType}",
+    "ScheduledTriggers": "/api/projects/Projects-1/scheduledtriggers{?skip,take,partialName}",
+    "OrderChannels": "/api/projects/Projects-1/channels/order",
+    "Variables": "/api/variables/variableset-Projects-1",
+    "Progression": "/api/progression/Projects-1{?aggregate}",
+    "DeploymentProcess": "/api/deploymentprocesses/deploymentprocess-Projects-1",
+    "Web": "/app#/projects/Projects-1",
+    "Logo": "/api/projects/Projects-1/logo?cb=2018.11.2"
+  },
+  "ClonedFromProjectName": null,
+  "IncludedLibraryVariableSetNames": [],
+  "LifecycleName": "Default Lifecycle",
+  "ProjectGroupName": "Default Project Group",
+  "DeploymentProcess": {
+    "Id": "deploymentprocess-Projects-1",
+    "ProjectId": "Projects-1",
+    "Steps": [
+      {
+        "Id": "c3e5cc13-32d6-4c54-932f-1c8d6727887a",
+        "Name": "Hello World",
+        "PackageRequirement": "LetOctopusDecide",
+        "Properties": {
+          "Octopus.Action.TargetRoles": "TestRole"
+        },
+        "Condition": "Success",
+        "StartTrigger": "StartAfterPrevious",
+        "Actions": [
+          {
+            "Id": "cce42be1-911d-415f-8965-3e9fed55dfd8",
+            "Name": "Hello World",
+            "ActionType": "Octopus.Script",
+            "IsDisabled": false,
+            "CanBeUsedForProjectVersioning": false,
+            "IsRequired": false,
+            "WorkerPoolId": null,
+            "Environments": [],
+            "ExcludedEnvironments": [],
+            "Channels": [],
+            "TenantTags": [],
+            "Packages": [],
+            "Properties": {
+              "Octopus.Action.RunOnServer": "false",
+              "Octopus.Action.Script.ScriptSource": "Inline",
+              "Octopus.Action.Script.Syntax": "PowerShell",
+              "Octopus.Action.Script.ScriptBody": "Write-Output \"Hello, world!\""
+            },
+            "Links": {}
+          }
+        ]
+      }
+    ],
+    "Version": 1,
+    "LastSnapshotId": null,
+    "Links": {
+      "Self": "/api/deploymentprocesses/deploymentprocess-Projects-1",
+      "Project": "/api/projects/Projects-1",
+      "Template": "/api/deploymentprocesses/deploymentprocess-Projects-1/template{?channel,releaseId}"
+    },
+    "LastSnapshotName": null,
+    "ProjectName": "TestProj1"
+  },
+  "VariableSet": {
+    "Id": "variableset-Projects-1",
+    "OwnerId": "Projects-1",
+    "Version": 6,
+    "Variables": [
+      {
+        "Id": "54655063-a823-fa09-7801-767a2b212bda",
+        "Name": "Var1",
+        "Value": "ABC",
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      },
+      {
+        "Id": "ad1227ba-525b-4ff7-db9c-f688d0543cda",
+        "Name": "Var2",
+        "Value": "123",
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      },
+      {
+        "Id": "4c8683af-aef9-1c78-365d-8142d07c9607",
+        "Name": "Var3",
+        "Value": "#{Test-Var-3}",
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      },
+      {
+        "Id": "96e2bf67-ad34-75a7-bd3e-851aab6fb3cd",
+        "Name": "Var4-Escape",
+        "Value": "Dan's Value\" needs escape!",
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      },
+      {
+        "Id": "8bc71031-7400-a161-cc91-cd98ff578279",
+        "Name": "Var5-Sensi",
+        "Value": null,
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "Sensitive",
+        "IsSensitive": true
+      },
+      {
+        "Id": "60144a7e-4da2-998f-b211-5f253c1be60d",
+        "Name": "SqlPwd",
+        "Value": "Ooops - not encrypted!",
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      }
+    ],
+    "Links": {
+      "Self": "/api/variables/variableset-Projects-1"
+    },
+    "OwnerName": "TestProj1"
+  },
+  "IncludedLibraryVariableSets": []
+}

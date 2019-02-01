@@ -1,0 +1,16 @@
+{
+  "Id": "smtp",
+  "SmtpHost": null,
+  "SmtpPort": 25,
+  "SendEmailFrom": null,
+  "SmtpLogin": null,
+  "EnableSsl": false,
+  "SmtpPassword": {
+    "HasValue": false,
+    "NewValue": null
+  },
+  "NewSmtpPassword": null,
+  "Links": {
+    "Self": "/api/smtpconfiguration"
+  }
+}

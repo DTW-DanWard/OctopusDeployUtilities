@@ -1,0 +1,28 @@
+{
+  "Id": "userroles-certificatemanager",
+  "Name": "Certificate manager",
+  "Description": "Certificate managers can edit certificates and export private-keys",
+  "SupportedRestrictions": null,
+  "PermissionDescriptions": [
+    "Create certificates (restrictable to environments, tenants)",
+    "Delete certificates (restrictable to environments, tenants)",
+    "Edit certificates (restrictable to environments, tenants)",
+    "Export certificate private-keys (restrictable to environments, tenants)",
+    "View certificates (restrictable to environments, tenants)",
+    "View environments (restrictable to environments)",
+    "View tenants (restrictable to tenants)"
+  ],
+  "GrantedPermissions": [
+    "CertificateView",
+    "CertificateCreate",
+    "CertificateEdit",
+    "CertificateDelete",
+    "CertificateExportPrivateKey",
+    "EnvironmentView",
+    "TenantView"
+  ],
+  "CanBeDeleted": false,
+  "Links": {
+    "Self": "/api/userroles/userroles-certificatemanager"
+  }
+}

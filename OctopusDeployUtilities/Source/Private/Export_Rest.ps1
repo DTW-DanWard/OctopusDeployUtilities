@@ -21,12 +21,10 @@ function Invoke-ODURestMethod {
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$Url,
-    [Parameter(Mandatory = $true)]
+    [string]$Url = $(throw "$($MyInvocation.MyCommand) : missing parameter RestName"),
     [ValidateNotNullOrEmpty()]
-    [string]$ApiKey
+    [string]$ApiKey = $(throw "$($MyInvocation.MyCommand) : missing parameter RestName")
   )
   #endregion
   process {
@@ -40,7 +38,7 @@ function Invoke-ODURestMethod {
       if (($Err.ToString()) -match "You do not have permission to perform this action. Please contact your Octopus administrator") {
         Write-Verbose "$($MyInvocation.MyCommand) :: Error calling $Url"
         Write-Verbose "$($MyInvocation.MyCommand) :: Error was $Err"
-        Write-Error -Message "Error occurred calling: $Url  You may not have permission to access this API; you should exclude this type from exports by adding it to the type blacklist.  See the docs. Error was: $Err"
+        throw "Error occurred calling: $Url  You may not have permission to access this API; you should exclude this type from exports by adding it to the type blacklist.  See the docs. Error was: $Err"
       } else {
         throw $Err
       }
@@ -70,12 +68,10 @@ function Test-ODUOctopusServerCredential {
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$ServerDomainName,
-    [Parameter(Mandatory = $true)]
+    [string]$ServerDomainName = $(throw "$($MyInvocation.MyCommand) : missing parameter RestName"),
     [ValidateNotNullOrEmpty()]
-    [string]$ApiKey
+    [string]$ApiKey = $(throw "$($MyInvocation.MyCommand) : missing parameter RestName")
   )
   #endregion
   process {
