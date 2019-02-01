@@ -46,9 +46,9 @@ Describe 'Configuration: export root folder initialized' {
 
   BeforeAll {
     # ensure config file DOES exist
-    $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
-    $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
-    $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
+    $ExportRootFolder = Join-Path -Path $TestDrive -ChildPath 'ExportRoot'
+    $ConfigFolderPath = Join-Path -Path $TestDrive -ChildPath 'Configuration'
+    $ConfigFilePath = Join-Path -Path $ConfigFolderPath -ChildPath 'Configuration.psd1'
 
     $null = New-Item -Path $ExportRootFolder -ItemType Directory
     $null = New-Item -Path $ConfigFolderPath -ItemType Directory
@@ -91,9 +91,9 @@ Describe 'Configuration: Octopus Server initialized' {
 
   BeforeAll {
     # ensure config file DOES exist
-    $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
-    $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
-    $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
+    $ExportRootFolder = Join-Path -Path $TestDrive -ChildPath 'ExportRoot'
+    $ConfigFolderPath = Join-Path -Path $TestDrive -ChildPath 'Configuration'
+    $ConfigFilePath = Join-Path -Path $ConfigFolderPath -ChildPath 'Configuration.psd1'
 
     $null = New-Item -Path $ExportRootFolder -ItemType Directory
     $null = New-Item -Path $ConfigFolderPath -ItemType Directory

@@ -20,8 +20,8 @@ Describe 'Configuration: export root folder initialized' {
 
   BeforeAll {
     # ensure config file DOES exist
-    $ExportRootFolder = Join-Path -Path $TestDrive 'ExportRoot'
-    $ConfigFolderPath = Join-Path -Path $TestDrive 'Configuration'
+    $ExportRootFolder = Join-Path -Path $TestDrive -ChildPath 'ExportRoot'
+    $ConfigFolderPath = Join-Path -Path $TestDrive -ChildPath 'Configuration'
     $ConfigFilePath = Join-Path -Path $ConfigFolderPath 'Configuration.psd1'
 
     $null = New-Item -Path $ExportRootFolder -ItemType Directory
