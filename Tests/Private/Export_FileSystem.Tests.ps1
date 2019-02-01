@@ -120,3 +120,30 @@ Describe 'New folder for each Api Call' {
   }
 }
 #endregion
+
+
+
+
+#region Out file Json
+Describe 'Out file Json' {
+
+  It 'no parameters throws error' {
+    { Out-ODUFileJson } | Should throw
+  }
+
+  It 'null parameters throws error' {
+    { $BadParam1 = $BadParam2 = $null; Out-ODUFileJson -FilePath $BadParam1 -Data $BadParam2} | Should throw
+  }
+
+  It 'valid params get file created' {
+    $JsonFilePath = Join-Path -Path $TestDrive -ChildPath File.json
+    $Property = 'ABC'
+    $Value = 123
+    $SomeObject = [PSCustomObject]@{ $Property = $Value }
+    Out-ODUFileJson -FilePath $JsonFilePath -Data $SomeObject
+    # get object from file and test property value
+    $SomeObjectRestored = ConvertFrom-Json -InputObject (Get-Content -Path $JsonFilePath -Raw)
+    $SomeObjectRestored.$Property | Should Be $Value
+  }
+}
+#endregion

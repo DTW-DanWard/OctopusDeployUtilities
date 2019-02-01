@@ -170,9 +170,8 @@ function Out-ODUFileJson {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$FilePath,
+    [string]$FilePath = $(throw "$($MyInvocation.MyCommand) : missing parameter ParentFolder"),
     $Data
   )
   #endregion
