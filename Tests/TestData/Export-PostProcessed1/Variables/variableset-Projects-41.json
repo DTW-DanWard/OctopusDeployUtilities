@@ -1,0 +1,55 @@
+{
+  "Id": "variableset-Projects-41",
+  "OwnerId": "Projects-41",
+  "Version": 14,
+  "Variables": [
+    {
+      "Id": "515670db-3d76-6af0-3296-395fee056842",
+      "Name": "ApplicationName",
+      "Value": "SalesTaxEngine",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "d77dd7f4-5455-2c21-a040-a2e42631814e",
+      "Name": "CnnString",
+      "Value": "#{ConnStr.SalesDb}",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "6b43a717-ab35-2ce2-e909-354a2ee0d8b1",
+      "Name": "DB.Password",
+      "Value": null,
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "Sensitive",
+      "IsSensitive": true
+    },
+    {
+      "Id": "3a859967-211d-488c-0ae9-f05df16a92b3",
+      "Name": "DB.User",
+      "Value": "DBSALESTXPRC-QQQ",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    }
+  ],
+  "Links": {
+    "Self": "/api/variables/variableset-Projects-41"
+  },
+  "OwnerName": "SalesTaxEngine"
+}

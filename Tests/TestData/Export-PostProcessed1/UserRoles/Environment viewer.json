@@ -1,0 +1,32 @@
+{
+  "Id": "userroles-environmentviewer",
+  "Name": "Environment viewer",
+  "Description": "Environment viewers can view environments, machines, workers, proxies and accounts, but not edit them.",
+  "SupportedRestrictions": null,
+  "PermissionDescriptions": [
+    "View accounts (restrictable to environments, tenants)",
+    "View certificates (restrictable to environments, tenants)",
+    "View environments (restrictable to environments)",
+    "View health check policies",
+    "View machines (restrictable to environments, tenants)",
+    "View proxies",
+    "View summary-level information associated with a task (restrictable to projects, environments, tenants)",
+    "View teams",
+    "View the workers in worker pools"
+  ],
+  "GrantedPermissions": [
+    "EnvironmentView",
+    "MachineView",
+    "TaskView",
+    "TeamView",
+    "AccountView",
+    "MachinePolicyView",
+    "CertificateView",
+    "ProxyView",
+    "WorkerView"
+  ],
+  "CanBeDeleted": false,
+  "Links": {
+    "Self": "/api/userroles/userroles-environmentviewer"
+  }
+}

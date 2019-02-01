@@ -1,0 +1,23 @@
+{
+  "TenantId": "Tenants-1",
+  "TenantName": "Tenant-1",
+  "ProjectVariables": {
+    "Projects-22": {
+      "ProjectId": "Projects-22",
+      "ProjectName": "TestProj2",
+      "Templates": [],
+      "Variables": {
+        "Environments-24": {}
+      },
+      "Links": {
+        "Project": "/api/projects/Projects-22",
+        "Logo": "/api/projects/Projects-22/logo"
+      }
+    }
+  },
+  "LibraryVariables": {},
+  "Links": {
+    "Self": "/api/tenants/Tenants-1/variables",
+    "Tenant": "/api/tenants/Tenants-1"
+  }
+}

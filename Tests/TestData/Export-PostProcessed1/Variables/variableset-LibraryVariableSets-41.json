@@ -1,0 +1,22 @@
+{
+  "Id": "variableset-LibraryVariableSets-41",
+  "OwnerId": "LibraryVariableSets-41",
+  "Version": 2,
+  "Variables": [
+    {
+      "Id": "b0bbd035-4ecc-a448-677a-1b15523b92dc",
+      "Name": "ConnStr.SalesDb",
+      "Value": "server=#{DB.Server};database=SalesDb;uid=#{DB.User};pwd=#{DB.Password};app=#{ApplicationName}",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    }
+  ],
+  "Links": {
+    "Self": "/api/variables/variableset-LibraryVariableSets-41"
+  },
+  "OwnerName": "ConnStr"
+}

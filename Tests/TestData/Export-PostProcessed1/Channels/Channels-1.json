@@ -1,0 +1,17 @@
+{
+  "Id": "Channels-1",
+  "Name": "Default",
+  "Description": null,
+  "ProjectId": "Projects-1",
+  "LifecycleId": null,
+  "IsDefault": true,
+  "Rules": [],
+  "TenantTags": [],
+  "Links": {
+    "Self": "/api/channels/Channels-1",
+    "Releases": "/api/channels/Channels-1/releases{?skip,take,searchByVersion}",
+    "Project": "/api/projects/Projects-1"
+  },
+  "LifecycleName": null,
+  "ProjectName": "TestProj1"
+}

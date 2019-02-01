@@ -1,0 +1,48 @@
+{
+  "Id": "deploymentprocess-Projects-22",
+  "ProjectId": "Projects-22",
+  "Steps": [
+    {
+      "Id": "557370d3-ef08-47ac-a251-84f5a4552450",
+      "Name": "Hello world again",
+      "PackageRequirement": "LetOctopusDecide",
+      "Properties": {
+        "Octopus.Action.TargetRoles": "TestRole"
+      },
+      "Condition": "Success",
+      "StartTrigger": "StartAfterPrevious",
+      "Actions": [
+        {
+          "Id": "6bce4124-2427-46fa-8547-f8a36c8935be",
+          "Name": "Hello world again",
+          "ActionType": "Octopus.Script",
+          "IsDisabled": false,
+          "CanBeUsedForProjectVersioning": false,
+          "IsRequired": false,
+          "WorkerPoolId": null,
+          "Environments": [],
+          "ExcludedEnvironments": [],
+          "Channels": [],
+          "TenantTags": [],
+          "Packages": [],
+          "Properties": {
+            "Octopus.Action.RunOnServer": "false",
+            "Octopus.Action.Script.ScriptSource": "Inline",
+            "Octopus.Action.Script.Syntax": "PowerShell",
+            "Octopus.Action.Script.ScriptBody": "Write-Host \"Hello, hello again!\""
+          },
+          "Links": {}
+        }
+      ]
+    }
+  ],
+  "Version": 1,
+  "LastSnapshotId": null,
+  "Links": {
+    "Self": "/api/deploymentprocesses/deploymentprocess-Projects-22",
+    "Project": "/api/projects/Projects-22",
+    "Template": "/api/deploymentprocesses/deploymentprocess-Projects-22/template{?channel,releaseId}"
+  },
+  "LastSnapshotName": null,
+  "ProjectName": "TestProj2"
+}

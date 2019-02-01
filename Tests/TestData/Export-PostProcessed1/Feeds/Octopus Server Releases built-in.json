@@ -1,0 +1,19 @@
+{
+  "FeedType": "OctopusProject",
+  "Name": "Octopus Server Releases (built-in)",
+  "PackageAcquisitionLocationOptions": [
+    "NotAcquired"
+  ],
+  "Id": "feeds-builtin-releases",
+  "LastModifiedOn": null,
+  "LastModifiedBy": null,
+  "Links": {
+    "Self": "/api/feeds/feeds-builtin-releases",
+    "SearchPackagesTemplate": "/api/feeds/feeds-builtin-releases/packages/search{?term,take,skip}",
+    "SearchPackageVersionsTemplate": "/api/feeds/feeds-builtin-releases/packages/versions{?packageId,take,skip,includePreRelease,versionRange,preReleaseTag,filter,includeReleaseNotes}",
+    "Packages": "/api/feeds/feeds-builtin-releases/packages",
+    "SearchTemplate": "/api/feeds/feeds-builtin-releases/packages{?packageId,partialMatch,includeMultipleVersions,includeNotes,includePreRelease,versionRange,preReleaseTag,take,descriptionsOptional}",
+    "VersionsTemplate": "/api/feeds/feeds-builtin-releases/packages{?packageIds}",
+    "NotesTemplate": "/api/feeds/feeds-builtin-releases/packages/notes{?packageId,version}"
+  }
+}

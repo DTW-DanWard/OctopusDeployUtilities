@@ -1,0 +1,17 @@
+{
+  "Id": "Channels-70",
+  "Name": "Default",
+  "Description": null,
+  "ProjectId": "Projects-70",
+  "LifecycleId": null,
+  "IsDefault": true,
+  "Rules": [],
+  "TenantTags": [],
+  "Links": {
+    "Self": "/api/channels/Channels-70",
+    "Releases": "/api/channels/Channels-70/releases{?skip,take,searchByVersion}",
+    "Project": "/api/projects/Projects-70"
+  },
+  "LifecycleName": null,
+  "ProjectName": "FinancePortal"
+}

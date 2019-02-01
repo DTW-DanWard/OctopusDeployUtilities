@@ -1,0 +1,25 @@
+{
+  "FeedType": "NuGet",
+  "DownloadAttempts": 5,
+  "DownloadRetryBackoffSeconds": 10,
+  "EnhancedMode": false,
+  "FeedUri": "octopus://",
+  "Username": null,
+  "Password": null,
+  "Name": "Octopus Server (built-in)",
+  "PackageAcquisitionLocationOptions": [
+    "Server"
+  ],
+  "Id": "feeds-builtin",
+  "LastModifiedOn": null,
+  "LastModifiedBy": null,
+  "Links": {
+    "Self": "/api/feeds/feeds-builtin",
+    "SearchPackagesTemplate": "/api/feeds/feeds-builtin/packages/search{?term,take,skip}",
+    "SearchPackageVersionsTemplate": "/api/feeds/feeds-builtin/packages/versions{?packageId,take,skip,includePreRelease,versionRange,preReleaseTag,filter,includeReleaseNotes}",
+    "Packages": "/api/feeds/feeds-builtin/packages",
+    "SearchTemplate": "/api/feeds/feeds-builtin/packages{?packageId,partialMatch,includeMultipleVersions,includeNotes,includePreRelease,versionRange,preReleaseTag,take,descriptionsOptional}",
+    "VersionsTemplate": "/api/feeds/feeds-builtin/packages{?packageIds}",
+    "NotesTemplate": "/api/feeds/feeds-builtin/packages/notes{?packageId,version}"
+  }
+}

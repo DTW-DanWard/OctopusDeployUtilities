@@ -1,0 +1,70 @@
+{
+  "Tasks": [
+    {
+      "Name": "CreatedEnvironment",
+      "Category": "Infrastructure",
+      "IsEnabled": true,
+      "IsComplete": true,
+      "SortOrder": 0
+    },
+    {
+      "Name": "CreatedMachine",
+      "Category": "Infrastructure",
+      "IsEnabled": true,
+      "IsComplete": false,
+      "SortOrder": 1
+    },
+    {
+      "Name": "AddedAzureAccount",
+      "Category": "Infrastructure",
+      "IsEnabled": true,
+      "IsComplete": false,
+      "SortOrder": 1
+    },
+    {
+      "Name": "UploadedPackage",
+      "Category": "Package",
+      "IsEnabled": true,
+      "IsComplete": true,
+      "SortOrder": 0
+    },
+    {
+      "Name": "AddedFeed",
+      "Category": "Package",
+      "IsEnabled": true,
+      "IsComplete": false,
+      "SortOrder": 0
+    },
+    {
+      "Name": "CreatedProject",
+      "Category": "Project",
+      "IsEnabled": true,
+      "IsComplete": true,
+      "SortOrder": 0
+    },
+    {
+      "Name": "AddedProjectStep",
+      "Category": "Project",
+      "IsEnabled": true,
+      "IsComplete": true,
+      "SortOrder": 1
+    },
+    {
+      "Name": "CreatedRelease",
+      "Category": "Deploy",
+      "IsEnabled": false,
+      "IsComplete": true,
+      "SortOrder": 0
+    },
+    {
+      "Name": "DeployedRelease",
+      "Category": "Deploy",
+      "IsEnabled": true,
+      "IsComplete": false,
+      "SortOrder": 1
+    }
+  ],
+  "Links": {
+    "Self": "/api/useronboarding"
+  }
+}

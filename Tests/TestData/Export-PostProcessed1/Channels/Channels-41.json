@@ -1,0 +1,17 @@
+{
+  "Id": "Channels-41",
+  "Name": "Default",
+  "Description": null,
+  "ProjectId": "Projects-41",
+  "LifecycleId": null,
+  "IsDefault": true,
+  "Rules": [],
+  "TenantTags": [],
+  "Links": {
+    "Self": "/api/channels/Channels-41",
+    "Releases": "/api/channels/Channels-41/releases{?skip,take,searchByVersion}",
+    "Project": "/api/projects/Projects-41"
+  },
+  "LifecycleName": null,
+  "ProjectName": "SalesTaxEngine"
+}

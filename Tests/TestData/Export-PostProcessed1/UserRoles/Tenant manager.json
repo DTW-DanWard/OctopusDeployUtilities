@@ -1,0 +1,22 @@
+{
+  "Id": "userroles-tenantmanager",
+  "Name": "Tenant manager",
+  "Description": "Tenant managers can edit tenants and their tags.",
+  "SupportedRestrictions": null,
+  "PermissionDescriptions": [
+    "Create tenants (restrictable to tenants)",
+    "Delete tenants (restrictable to tenants)",
+    "Edit tenants (restrictable to tenants)",
+    "View tenants (restrictable to tenants)"
+  ],
+  "GrantedPermissions": [
+    "TenantCreate",
+    "TenantEdit",
+    "TenantDelete",
+    "TenantView"
+  ],
+  "CanBeDeleted": false,
+  "Links": {
+    "Self": "/api/userroles/userroles-tenantmanager"
+  }
+}

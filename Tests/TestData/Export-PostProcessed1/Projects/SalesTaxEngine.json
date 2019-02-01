@@ -1,0 +1,175 @@
+{
+  "Id": "Projects-41",
+  "VariableSetId": "variableset-Projects-41",
+  "DeploymentProcessId": "deploymentprocess-Projects-41",
+  "ClonedFromProjectId": null,
+  "DiscreteChannelRelease": false,
+  "IncludedLibraryVariableSetIds": [],
+  "DefaultToSkipIfAlreadyInstalled": false,
+  "TenantedDeploymentMode": "Untenanted",
+  "DefaultGuidedFailureMode": "EnvironmentDefault",
+  "VersioningStrategy": {
+    "Template": "#{Octopus.Version.LastMajor}.#{Octopus.Version.LastMinor}.#{Octopus.Version.NextPatch}",
+    "DonorPackage": null,
+    "DonorPackageStepId": null
+  },
+  "ReleaseCreationStrategy": {
+    "ChannelId": null,
+    "ReleaseCreationPackage": null,
+    "ReleaseCreationPackageStepId": null
+  },
+  "Templates": [],
+  "AutoDeployReleaseOverrides": [],
+  "Name": "SalesTaxEngine",
+  "Slug": "salestaxengine",
+  "Description": "",
+  "IsDisabled": false,
+  "ProjectGroupId": "ProjectGroups-1",
+  "LifecycleId": "Lifecycles-1",
+  "AutoCreateRelease": false,
+  "ProjectConnectivityPolicy": {
+    "SkipMachineBehavior": "None",
+    "TargetRoles": [],
+    "AllowDeploymentsToNoTargets": false
+  },
+  "Links": {
+    "Self": "/api/projects/Projects-41",
+    "Releases": "/api/projects/Projects-41/releases{/version}{?skip,take,searchByVersion}",
+    "Channels": "/api/projects/Projects-41/channels{?skip,take,partialName}",
+    "Triggers": "/api/projects/Projects-41/triggers{?skip,take,partialName,triggerActionType}",
+    "ScheduledTriggers": "/api/projects/Projects-41/scheduledtriggers{?skip,take,partialName}",
+    "OrderChannels": "/api/projects/Projects-41/channels/order",
+    "Variables": "/api/variables/variableset-Projects-41",
+    "Progression": "/api/progression/Projects-41{?aggregate}",
+    "DeploymentProcess": "/api/deploymentprocesses/deploymentprocess-Projects-41",
+    "Web": "/app#/projects/Projects-41",
+    "Logo": "/api/projects/Projects-41/logo?cb=2018.11.2"
+  },
+  "ClonedFromProjectName": null,
+  "IncludedLibraryVariableSetNames": [],
+  "LifecycleName": "Default Lifecycle",
+  "ProjectGroupName": "Default Project Group",
+  "DeploymentProcess": {
+    "Id": "deploymentprocess-Projects-41",
+    "ProjectId": "Projects-41",
+    "Steps": [
+      {
+        "Id": "18f77856-ea5e-480c-9c90-4002226c0e37",
+        "Name": "Deploy Service",
+        "PackageRequirement": "LetOctopusDecide",
+        "Properties": {
+          "Octopus.Action.TargetRoles": "MessageQueue"
+        },
+        "Condition": "Success",
+        "StartTrigger": "StartAfterPrevious",
+        "Actions": [
+          {
+            "Id": "f2e31352-07f1-4dc6-a7c3-f4e52aaf8211",
+            "Name": "Deploy Service",
+            "ActionType": "Octopus.WindowsService",
+            "IsDisabled": false,
+            "CanBeUsedForProjectVersioning": true,
+            "IsRequired": false,
+            "WorkerPoolId": null,
+            "Environments": [],
+            "ExcludedEnvironments": [],
+            "Channels": [],
+            "TenantTags": [],
+            "Packages": [
+              {
+                "Id": "1a430f73-8ac9-4525-95e9-e0a05927dd08",
+                "Name": "",
+                "PackageId": "Contoso.Utility.UsefulStuff",
+                "FeedId": "feeds-builtin",
+                "AcquisitionLocation": "Server",
+                "Properties": {}
+              }
+            ],
+            "Properties": {
+              "Octopus.Action.WindowsService.CreateOrUpdateService": "True",
+              "Octopus.Action.WindowsService.ServiceAccount": "LocalSystem",
+              "Octopus.Action.WindowsService.StartMode": "auto",
+              "Octopus.Action.Package.AutomaticallyRunConfigurationTransformationFiles": "True",
+              "Octopus.Action.Package.AutomaticallyUpdateAppSettingsAndConnectionStrings": "True",
+              "Octopus.Action.EnabledFeatures": "Octopus.Features.WindowsService,Octopus.Features.CustomDirectory,Octopus.Features.ConfigurationVariables,Octopus.Features.ConfigurationTransforms",
+              "Octopus.Action.WindowsService.ServiceName": "TestService",
+              "Octopus.Action.WindowsService.DisplayName": "TestService",
+              "Octopus.Action.WindowsService.ExecutablePath": "TestService.exe",
+              "Octopus.Action.Package.PackageId": "Contoso.Utility.UsefulStuff",
+              "Octopus.Action.Package.FeedId": "feeds-builtin",
+              "Octopus.Action.Package.DownloadOnTentacle": "False",
+              "Octopus.Action.Package.CustomInstallationDirectory": "D:\\Applications\\TestService",
+              "Octopus.Action.Package.CustomInstallationDirectoryShouldBePurgedBeforeDeployment": "True"
+            },
+            "Links": {}
+          }
+        ]
+      }
+    ],
+    "Version": 2,
+    "LastSnapshotId": null,
+    "Links": {
+      "Self": "/api/deploymentprocesses/deploymentprocess-Projects-41",
+      "Project": "/api/projects/Projects-41",
+      "Template": "/api/deploymentprocesses/deploymentprocess-Projects-41/template{?channel,releaseId}"
+    },
+    "LastSnapshotName": null,
+    "ProjectName": "SalesTaxEngine"
+  },
+  "VariableSet": {
+    "Id": "variableset-Projects-41",
+    "OwnerId": "Projects-41",
+    "Version": 14,
+    "Variables": [
+      {
+        "Id": "515670db-3d76-6af0-3296-395fee056842",
+        "Name": "ApplicationName",
+        "Value": "SalesTaxEngine",
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      },
+      {
+        "Id": "d77dd7f4-5455-2c21-a040-a2e42631814e",
+        "Name": "CnnString",
+        "Value": "#{ConnStr.SalesDb}",
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      },
+      {
+        "Id": "6b43a717-ab35-2ce2-e909-354a2ee0d8b1",
+        "Name": "DB.Password",
+        "Value": null,
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "Sensitive",
+        "IsSensitive": true
+      },
+      {
+        "Id": "3a859967-211d-488c-0ae9-f05df16a92b3",
+        "Name": "DB.User",
+        "Value": "DBSALESTXPRC-QQQ",
+        "Description": null,
+        "Scope": {},
+        "IsEditable": true,
+        "Prompt": null,
+        "Type": "String",
+        "IsSensitive": false
+      }
+    ],
+    "Links": {
+      "Self": "/api/variables/variableset-Projects-41"
+    },
+    "OwnerName": "SalesTaxEngine"
+  },
+  "IncludedLibraryVariableSets": []
+}

@@ -1,0 +1,18 @@
+{
+  "IsDatabaseEncrypted": false,
+  "IsUpgradeAvailable": true,
+  "MaximumAvailableVersion": "2019.1.1",
+  "MaximumAvailableVersionCoveredByLicense": "2019.1.1",
+  "MaintenanceExpires": "2/20/2019",
+  "IsInMaintenanceMode": false,
+  "IsMajorMinorUpgrade": true,
+  "Links": {
+    "Self": "/api/serverstatus",
+    "Health": "/api/serverstatus/health",
+    "RecentLogs": "/api/serverstatus/logs{?skip,take,includeDetail}",
+    "SystemInfo": "/api/serverstatus/system-info",
+    "SystemReport": "/api/serverstatus/system-report",
+    "BuiltInFeedStats": "/api/serverstatus/nuget",
+    "GCCollect": "/api/serverstatus/gc-collect"
+  }
+}

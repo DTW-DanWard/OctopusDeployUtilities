@@ -1,0 +1,16 @@
+{
+  "Id": "userroles-packagepublisher",
+  "Name": "Package publisher",
+  "Description": null,
+  "SupportedRestrictions": null,
+  "PermissionDescriptions": [
+    "Push new packages to the built-in package repository (restrictable to projects)"
+  ],
+  "GrantedPermissions": [
+    "BuiltInFeedPush"
+  ],
+  "CanBeDeleted": false,
+  "Links": {
+    "Self": "/api/userroles/userroles-packagepublisher"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "Id": "Tenants-1",
+  "Name": "Tenant-1",
+  "TenantTags": [],
+  "ProjectEnvironments": {
+    "Projects-22": [
+      "Environments-24"
+    ]
+  },
+  "Links": {
+    "Self": "/api/tenants/Tenants-1",
+    "Variables": "/api/tenants/Tenants-1/variables",
+    "Web": "/app#/tenants/Tenants-1",
+    "Logo": "/api/tenants/Tenants-1/logo?cb=2018.11.2"
+  }
+}

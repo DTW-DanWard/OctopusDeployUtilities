@@ -1,0 +1,824 @@
+[
+  {
+    "Id": "UTC",
+    "Name": "(UTC) Coordinated Universal Time",
+    "IsLocal": true,
+    "Links": {}
+  },
+  {
+    "Id": "Morocco Standard Time",
+    "Name": "(UTC+00:00) Casablanca",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "GMT Standard Time",
+    "Name": "(UTC+00:00) Dublin, Edinburgh, Lisbon, London",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Greenwich Standard Time",
+    "Name": "(UTC+00:00) Monrovia, Reykjavik",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "W. Europe Standard Time",
+    "Name": "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Central Europe Standard Time",
+    "Name": "(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Romance Standard Time",
+    "Name": "(UTC+01:00) Brussels, Copenhagen, Madrid, Paris",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Sao Tome Standard Time",
+    "Name": "(UTC+01:00) Sao Tome",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Central European Standard Time",
+    "Name": "(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "W. Central Africa Standard Time",
+    "Name": "(UTC+01:00) West Central Africa",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Jordan Standard Time",
+    "Name": "(UTC+02:00) Amman",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "GTB Standard Time",
+    "Name": "(UTC+02:00) Athens, Bucharest",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Middle East Standard Time",
+    "Name": "(UTC+02:00) Beirut",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Egypt Standard Time",
+    "Name": "(UTC+02:00) Cairo",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "E. Europe Standard Time",
+    "Name": "(UTC+02:00) Chisinau",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Syria Standard Time",
+    "Name": "(UTC+02:00) Damascus",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "West Bank Standard Time",
+    "Name": "(UTC+02:00) Gaza, Hebron",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "South Africa Standard Time",
+    "Name": "(UTC+02:00) Harare, Pretoria",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "FLE Standard Time",
+    "Name": "(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Israel Standard Time",
+    "Name": "(UTC+02:00) Jerusalem",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Kaliningrad Standard Time",
+    "Name": "(UTC+02:00) Kaliningrad",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Sudan Standard Time",
+    "Name": "(UTC+02:00) Khartoum",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Libya Standard Time",
+    "Name": "(UTC+02:00) Tripoli",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Namibia Standard Time",
+    "Name": "(UTC+02:00) Windhoek",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Arabic Standard Time",
+    "Name": "(UTC+03:00) Baghdad",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Turkey Standard Time",
+    "Name": "(UTC+03:00) Istanbul",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Arab Standard Time",
+    "Name": "(UTC+03:00) Kuwait, Riyadh",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Belarus Standard Time",
+    "Name": "(UTC+03:00) Minsk",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Russian Standard Time",
+    "Name": "(UTC+03:00) Moscow, St. Petersburg, Volgograd",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "E. Africa Standard Time",
+    "Name": "(UTC+03:00) Nairobi",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Iran Standard Time",
+    "Name": "(UTC+03:30) Tehran",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Arabian Standard Time",
+    "Name": "(UTC+04:00) Abu Dhabi, Muscat",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Astrakhan Standard Time",
+    "Name": "(UTC+04:00) Astrakhan, Ulyanovsk",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Azerbaijan Standard Time",
+    "Name": "(UTC+04:00) Baku",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Russia Time Zone 3",
+    "Name": "(UTC+04:00) Izhevsk, Samara",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Mauritius Standard Time",
+    "Name": "(UTC+04:00) Port Louis",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Saratov Standard Time",
+    "Name": "(UTC+04:00) Saratov",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Georgian Standard Time",
+    "Name": "(UTC+04:00) Tbilisi",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Caucasus Standard Time",
+    "Name": "(UTC+04:00) Yerevan",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Afghanistan Standard Time",
+    "Name": "(UTC+04:30) Kabul",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "West Asia Standard Time",
+    "Name": "(UTC+05:00) Ashgabat, Tashkent",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Ekaterinburg Standard Time",
+    "Name": "(UTC+05:00) Ekaterinburg",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Pakistan Standard Time",
+    "Name": "(UTC+05:00) Islamabad, Karachi",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "India Standard Time",
+    "Name": "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Sri Lanka Standard Time",
+    "Name": "(UTC+05:30) Sri Jayawardenepura",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Nepal Standard Time",
+    "Name": "(UTC+05:45) Kathmandu",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Central Asia Standard Time",
+    "Name": "(UTC+06:00) Astana",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Bangladesh Standard Time",
+    "Name": "(UTC+06:00) Dhaka",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Omsk Standard Time",
+    "Name": "(UTC+06:00) Omsk",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Myanmar Standard Time",
+    "Name": "(UTC+06:30) Yangon (Rangoon)",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "SE Asia Standard Time",
+    "Name": "(UTC+07:00) Bangkok, Hanoi, Jakarta",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Altai Standard Time",
+    "Name": "(UTC+07:00) Barnaul, Gorno-Altaysk",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "W. Mongolia Standard Time",
+    "Name": "(UTC+07:00) Hovd",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "North Asia Standard Time",
+    "Name": "(UTC+07:00) Krasnoyarsk",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "N. Central Asia Standard Time",
+    "Name": "(UTC+07:00) Novosibirsk",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Tomsk Standard Time",
+    "Name": "(UTC+07:00) Tomsk",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "China Standard Time",
+    "Name": "(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "North Asia East Standard Time",
+    "Name": "(UTC+08:00) Irkutsk",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Singapore Standard Time",
+    "Name": "(UTC+08:00) Kuala Lumpur, Singapore",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "W. Australia Standard Time",
+    "Name": "(UTC+08:00) Perth",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Taipei Standard Time",
+    "Name": "(UTC+08:00) Taipei",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Ulaanbaatar Standard Time",
+    "Name": "(UTC+08:00) Ulaanbaatar",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Aus Central W. Standard Time",
+    "Name": "(UTC+08:45) Eucla",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Transbaikal Standard Time",
+    "Name": "(UTC+09:00) Chita",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Tokyo Standard Time",
+    "Name": "(UTC+09:00) Osaka, Sapporo, Tokyo",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "North Korea Standard Time",
+    "Name": "(UTC+09:00) Pyongyang",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Korea Standard Time",
+    "Name": "(UTC+09:00) Seoul",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Yakutsk Standard Time",
+    "Name": "(UTC+09:00) Yakutsk",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Cen. Australia Standard Time",
+    "Name": "(UTC+09:30) Adelaide",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "AUS Central Standard Time",
+    "Name": "(UTC+09:30) Darwin",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "E. Australia Standard Time",
+    "Name": "(UTC+10:00) Brisbane",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "AUS Eastern Standard Time",
+    "Name": "(UTC+10:00) Canberra, Melbourne, Sydney",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "West Pacific Standard Time",
+    "Name": "(UTC+10:00) Guam, Port Moresby",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Tasmania Standard Time",
+    "Name": "(UTC+10:00) Hobart",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Vladivostok Standard Time",
+    "Name": "(UTC+10:00) Vladivostok",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Lord Howe Standard Time",
+    "Name": "(UTC+10:30) Lord Howe Island",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Bougainville Standard Time",
+    "Name": "(UTC+11:00) Bougainville Island",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Russia Time Zone 10",
+    "Name": "(UTC+11:00) Chokurdakh",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Magadan Standard Time",
+    "Name": "(UTC+11:00) Magadan",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Norfolk Standard Time",
+    "Name": "(UTC+11:00) Norfolk Island",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Sakhalin Standard Time",
+    "Name": "(UTC+11:00) Sakhalin",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Central Pacific Standard Time",
+    "Name": "(UTC+11:00) Solomon Is., New Caledonia",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Russia Time Zone 11",
+    "Name": "(UTC+12:00) Anadyr, Petropavlovsk-Kamchatsky",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "New Zealand Standard Time",
+    "Name": "(UTC+12:00) Auckland, Wellington",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "UTC+12",
+    "Name": "(UTC+12:00) Coordinated Universal Time+12",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Fiji Standard Time",
+    "Name": "(UTC+12:00) Fiji",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Kamchatka Standard Time",
+    "Name": "(UTC+12:00) Petropavlovsk-Kamchatsky - Old",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Chatham Islands Standard Time",
+    "Name": "(UTC+12:45) Chatham Islands",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "UTC+13",
+    "Name": "(UTC+13:00) Coordinated Universal Time+13",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Tonga Standard Time",
+    "Name": "(UTC+13:00) Nuku'alofa",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Samoa Standard Time",
+    "Name": "(UTC+13:00) Samoa",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Line Islands Standard Time",
+    "Name": "(UTC+14:00) Kiritimati Island",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Azores Standard Time",
+    "Name": "(UTC-01:00) Azores",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Cape Verde Standard Time",
+    "Name": "(UTC-01:00) Cabo Verde Is.",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "UTC-02",
+    "Name": "(UTC-02:00) Coordinated Universal Time-02",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Mid-Atlantic Standard Time",
+    "Name": "(UTC-02:00) Mid-Atlantic - Old",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Tocantins Standard Time",
+    "Name": "(UTC-03:00) Araguaina",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "E. South America Standard Time",
+    "Name": "(UTC-03:00) Brasilia",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "SA Eastern Standard Time",
+    "Name": "(UTC-03:00) Cayenne, Fortaleza",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Argentina Standard Time",
+    "Name": "(UTC-03:00) City of Buenos Aires",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Greenland Standard Time",
+    "Name": "(UTC-03:00) Greenland",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Montevideo Standard Time",
+    "Name": "(UTC-03:00) Montevideo",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Magallanes Standard Time",
+    "Name": "(UTC-03:00) Punta Arenas",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Saint Pierre Standard Time",
+    "Name": "(UTC-03:00) Saint Pierre and Miquelon",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Bahia Standard Time",
+    "Name": "(UTC-03:00) Salvador",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Newfoundland Standard Time",
+    "Name": "(UTC-03:30) Newfoundland",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Paraguay Standard Time",
+    "Name": "(UTC-04:00) Asuncion",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Atlantic Standard Time",
+    "Name": "(UTC-04:00) Atlantic Time (Canada)",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Venezuela Standard Time",
+    "Name": "(UTC-04:00) Caracas",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Central Brazilian Standard Time",
+    "Name": "(UTC-04:00) Cuiaba",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "SA Western Standard Time",
+    "Name": "(UTC-04:00) Georgetown, La Paz, Manaus, San Juan",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Pacific SA Standard Time",
+    "Name": "(UTC-04:00) Santiago",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "SA Pacific Standard Time",
+    "Name": "(UTC-05:00) Bogota, Lima, Quito, Rio Branco",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Eastern Standard Time (Mexico)",
+    "Name": "(UTC-05:00) Chetumal",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Eastern Standard Time",
+    "Name": "(UTC-05:00) Eastern Time (US & Canada)",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Haiti Standard Time",
+    "Name": "(UTC-05:00) Haiti",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Cuba Standard Time",
+    "Name": "(UTC-05:00) Havana",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "US Eastern Standard Time",
+    "Name": "(UTC-05:00) Indiana (East)",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Turks And Caicos Standard Time",
+    "Name": "(UTC-05:00) Turks and Caicos",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Central America Standard Time",
+    "Name": "(UTC-06:00) Central America",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Central Standard Time",
+    "Name": "(UTC-06:00) Central Time (US & Canada)",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Easter Island Standard Time",
+    "Name": "(UTC-06:00) Easter Island",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Central Standard Time (Mexico)",
+    "Name": "(UTC-06:00) Guadalajara, Mexico City, Monterrey",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Canada Central Standard Time",
+    "Name": "(UTC-06:00) Saskatchewan",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "US Mountain Standard Time",
+    "Name": "(UTC-07:00) Arizona",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Mountain Standard Time (Mexico)",
+    "Name": "(UTC-07:00) Chihuahua, La Paz, Mazatlan",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Mountain Standard Time",
+    "Name": "(UTC-07:00) Mountain Time (US & Canada)",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Pacific Standard Time (Mexico)",
+    "Name": "(UTC-08:00) Baja California",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "UTC-08",
+    "Name": "(UTC-08:00) Coordinated Universal Time-08",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Pacific Standard Time",
+    "Name": "(UTC-08:00) Pacific Time (US & Canada)",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Alaskan Standard Time",
+    "Name": "(UTC-09:00) Alaska",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "UTC-09",
+    "Name": "(UTC-09:00) Coordinated Universal Time-09",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Marquesas Standard Time",
+    "Name": "(UTC-09:30) Marquesas Islands",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Aleutian Standard Time",
+    "Name": "(UTC-10:00) Aleutian Islands",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Hawaiian Standard Time",
+    "Name": "(UTC-10:00) Hawaii",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "UTC-11",
+    "Name": "(UTC-11:00) Coordinated Universal Time-11",
+    "IsLocal": false,
+    "Links": {}
+  },
+  {
+    "Id": "Dateline Standard Time",
+    "Name": "(UTC-12:00) International Date Line West",
+    "IsLocal": false,
+    "Links": {}
+  }
+]
