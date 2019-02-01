@@ -123,15 +123,12 @@ function New-ODURootExportFolder {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$MainExportRoot,
-    [Parameter(Mandatory = $true)]
+    [string]$MainExportRoot = $(throw "$($MyInvocation.MyCommand) : missing parameter MainExportRoot"),
     [ValidateNotNullOrEmpty()]
-    [string]$ServerName,
-    [Parameter(Mandatory = $true)]
+    [string]$ServerName = $(throw "$($MyInvocation.MyCommand) : missing parameter ServerName"),
     [ValidateNotNullOrEmpty()]
-    [datetime]$DateTime
+    [datetime]$DateTime = $(throw "$($MyInvocation.MyCommand) : missing parameter DateTime")
 
   )
   #endregion
@@ -171,7 +168,7 @@ function Out-ODUFileJson {
   [CmdletBinding()]
   param(
     [ValidateNotNullOrEmpty()]
-    [string]$FilePath = $(throw "$($MyInvocation.MyCommand) : missing parameter ParentFolder"),
+    [string]$FilePath = $(throw "$($MyInvocation.MyCommand) : missing parameter FilePath"),
     $Data
   )
   #endregion

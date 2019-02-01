@@ -122,6 +122,36 @@ Describe 'New folder for each Api Call' {
 #endregion
 
 
+#region New root export folder
+Describe 'New root export folder' {
+
+  It 'no parameters throws error' {
+    { New-ODURootExportFolder } | Should throw
+  }
+
+  It 'null parameters throws error' {
+    { $BadParam1 = $BadParam2 = $BadParam3 = $null; New-ODURootExportFolder -MainExportRoot $BadParam1 -ServerName $BadParam2 -DateTime $BadParam3 } | Should throw
+  }
+
+  It 'valid params folder is created' {
+    # root folder must exist
+    $MainExportRoot = Join-Path -Path $TestDrive -ChildPath MainExportRoot
+    $null = New-Item -Path $MainExportRoot -ItemType Directory
+    $ServerName = 'MyServer'
+    $Date = Get-Date
+
+    # folder that gets created is:
+    # $MainExportRoot\$ServerName\<datetimestamp>
+    $FolderToBeCreated = Join-Path -Path $MainExportRoot -ChildPath $ServerName
+    $FolderToBeCreated = Join-Path -Path $FolderToBeCreated -ChildPath ('{0:yyyyMMdd-HHmmss}' -f $Date)
+
+    $FolderCreated = New-ODURootExportFolder -MainExportRoot $MainExportRoot -ServerName $ServerName -DateTime $Date
+    # make sure match and actually created
+    $FolderCreated | Should Be $FolderToBeCreated
+    Test-Path -Path $FolderCreated -PathType Container | Should Be $true
+  }
+}
+#endregion
 
 
 #region Out file Json
