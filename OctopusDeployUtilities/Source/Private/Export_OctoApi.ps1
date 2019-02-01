@@ -161,9 +161,8 @@ function Test-ODUValidateRestApiTypeName {
   [CmdletBinding()]
   [OutputType([bool])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string[]]$TypeName
+    [string[]]$TypeName = $(throw "$($MyInvocation.MyCommand) : missing parameter TypeName")
   )
   process {
     $ValidTypeNames = Get-ODURestApiTypeName

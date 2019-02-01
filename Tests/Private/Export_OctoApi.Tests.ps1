@@ -64,6 +64,47 @@ Describe 'new export rest api call' {
     $Object.ExternalIdToResolvePropertyName | Should Be $ExternalIdToResolvePropertyName
     $Object.ItemIdOnlyReferencePropertyName | Should Be $ItemIdOnlyReferencePropertyName
   }
+}
+#endregion
 
+
+#region Test validate rest api type name
+Describe 'Test validate rest api type name' {
+
+  BeforeAll {
+
+    $GoodValue1 = 'GoodValue1'
+    $GoodValue2 = 'GoodValue2'
+    $GoodValue3 = 'GoodValue3'
+    function Get-ODURestApiTypeName { @($GoodValue1, $GoodValue2, $GoodValue3) }
+  }
+
+  It 'no parameter throws error' {
+    { Test-ODUValidateRestApiTypeName } | Should throw
+  }
+
+  It 'null parameter throws error' {
+    { $BadParam1 = $null; Test-ODUValidateRestApiTypeName -TypeName $BadParam1 } | Should throw
+  }
+
+  It 'single bad value returns false' {
+    Test-ODUValidateRestApiTypeName -TypeName 'BadValue' | Should Be $false
+  }
+
+  It 'multiple bad values returns false' {
+    Test-ODUValidateRestApiTypeName -TypeName @('BadValue1', 'BadValue2') | Should Be $false
+  }
+
+  It 'bad value with good values returns false' {
+    Test-ODUValidateRestApiTypeName -TypeName @('BadValue1', $GoodValue1, $GoodValue1) | Should Be $false
+  }
+
+  It 'single good value returns true' {
+    Test-ODUValidateRestApiTypeName -TypeName $GoodValue1 | Should Be $true
+  }
+
+  It 'multiple good values returns true' {
+    Test-ODUValidateRestApiTypeName -TypeName @($GoodValue1, $GoodValue2) | Should Be $true
+  }
 }
 #endregion
