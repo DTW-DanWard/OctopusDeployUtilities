@@ -19,9 +19,8 @@ function Update-ODUExportIncludedVariableSetsAddVariable {
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$Path
+    [string]$Path = $(throw "$($MyInvocation.MyCommand) : missing parameter Path")
   )
   #endregion
   process {
