@@ -109,7 +109,7 @@ Describe 'get filtered export rest api call' {
   Context 'unfiltered list has original items' {
 
     BeforeAll {
-      $AllRestApiCalls = Get-ODUStandardExportRestApiCall
+      $script:AllRestApiCalls = Get-ODUStandardExportRestApiCall
       function Get-ODUConfigTypeBlacklist { }
       function Get-ODUConfigTypeWhitelist { }
     }
