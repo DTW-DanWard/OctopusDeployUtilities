@@ -111,19 +111,15 @@ New-ODUExportRestApiCall 'Artifacts' '/api/artifacts' 'MultiFetch' 'Id'
 function New-ODUExportRestApiCall {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$RestName,
-    [Parameter(Mandatory = $true)]
+    [string]$RestName = $(throw "$($MyInvocation.MyCommand) : missing parameter RestName"),
     [ValidateNotNullOrEmpty()]
-    [string]$RestMethod,
-    [Parameter(Mandatory = $true)]
+    [string]$RestMethod = $(throw "$($MyInvocation.MyCommand) : missing parameter RestMethod"),
     [ValidateNotNullOrEmpty()]
     [ValidateScript( { $_ -in $ApiFetchTypeList})]
-    [string]$ApiFetchType,
-    [Parameter(Mandatory = $true)]
+    [string]$ApiFetchType = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiFetchType"),
     [ValidateNotNullOrEmpty()]
-    [string]$FileNamePropertyName,
+    [string]$FileNamePropertyName = $(throw "$($MyInvocation.MyCommand) : missing parameter FileNamePropertyName"),
     [string]$IdToNamePropertyName = 'Name',
     [string[]]$ExternalIdToResolvePropertyName,
     [string]$ItemIdOnlyReferencePropertyName
