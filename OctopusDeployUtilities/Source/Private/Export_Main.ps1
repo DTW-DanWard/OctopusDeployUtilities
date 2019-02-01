@@ -29,7 +29,7 @@ function Export-ODUOctopusDeployConfigMain {
     $OctopusServer = Get-ODUConfigOctopusServer
     $ServerName = $OctopusServer.Name
     $ServerUrl = $OctopusServer.Url
-    $ApiKey = Convert-ODUDecryptApiKey -ApiKey ($OctopusServer.ApiKey)
+    $ApiKey = Convert-ODUDecryptText -Text ($OctopusServer.ApiKey)
 
     # create root folder for this export instance
     $CurrentExportRootFolder = New-ODURootExportFolder -MainExportRoot (Get-ODUConfigExportRootFolder) -ServerName $ServerName -DateTime (Get-Date)

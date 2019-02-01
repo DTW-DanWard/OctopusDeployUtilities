@@ -104,7 +104,7 @@ Describe 'Configuration: Octopus Server initialized' {
 
     # encryption tests only run on Windows
     $script:Windows = $false
-    # encrypt key they test decrypt with Convert-ODUDecryptApiKey
+    # encrypt key they test decrypt with Convert-ODUDecryptText
     $OctoServerApiKeyEncrypted = $OctoServerApiKey
     if (($PSVersionTable.PSVersion.Major -le 5) -or ($true -eq $IsWindows)) {
      $script:Windows = $true
@@ -142,7 +142,7 @@ Describe 'Configuration: Octopus Server initialized' {
     Mock -CommandName 'Get-ODUConfig' -MockWith { $Config }
   }
 
-  function Convert-ODUDecryptApiKey { $OctoServerApiKey }
+  function Convert-ODUDecryptText { $OctoServerApiKey }
 
   function Test-ODUConfigFilePath { $true }
 
@@ -163,6 +163,6 @@ Describe 'Configuration: Octopus Server initialized' {
   It 'Get-ODUConfigOctopusServer.Url returns correct value' { (Get-ODUConfigOctopusServer).Url | Should Be $OctoServerUrl }
 
   $ItParams = @{ Skip = $(! $Windows) }
-  It @ItParams 'Convert-ODUDecryptApiKey returns correct value' { Convert-ODUDecryptApiKey ((Get-ODUConfigOctopusServer).ApiKey) | Should Be $OctoServerApiKey }
+  It @ItParams 'Convert-ODUDecryptText returns correct value' { Convert-ODUDecryptText -Text ((Get-ODUConfigOctopusServer).ApiKey) | Should Be $OctoServerApiKey }
 }
 #endregion

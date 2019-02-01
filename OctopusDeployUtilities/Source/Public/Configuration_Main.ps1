@@ -51,7 +51,7 @@ function Add-ODUConfigOctopusServer {
     $Name = ($Url -split '/')[2]
     #endregion
 
-    $ApiKeySecure = Convert-ODUEncryptApiKey -ApiKey $ApiKey
+    $ApiKeySecure = Convert-ODUEncryptText -Text $ApiKey
 
     # get newly created Octopus Server configuration using name, url and apikey
     $NewOctopusServer = Get-ODUConfigOctopusServerSection -Name $Name -Url $Url -ApiKey $ApiKeySecure
@@ -61,14 +61,14 @@ function Add-ODUConfigOctopusServer {
     if ($null -ne ($CurrentOctopusServer)) {
       Write-Verbose "$($MyInvocation.MyCommand) :: Octopus Deploy server settings already exist"
       # if settings are the same as before just return without making any changes
-      if ($Url -eq $CurrentOctopusServer.Url -and ($ApiKey -eq (Convert-ODUDecryptApiKey -ApiKey ($CurrentOctopusServer.ApiKey)))) {
+      if ($Url -eq $CurrentOctopusServer.Url -and ($ApiKey -eq (Convert-ODUDecryptText -Text ($CurrentOctopusServer.ApiKey)))) {
         Write-Verbose "$($MyInvocation.MyCommand) :: Settings same as before"
         return
       }
       Write-Host "These are your current settings: " -NoNewline
       Write-Host $CurrentOctopusServer.Url -ForegroundColor Cyan -NoNewline
       Write-Host " :: " -NoNewline
-      Write-Host "$((Convert-ODUDecryptApiKey -ApiKey ($CurrentOctopusServer.ApiKey)).Substring(0,8))..." -ForegroundColor Cyan
+      Write-Host "$((Convert-ODUDecryptText -Text ($CurrentOctopusServer.ApiKey)).Substring(0,8))..." -ForegroundColor Cyan
       $Prompt = Read-Host -Prompt "Overwrite these? (Yes/No)"
       if ($Prompt -ne 'yes') {
         Write-Verbose "$($MyInvocation.MyCommand) :: Do not overwrite settings"
