@@ -16,6 +16,49 @@ Describe "Re/loading: $SourceScript" { }
 
 
 
-# asdf tests to do
-# validation on valid names
+#region Function: New-ODUExportRestApiCall
+# Quickly create PSObject with values; simplified version used for testing. No validation of parameters, etc.
+function New-ODUExportRestApiCall {
+  param(
+    [string]$RestName,
+    [string]$RestMethod,
+    [string]$ApiFetchType,
+    [string]$FileNamePropertyName,
+    [string]$IdToNamePropertyName = 'Name',
+    [string[]]$ExternalIdToResolvePropertyName,
+    [string]$ItemIdOnlyReferencePropertyName
+  )
+  [PSCustomObject]@{
+    RestName                        = $RestName
+    RestMethod                      = $RestMethod
+    ApiFetchType                    = $ApiFetchType
+    FileNamePropertyName            = $FileNamePropertyName
+    IdToNamePropertyName            = $IdToNamePropertyName
+    ExternalIdToResolvePropertyName = $ExternalIdToResolvePropertyName
+    ItemIdOnlyReferencePropertyName = $ItemIdOnlyReferencePropertyName
+  }
+}
+#endregion
 
+
+#region get rest api type names
+Describe 'get rest api type names' {
+
+  It 'names are returned' {
+    (Get-ODURestApiTypeName).Count | Should BeGreaterThan 0
+  }
+
+  It 'known names are found in results' {
+    [string[]]$ApiTypeNames = Get-ODURestApiTypeName
+    $ApiTypeNames -contains 'Authentication' | Should Be $true
+    $ApiTypeNames -contains 'Projects' | Should Be $true
+    $ApiTypeNames -contains 'Teams' | Should Be $true
+  }
+
+  It 'unknown names are found in results' {
+    [string[]]$ApiTypeNames = Get-ODURestApiTypeName
+    $ApiTypeNames -contains 'JunkValue1' | Should Be $false
+    $ApiTypeNames -contains 'JunkValue2' | Should Be $false
+  }
+}
+#endregion
