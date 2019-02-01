@@ -26,16 +26,14 @@ function Format-ODUSanitizeFileName {
   )
   #endregion
   process {
-    if ($FileName.Trim() -eq '') { throw 'FileName value is only spaces' }
+    if ($FileName.Trim() -eq '') { throw "$($MyInvocation.MyCommand) : FileName value is only spaces" }
     # clean out characters non alpha-numeric, space, dash
     $FileName = $FileName -replace '[^a-z0-9 -]', ''
     # replace any multiple spaces with a single space
     $FileName = $FileName -replace ' +', ' '
-    # and trim spaces as well
-    $FileName = $FileName.Trim()
-    # if resulting value is empty, throw error
-    if ($FileName.Length -eq 0) { throw "$($MyInvocation.MyCommand) : Sanitized version of $FileName has no remaining characters" }
-    $FileName
+    if ($null -eq $FileName -or $FileName.Trim() -eq '') { throw "$($MyInvocation.MyCommand) : after removing bad characters, nothing remains" }
+    # trim spaces and return
+    $FileName.Trim()
   }
 }
 #endregion
@@ -58,9 +56,8 @@ function New-ODUExportItemFolder {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$FolderPath
+    [string]$FolderPath = $(throw "$($MyInvocation.MyCommand) : missing parameter FolderPath")
   )
   #endregion
   process {

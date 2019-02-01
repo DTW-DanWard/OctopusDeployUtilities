@@ -21,11 +21,15 @@ Describe "Re/loading: $SourceScript" { }
 # Value trimmed as well
 Describe 'Format sanitize file name' {
 
-  It 'throws error if no file name' {
+  It 'no parameter throws error' {
     { Format-ODUSanitizeFileName } | Should throw
   }
 
-  It 'throws error if empty file name' {
+  It 'null parameter throws error' {
+    { $BadValue = $null; Format-ODUSanitizeFileName -FileName $BadValue } | Should throw
+  }
+
+  It 'empty file name throws error' {
     { Format-ODUSanitizeFileName -FileName '   ' } | Should throw
   }
 
@@ -47,6 +51,42 @@ Describe 'Format sanitize file name' {
 
   It 'prefix/suffix spaces are trimmed' {
     Format-ODUSanitizeFileName -FileName '  A1 - B2 - C3  ' | Should Be 'A1 - B2 - C3'
+  }
+}
+#endregion
+
+
+#region New export item folder
+Describe 'New export item folder' {
+
+  It 'no parameter throws error' {
+    { New-ODUExportItemFolder } | Should throw
+  }
+
+  It 'null parameter throws error' {
+    { $BadPath = $null; New-ODUExportItemFolder -FolderPath $BadPath } | Should throw
+  }
+
+  It 'path that does not exist will be created' {
+    $NewFolder = Join-Path -Path $TestDrive -ChildPath FolderNotFound1
+    Test-Path -Path $NewFolder | Should Be $false
+    New-ODUExportItemFolder -FolderPath $NewFolder
+    Test-Path -Path $NewFolder | Should Be $true
+  }
+
+  It 'path that does not exist will be created and will be a folder' {
+    $NewFolder = Join-Path -Path $TestDrive -ChildPath FolderNotFound2
+    Test-Path -Path $NewFolder | Should Be $false
+    New-ODUExportItemFolder -FolderPath $NewFolder
+    Test-Path -Path $NewFolder -PathType Container | Should Be $true
+  }
+
+  It 'path that already exists will be ignored, still exists' {
+    $NewFolder = Join-Path -Path $TestDrive -ChildPath FolderNotFound1
+    # folder created in earlier test
+    Test-Path -Path $NewFolder | Should Be $true
+    New-ODUExportItemFolder -FolderPath $NewFolder
+    Test-Path -Path $NewFolder -PathType Container | Should Be $true
   }
 }
 #endregion
