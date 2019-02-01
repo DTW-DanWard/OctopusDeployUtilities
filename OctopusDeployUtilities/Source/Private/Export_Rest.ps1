@@ -70,12 +70,10 @@ function Test-ODUOctopusServerCredential {
   [CmdletBinding()]
   [OutputType([string])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$ServerDomainName,
-    [Parameter(Mandatory = $true)]
+    [string]$ServerDomainName = $(throw "$($MyInvocation.MyCommand) : missing parameter RestName"),
     [ValidateNotNullOrEmpty()]
-    [string]$ApiKey
+    [string]$ApiKey = $(throw "$($MyInvocation.MyCommand) : missing parameter RestName")
   )
   #endregion
   process {
