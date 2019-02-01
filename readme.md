@@ -1,5 +1,5 @@
 
-[![PS Gallery](https://img.shields.io/badge/install-PS%20Gallery-blue.svg)](https://www.powershellgallery.com/packages/OctopusDeployUtilities)  [![Build status](https://ci.appveyor.com/api/projects/status/ql47p2y1relp1dng/branch/master?svg=true)](https://ci.appveyor.com/project/DTW-DanWard/octopusdeployutilities/branch/master)  ![Test Coverage](https://img.shields.io/badge/coverage-31%25-red.svg?maxAge=60)
+[![PS Gallery](https://img.shields.io/badge/install-PS%20Gallery-blue.svg)](https://www.powershellgallery.com/packages/OctopusDeployUtilities)  [![Build status](https://ci.appveyor.com/api/projects/status/ql47p2y1relp1dng/branch/master?svg=true)](https://ci.appveyor.com/project/DTW-DanWard/octopusdeployutilities/branch/master)  ![Test Coverage](https://img.shields.io/badge/coverage-37%25-red.svg?maxAge=60)
 
 
 # Octopus Deploy Utilities
