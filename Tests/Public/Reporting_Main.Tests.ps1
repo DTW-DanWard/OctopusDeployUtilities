@@ -16,6 +16,9 @@ Describe "Re/loading: $SourceScript" { }
 
 
 
+# root folder containing various exports
+$SourceDataRootFolder = (Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath TestData)
+
 #region Get export latest path
 Describe 'Get export latest path' {
 
@@ -241,5 +244,40 @@ Describe 'Get export older path' {
       Get-ODUExportOlderPath -Hours 1 | Should Be $ExportFolder1
     }
   }
+}
+#endregion
+
+
+#region Read export from files
+Describe 'Read export from files' {
+
+  It 'path does not exist throws error' {
+    { Read-ODUExportFromFile -Path (Join-Path -Path $TestDrive -ChildPath FolderNotFound) } | Should throw
+  }
+
+  It 'path is a file throws error' {
+    $FilePath = Join-Path -Path $TestDrive -ChildPath AFile.txt
+    "asdf" > $FilePath
+    { Read-ODUExportFromFile -Path $FilePath } | Should throw
+  }
+
+  It 'no config returns null' {
+    function Confirm-ODUConfig { $false }
+    Read-ODUExportFromFile | Should BeNullOrEmpty
+  }
+
+  Context 'Export folder does not look like export (missing expected folders) throws error' {
+
+    It 'Export folder does not look like export (missing expected folders) throws error' {
+      function Confirm-ODUConfig { $true }
+      $TestExportRootPath = Join-Path -Path $TestDrive -ChildPath Export
+      $null = New-Item -Path $TestExportRootPath -ItemType Directory
+      'Junk1', 'Junk2', 'Junk13' | ForEach-Object {
+        $null = New-Item -Path (Join-Path -Path $TestDrive -ChildPath $_) -ItemType Directory
+      }
+      { Read-ExportFromFile } | Should throw
+    }
+  }
+  # asdf not complete - need testing for actual Read-ODUExportFromFile work, RSJobs a bit complicated to mock...?
 }
 #endregion
