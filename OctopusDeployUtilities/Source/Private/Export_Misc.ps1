@@ -23,12 +23,10 @@ function Get-ODUExportItemFileName {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [object]$ApiCall,
-    [Parameter(Mandatory = $true)]
+    [object]$ApiCall = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiCall"),
     [ValidateNotNullOrEmpty()]
-    [object]$ExportItem
+    [object]$ExportItem = $(throw "$($MyInvocation.MyCommand) : missing parameter ExportItem")
   )
   #endregion
   process {
@@ -72,9 +70,8 @@ function Get-ODUFolderNameForApiCall {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [object]$ApiCall
+    [object]$ApiCall = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiCall")
   )
   #endregion
   process {
@@ -110,9 +107,8 @@ function Initialize-ODUFetchTypeItemIdOnlyIdsLookup {
   [CmdletBinding()]
   [OutputType([hashtable])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [object[]]$ApiCalls
+    [object[]]$ApiCalls = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiCalls")
   )
   #endregion
   process {
@@ -146,12 +142,10 @@ function Remove-ODUFilterPropertiesFromExportItem {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$RestName,
-    [Parameter(Mandatory = $true)]
+    [string]$RestName = $(throw "$($MyInvocation.MyCommand) : missing parameter RestName"),
     [ValidateNotNullOrEmpty()]
-    [object]$ExportItem
+    [object]$ExportItem = $(throw "$($MyInvocation.MyCommand) : missing parameter ExportItem")
   )
   #endregion
   process {
