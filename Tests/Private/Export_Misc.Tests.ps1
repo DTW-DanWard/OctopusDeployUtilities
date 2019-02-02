@@ -59,3 +59,30 @@ Describe 'Get export item file name' {
   }
 }
 #endregion
+
+
+#region Get folder name for Api call
+Describe 'Get folder name for Api call' {
+
+  It 'no parameter throws error' {
+    { Get-ODUFolderNameForApiCall } | Should throw
+  }
+
+  It 'null parameter throws error' {
+    { $BadParam1 = $null; Get-ODUFolderNameForApiCall -ApiCall $BadParam1 } | Should throw
+  }
+
+  It 'simple api type returns Miscellaneous folder name' {
+    $Miscellaneous = 'Miscellaneous'
+    $RestName = 'MyRestName'
+    $ApiCall = [PSCustomObject]@{ ApiFetchType = $ApiFetchType_Simple; RestName = $RestName }
+    Get-ODUFolderNameForApiCall -ApiCall $ApiCall | Should Be $Miscellaneous
+  }
+
+  It 'non-simple api type returns RestName for folder name' {
+    $RestName = 'MyRestName'
+    $ApiCall = [PSCustomObject]@{ ApiFetchType = $ApiFetchType_MultiFetch; RestName = $RestName }
+    Get-ODUFolderNameForApiCall -ApiCall $ApiCall | Should Be $RestName
+  }
+}
+#endregion

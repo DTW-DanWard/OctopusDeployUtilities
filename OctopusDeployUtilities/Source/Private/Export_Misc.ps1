@@ -75,7 +75,6 @@ function Get-ODUFolderNameForApiCall {
   )
   #endregion
   process {
-
     $FolderName = $null
     if ($ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
       $FolderName = 'Miscellaneous'
