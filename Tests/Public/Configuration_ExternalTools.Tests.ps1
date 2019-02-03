@@ -66,3 +66,77 @@ Describe 'Configuration: get external tools - initialized' {
   It 'Get-ODUConfigTextEditor returns correct value' { Get-ODUConfigTextEditor | Should Be $TextEditorPath }
 }
 #endregion
+
+
+#region Set config diff viewer
+Describe 'set config diff viewer' {
+
+  It 'no parameter throws error' {
+    { Set-ODUConfigDiffViewer } | Should throw
+  }
+
+  It 'null parameter throws error' {
+    { $BadParam1 = $null; Set-ODUConfigDiffViewer -Path $BadParam1 } | Should throw
+  }
+
+  It 'no config returns null' {
+    function Confirm-ODUConfig { $false }
+    Set-ODUConfigDiffViewer -Path (Get-Random -Minimum 1 -Maximum 9) | Should BeNullOrEmpty
+  }
+
+  It 'invalid path param throws error' {
+    function Confirm-ODUConfig { $true }
+    { Set-ODUConfigDiffViewer -Path (Join-Path -Path $TestDrive -ChildPath NotFound) } | Should throw
+  }
+
+  It 'valid path works' {
+    function Confirm-ODUConfig { $true }
+    # does not have to be an exe, just a valid file path, so create a text file
+    $ValidPath = Join-Path -Path $TestDrive -ChildPath AFile.txt
+    "asdf" > $ValidPath
+    function Get-ODUConfig { @{ ExternalTools = @{ DiffViewerPath = $ValidPath } } }
+    function Save-ODUConfig { param([hashtable]$Config) }
+    Mock 'Save-ODUConfig'
+    $Config = Get-ODUConfig
+    Set-ODUConfigDiffViewer -Path $ValidPath
+    Assert-MockCalled -CommandName 'Save-ODUConfig' -ParameterFilter { $Config.ExternalTools.DiffViewerPath -eq $ValidPath }
+  }
+}
+#endregion
+
+
+#region Set config text editor
+Describe 'set config text editor' {
+
+  It 'no parameter throws error' {
+    { Set-ODUConfigTextEditor } | Should throw
+  }
+
+  It 'null parameter throws error' {
+    { $BadParam1 = $null; Set-ODUConfigTextEditor -Path $BadParam1 } | Should throw
+  }
+
+  It 'no config returns null' {
+    function Confirm-ODUConfig { $false }
+    Set-ODUConfigTextEditor -Path (Get-Random -Minimum 1 -Maximum 9) | Should BeNullOrEmpty
+  }
+
+  It 'invalid path param throws error' {
+    function Confirm-ODUConfig { $true }
+    { Set-ODUConfigTextEditor -Path (Join-Path -Path $TestDrive -ChildPath NotFound) } | Should throw
+  }
+
+  It 'valid path works' {
+    function Confirm-ODUConfig { $true }
+    # does not have to be an exe, just a valid file path, so create a text file
+    $ValidPath = Join-Path -Path $TestDrive -ChildPath AFile.txt
+    "asdf" > $ValidPath
+    function Get-ODUConfig { @{ ExternalTools = @{ DiffViewerPath = $ValidPath } } }
+    function Save-ODUConfig { param([hashtable]$Config) }
+    Mock 'Save-ODUConfig'
+    $Config = Get-ODUConfig
+    Set-ODUConfigTextEditor -Path $ValidPath
+    Assert-MockCalled -CommandName 'Save-ODUConfig' -ParameterFilter { $Config.ExternalTools.DiffViewerPath -eq $ValidPath }
+  }
+}
+#endregion

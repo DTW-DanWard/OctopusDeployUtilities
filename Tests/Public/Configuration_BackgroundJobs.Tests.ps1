@@ -70,7 +70,7 @@ Describe 'set config background jobs max' {
     function Confirm-ODUConfig { $true }
     # validation on set method is int between 0 - 9
     function Get-ODUConfig { @{ BackgroundJobsMax = (Get-Random -Minimum 1 -Maximum 9) } }
-    function Save-ODUConfig { param([hashtable]$Config)  }
+    function Save-ODUConfig { param([hashtable]$Config) }
     Mock 'Save-ODUConfig'
     $Config = Get-ODUConfig
     $Value = Get-Random -Minimum 1 -Maximum 9
