@@ -114,3 +114,95 @@ Describe 'get config type whitelist' {
   }
 }
 #endregion
+
+
+#region Set config type blacklist
+Describe 'set config type blacklist' {
+
+  It 'no config returns null' {
+    function Confirm-ODUConfig { $false }
+    Set-ODUConfigTypeBlacklist | Should BeNullOrEmpty
+  }
+
+  It 'invalid type name param throws error' {
+    function Confirm-ODUConfig { $true }
+    function Find-ODUInvalidRestApiTypeName { throw 'Not a valid type name' }
+    { Set-ODUConfigTypeBlacklist -TypeName @('Not','Valid') } | Should throw
+  }
+
+  It 'Octo server not configured yet returns null' {
+    function Confirm-ODUConfig { $true }
+    function Find-ODUInvalidRestApiTypeName { $null }
+    function Get-ODUConfigOctopusServer { $null }
+    { Set-ODUConfigTypeBlacklist -TypeName @('Not','Valid') } | Should throw
+  }
+
+  It 'valid values works' {
+    function Confirm-ODUConfig { $true }
+    function Get-ODUConfigOctopusServer { 'something not null' }
+    function Find-ODUInvalidRestApiTypeName { $null }
+    $Values = @('Val1','Val2')
+    function Get-ODUConfig {
+      $OctopusServer = @{ TypeBlacklist = @(); TypeWhitelist = @();  }
+      [object[]]$OctopusServers = @($OctopusServer)
+      @{ OctopusServers = $OctopusServers }
+    }
+    function Save-ODUConfig { param([hashtable]$Config) }
+    Mock 'Save-ODUConfig'
+    $Config = Get-ODUConfig
+
+    Set-ODUConfigTypeBlacklist -TypeName $Values
+
+    # blacklist should be set
+    Assert-MockCalled -CommandName 'Save-ODUConfig' -ParameterFilter { $Config.OctopusServers[0].TypeBlacklist.Count -eq $Values.Count }
+    # whitelist should be reset
+    Assert-MockCalled -CommandName 'Save-ODUConfig' -ParameterFilter { $Config.OctopusServers[0].TypeWhitelist.Count -eq 0 }
+  }
+}
+#endregion
+
+
+#region Set config type whitelist
+Describe 'set config type whitelist' {
+
+  It 'no config returns null' {
+    function Confirm-ODUConfig { $false }
+    Set-ODUConfigTypeWhitelist | Should BeNullOrEmpty
+  }
+
+  It 'invalid type name param throws error' {
+    function Confirm-ODUConfig { $true }
+    function Find-ODUInvalidRestApiTypeName { throw 'Not a valid type name' }
+    { Set-ODUConfigTypeWhitelist -TypeName @('Not','Valid') } | Should throw
+  }
+
+  It 'Octo server not configured yet returns null' {
+    function Confirm-ODUConfig { $true }
+    function Find-ODUInvalidRestApiTypeName { $null }
+    function Get-ODUConfigOctopusServer { $null }
+    { Set-ODUConfigTypeWhitelist -TypeName @('Not','Valid') } | Should throw
+  }
+
+  It 'valid values works' {
+    function Confirm-ODUConfig { $true }
+    function Get-ODUConfigOctopusServer { 'something not null' }
+    function Find-ODUInvalidRestApiTypeName { $null }
+    $Values = @('Val1','Val2')
+    function Get-ODUConfig {
+      $OctopusServer = @{ TypeBlacklist = @(); TypeWhitelist = @();  }
+      [object[]]$OctopusServers = @($OctopusServer)
+      @{ OctopusServers = $OctopusServers }
+    }
+    function Save-ODUConfig { param([hashtable]$Config) }
+    Mock 'Save-ODUConfig'
+    $Config = Get-ODUConfig
+
+    Set-ODUConfigTypeWhitelist -TypeName $Values
+
+    # whitelist should be set
+    Assert-MockCalled -CommandName 'Save-ODUConfig' -ParameterFilter { $Config.OctopusServers[0].TypeWhitelist.Count -eq $Values.Count }
+    # blacklist should be reset
+    Assert-MockCalled -CommandName 'Save-ODUConfig' -ParameterFilter { $Config.OctopusServers[0].TypeBlacklist.Count -eq 0 }
+  }
+}
+#endregion
