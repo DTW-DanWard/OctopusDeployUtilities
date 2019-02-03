@@ -69,9 +69,8 @@ https://github.com/DTW-DanWard/OctopusDeployUtilities
 function Set-ODUConfigDiffViewer {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$Path
+    [string]$Path = $(throw "$($MyInvocation.MyCommand) : missing parameter Path")
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
@@ -108,9 +107,8 @@ https://github.com/DTW-DanWard/OctopusDeployUtilities
 function Set-ODUConfigTextEditor {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$Path
+    [string]$Path = $(throw "$($MyInvocation.MyCommand) : missing parameter Path")
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }

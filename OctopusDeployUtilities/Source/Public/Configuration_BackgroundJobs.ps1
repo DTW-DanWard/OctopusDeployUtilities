@@ -50,9 +50,8 @@ https://github.com/DTW-DanWard/OctopusDeployUtilities
 function Set-ODUConfigBackgroundJobsMax {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateRange(1, 9)]
-    [int]$BackgroundJobsMax
+    [int]$BackgroundJobsMax = $(throw "$($MyInvocation.MyCommand) : missing parameter BackgroundJobsMax")
   )
   process {
     if ($false -eq (Confirm-ODUConfig)) { return }
