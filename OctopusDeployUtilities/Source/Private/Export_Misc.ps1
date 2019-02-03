@@ -23,12 +23,10 @@ function Get-ODUExportItemFileName {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [object]$ApiCall,
-    [Parameter(Mandatory = $true)]
+    [object]$ApiCall = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiCall"),
     [ValidateNotNullOrEmpty()]
-    [object]$ExportItem
+    [object]$ExportItem = $(throw "$($MyInvocation.MyCommand) : missing parameter ExportItem")
   )
   #endregion
   process {
@@ -72,13 +70,11 @@ function Get-ODUFolderNameForApiCall {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [object]$ApiCall
+    [object]$ApiCall = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiCall")
   )
   #endregion
   process {
-
     $FolderName = $null
     if ($ApiCall.ApiFetchType -eq $ApiFetchType_Simple) {
       $FolderName = 'Miscellaneous'
@@ -110,9 +106,8 @@ function Initialize-ODUFetchTypeItemIdOnlyIdsLookup {
   [CmdletBinding()]
   [OutputType([hashtable])]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [object[]]$ApiCalls
+    [object[]]$ApiCalls = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiCalls")
   )
   #endregion
   process {
@@ -146,12 +141,10 @@ function Remove-ODUFilterPropertiesFromExportItem {
   #region Function parameters
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$RestName,
-    [Parameter(Mandatory = $true)]
+    [string]$RestName = $(throw "$($MyInvocation.MyCommand) : missing parameter RestName"),
     [ValidateNotNullOrEmpty()]
-    [object]$ExportItem
+    [object]$ExportItem = $(throw "$($MyInvocation.MyCommand) : missing parameter ExportItem")
   )
   #endregion
   process {
@@ -178,7 +171,7 @@ function Remove-ODUFilterPropertiesFromExportItem {
       $FilteredExportItem = New-Object -TypeName PSObject
       # don't use Get-Member to get properties, which sorts property names and loses original order, use this
       $ExportItem.PSObject.Properties.Name | ForEach-Object {
-        if ($WhiteList -contains $_ -or $BlackList -notcontains $_) {
+        if (($null -ne $WhiteList -and $WhiteList -contains $_) -or ($null -ne $BlackList -and $BlackList -notcontains $_)) {
           Add-Member -InputObject $FilteredExportItem -MemberType NoteProperty -Name $_ -Value ($ExportItem.$_)
         }
       }
