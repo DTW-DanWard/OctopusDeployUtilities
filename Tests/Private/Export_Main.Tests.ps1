@@ -32,7 +32,7 @@ Describe 'new export job info' {
     function Invoke-ODURestMethod { [PSCustomObject]@{ } }
 
     $ApiCall = [PSCustomObject]@{ RestName = 'Authentication'; RestMethod = '/api/authentication'; ApiFetchType = $ApiFetchType_Simple; FileNamePropertyName = 'NOT_USED' }
-    (New-ODUExportJobInfo -ServerBaseUrl 'http://SomeServerUrl.com' -ApiKey 'API-1234567890' -ApiCall $ApiCall -ParentFolder $TestDrive).Count | Should Be 1
+    ([object[]](New-ODUExportJobInfo -ServerBaseUrl 'http://SomeServerUrl.com' -ApiKey 'API-1234567890' -ApiCall $ApiCall -ParentFolder $TestDrive)).Count | Should Be 1
   }
 
   It 'new export job info - type multi - creates 0 job info items' {
@@ -49,7 +49,7 @@ Describe 'new export job info' {
     function Invoke-ODURestMethod { [PSCustomObject]@{ TotalResults = 10 } }
 
     $ApiCall = [PSCustomObject]@{ RestName = 'Projects'; RestMethod = '/api/projects'; ApiFetchType = $ApiFetchType_MultiFetch; FileNamePropertyName = 'Name' }
-    (New-ODUExportJobInfo -ServerBaseUrl 'http://SomeServerUrl.com' -ApiKey 'API-1234567890' -ApiCall $ApiCall -ParentFolder $TestDrive).Count | Should Be 1
+    ([object[]](New-ODUExportJobInfo -ServerBaseUrl 'http://SomeServerUrl.com' -ApiKey 'API-1234567890' -ApiCall $ApiCall -ParentFolder $TestDrive)).Count | Should Be 1
   }
 
   It 'new export job info - type multi - creates multiple job info items' {
@@ -66,7 +66,7 @@ Describe 'new export job info' {
     function Invoke-ODURestMethod { $null }
 
     $ApiCall = [PSCustomObject]@{ RestName = 'Projects'; RestMethod = '/api/projects'; ApiFetchType = $ApiFetchType_MultiFetch; FileNamePropertyName = 'Name' }
-    (New-ODUExportJobInfo -ServerBaseUrl 'http://SomeServerUrl.com' -ApiKey 'API-1234567890' -ApiCall $ApiCall -ParentFolder $TestDrive).Count | Should Be 1
+    ([object[]](New-ODUExportJobInfo -ServerBaseUrl 'http://SomeServerUrl.com' -ApiKey 'API-1234567890' -ApiCall $ApiCall -ParentFolder $TestDrive)).Count | Should Be 1
   }
 
   It 'new export job info - type item id only - no results from Api, one job info item' {
