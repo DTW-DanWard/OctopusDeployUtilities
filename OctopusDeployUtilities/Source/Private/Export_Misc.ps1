@@ -171,7 +171,7 @@ function Remove-ODUFilterPropertiesFromExportItem {
       $FilteredExportItem = New-Object -TypeName PSObject
       # don't use Get-Member to get properties, which sorts property names and loses original order, use this
       $ExportItem.PSObject.Properties.Name | ForEach-Object {
-        if ($WhiteList -contains $_ -or $BlackList -notcontains $_) {
+        if (($null -ne $WhiteList -and $WhiteList -contains $_) -or ($null -ne $BlackList -and $BlackList -notcontains $_)) {
           Add-Member -InputObject $FilteredExportItem -MemberType NoteProperty -Name $_ -Value ($ExportItem.$_)
         }
       }
