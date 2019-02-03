@@ -199,18 +199,14 @@ New-ODUExportJobInfo
 function New-ODUExportJobInfo {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string]$ServerBaseUrl,
-    [Parameter(Mandatory = $true)]
+    [string]$ServerBaseUrl = $(throw "$($MyInvocation.MyCommand) : missing parameter ServerBaseUrl"),
     [ValidateNotNullOrEmpty()]
-    [string]$ApiKey,
-    [Parameter(Mandatory = $true)]
+    [string]$ApiKey = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiKey"),
     [ValidateNotNullOrEmpty()]
-    [object]$ApiCall,
-    [Parameter(Mandatory = $true)]
+    [object]$ApiCall = $(throw "$($MyInvocation.MyCommand) : missing parameter ApiCall"),
     [ValidateNotNullOrEmpty()]
-    [string]$ParentFolder,
+    [string]$ParentFolder = $(throw "$($MyInvocation.MyCommand) : missing parameter ParentFolder"),
     [string[]]$ItemIdOnlyIds
   )
   process {
