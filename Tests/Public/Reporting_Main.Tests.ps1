@@ -16,9 +16,6 @@ Describe "Re/loading: $SourceScript" { }
 
 
 
-# root folder containing various exports
-$SourceDataRootFolder = (Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath TestData)
-
 #region Get export latest path
 Describe 'Get export latest path' {
 
