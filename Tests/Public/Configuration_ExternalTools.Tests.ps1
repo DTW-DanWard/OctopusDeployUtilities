@@ -14,9 +14,24 @@ Describe "Re/loading: $SourceScript" { }
 . $SourceScript
 #endregion
 
+#region Configuration external tools initialized
+Describe 'Configuration: get external tools - not initialized' {
+
+  BeforeAll {
+    function Confirm-ODUConfig { $false }
+  }
+
+  It 'no config returns null' {
+    function Confirm-ODUConfig { $false }
+    Get-ODUConfigDiffViewer | Should BeNullOrEmpty
+    Get-ODUConfigTextEditor | Should BeNullOrEmpty
+  }
+}
+#endregion
+
 
 #region Configuration external tools initialized
-Describe 'Configuration: external tools initialized' {
+Describe 'Configuration: get external tools - initialized' {
 
   BeforeAll {
     # ensure config file DOES exist
