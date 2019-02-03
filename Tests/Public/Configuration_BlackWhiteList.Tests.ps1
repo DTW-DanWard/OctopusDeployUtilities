@@ -64,3 +64,53 @@ Describe 'get config property whitelist' {
   }
 }
 #endregion
+
+
+#region Get config type blacklist
+Describe 'get config type blacklist' {
+
+  It 'no config returns null' {
+    function Confirm-ODUConfig { $false }
+    Get-ODUConfigTypeBlacklist | Should BeNullOrEmpty
+  }
+
+  It 'Octo server not configured yet returns null' {
+    function Confirm-ODUConfig { $true }
+    function Get-ODUConfigOctopusServer { $null }
+    Get-ODUConfigTypeBlacklist | Should BeNullOrEmpty
+  }
+
+
+  It 'Octo server configured returns values' {
+    function Confirm-ODUConfig { $true }
+    $Values = @('Val1','Val2')
+    function Get-ODUConfigOctopusServer { @{ TypeBlacklist = $Values } }
+    Compare-Object -ReferenceObject (Get-ODUConfigTypeBlacklist) -DifferenceObject $Values | Should BeNullOrEmpty
+  }
+}
+#endregion
+
+
+#region Get config type whitelist
+Describe 'get config type whitelist' {
+
+  It 'no config returns null' {
+    function Confirm-ODUConfig { $false }
+    Get-ODUConfigTypeWhitelist | Should BeNullOrEmpty
+  }
+
+  It 'Octo server not configured yet returns null' {
+    function Confirm-ODUConfig { $true }
+    function Get-ODUConfigOctopusServer { $null }
+    Get-ODUConfigTypeWhitelist | Should BeNullOrEmpty
+  }
+
+
+  It 'Octo server configured returns values' {
+    function Confirm-ODUConfig { $true }
+    $Values = @('Val1','Val2')
+    function Get-ODUConfigOctopusServer { @{ TypeWhitelist = $Values } }
+    Compare-Object -ReferenceObject (Get-ODUConfigTypeWhitelist) -DifferenceObject $Values | Should BeNullOrEmpty
+  }
+}
+#endregion
