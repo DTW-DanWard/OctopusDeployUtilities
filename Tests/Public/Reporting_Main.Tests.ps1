@@ -73,6 +73,13 @@ Describe 'Get export latest path' {
 #region Get export older path
 Describe 'Get export older path' {
 
+  BeforeAll {
+    $script:SkipTest = @{}
+    if (($PSVersionTable.PSVersion.Major -ge 6) -and ($false -eq $IsWindows)) {
+      $script:SkipTest = @{ Skip = $true}
+    }
+  }
+
   It 'non-number throws error' {
     { Get-ODUExportOlderPath -Hours 'W' } | Should throw
   }
@@ -206,7 +213,7 @@ Describe 'Get export older path' {
 
   Context 'multiple export folder exists, return path of older folder' {
 
-    It 'multiple export folder exists, return path of older folder' {
+    It @SkipTest 'multiple export folder exists, return path of older folder' {
       $ExportRootFolder = Join-Path -Path $TestDrive -ChildPath 'ExportRoot'
       $null = New-Item -Path $ExportRootFolder -ItemType Directory
       $ServerRootFolder = Join-Path -Path $ExportRootFolder -ChildPath 'ServerName'

@@ -1,4 +1,5 @@
 param(
+  [ValidateSet('Analyze','Build','Default','Deploy','Init','Test','Test_Ubuntu')]
   [string]$Task = 'Default'
 )
 
