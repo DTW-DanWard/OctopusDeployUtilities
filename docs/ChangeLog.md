@@ -11,3 +11,4 @@ Removed registration server url validation to support non-root installations.
 
 ## v1.1.3
 Minor bug fixes and improved error handling.
+
