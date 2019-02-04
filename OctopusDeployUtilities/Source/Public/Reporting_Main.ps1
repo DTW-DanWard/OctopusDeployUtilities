@@ -89,7 +89,7 @@ function Get-ODUExportOlderPath {
       $OlderThanTime = $Folders[1].CreationTime.AddHours(-$Hours)
       # filter down folders
       [object[]]$Folders = $Folders | Where-Object { $_.CreationTime -lt $OlderThanTime } | Select-Object -First 1
-      if ($Folders.Count -eq 0) {
+      if ($null -eq $Folders -or $Folders.Count -eq 0) {
         throw "No export folder found older than $Hours hours (or, more specifically, older than $OlderThanTime"
       } else {
         $Folders[0].FullName
