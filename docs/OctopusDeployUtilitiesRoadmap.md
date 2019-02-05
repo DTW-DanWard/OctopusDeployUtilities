@@ -3,18 +3,29 @@
 A Brief Road Map of Upcoming Enhancements
 
 
-## Purge Duplicate Exports
-
-Once you automate exports they can pile up.  If no changes exist between two exports the second export is unnecessary.  Add function to programmatically compare/delete identical exports.
-
 ## Add Custom Types to Objects and Provide Console Output Formatting
 
 Add type names (ODU.<FolderName>, etc.) to export in oduobject processing.  Will allow for better filtering/processing and console output (PS1XML) formatting.
 
 
+## Filter out APIs not Available on Server
+
+Octopus Deploy Utilities attempts to download data from all APIs in an internal list.  As new APIs are added - or as users continue to run older versions of Octopus Deploy - it will become necessary to confirm API availability on the current server before attempting use.
+
+
+## Identify Currently Running exports, Prevent New Exports from Launching
+
+Exporting data from an Octopus Deploy server might take some time (a few minutes or more).  Prevent accidental concurrent exports by identifying currently running exports.
+
+
 ## Compare Releases
 
-Function to export/compare two releases for a particular project to identify differences.
+Functionality to export/compare two releases for a particular project to identify differences.
+
+
+## Purge Duplicate Exports
+
+Once you automate exports they can pile up.  If no changes exist between two exports the second export is unnecessary.  Add function to programmatically compare/delete identical exports.
 
 
 ## Support for Multiple Server Configurations in Config System
