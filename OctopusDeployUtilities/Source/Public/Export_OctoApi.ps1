@@ -38,7 +38,6 @@ blacklist and whitelist
 .EXAMPLE
 Get-ODURestApiTypeName
 Authentication
-BuiltInRepository
 ExternalSecurityGroups
 FeaturesConfiguration
 ...
@@ -77,7 +76,6 @@ function Get-ODUStandardExportRestApiCall {
   process {
     # Simple REST API calls
     New-ODUExportRestApiCall 'Authentication' '/api/authentication' 'Simple' 'NOT_USED'
-    New-ODUExportRestApiCall 'BuiltInRepository' '/api/repository/configuration' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'ExternalSecurityGroups' '/api/externalsecuritygroupproviders' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'FeaturesConfiguration' '/api/featuresconfiguration' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'LetsEncrypt' '/api/letsencryptconfiguration' 'Simple' 'NOT_USED'
@@ -89,7 +87,6 @@ function Get-ODUStandardExportRestApiCall {
     New-ODUExportRestApiCall 'ServerConfiguration' '/api/serverconfiguration' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'ServerStatus' '/api/serverstatus' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'SmtpConfiguration' '/api/smtpconfiguration' 'Simple' 'NOT_USED'
-    New-ODUExportRestApiCall 'ServerStatus-Nuget' '/api/serverstatus/nuget' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'ServerStatus-SystemInfo' '/api/serverstatus/system-info' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'ServerStatus-Timezones' '/api/serverstatus/timezones' 'Simple' 'NOT_USED'
     New-ODUExportRestApiCall 'UpgradeConfiguration' '/api/upgradeconfiguration' 'Simple' 'NOT_USED'
@@ -123,7 +120,7 @@ function Get-ODUStandardExportRestApiCall {
     New-ODUExportRestApiCall 'Subscriptions' '/api/subscriptions' 'MultiFetch' 'Name'
     New-ODUExportRestApiCall 'TagSets' '/api/tagsets' 'MultiFetch' 'Name'
     New-ODUExportRestApiCall 'Tasks' '/api/tasks' 'MultiFetch' 'Id'
-    New-ODUExportRestApiCall 'Teams' '/api/teams' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('EnvironmentIds', 'MemberUserIds', 'ProjectGroupIds', 'ProjectIds', 'TenantIds', 'UserRoleIds')
+    New-ODUExportRestApiCall 'Teams' '/api/teams' 'MultiFetch' 'Name' -ExternalIdToResolvePropertyName @('MemberUserIds')
     New-ODUExportRestApiCall 'Tenants' '/api/tenants' 'MultiFetch' 'Name'
     New-ODUExportRestApiCall 'TenantVariables' '/api/tenantvariables/all' 'MultiFetch' 'TenantId'
     New-ODUExportRestApiCall 'UserRoles' '/api/userroles' 'MultiFetch' 'Name'

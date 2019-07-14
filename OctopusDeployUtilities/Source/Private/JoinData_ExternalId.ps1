@@ -104,9 +104,14 @@ function Update-ODUExportAddExternalNameForId {
               # make it plural
               $ExternalNamePropertyName += 's'
               [string[]]$ExternalDisplayNames = @()
-              $ExportItem.$ExternalIdToResolvePropertyName | ForEach-Object {
-                $ExternalId = $_
-                $ExternalDisplayNames += (Get-ODUIdToNameLookupValue -Lookup $IdToNameLookup -Key $ExternalId)
+              # test if property still exists in case API was updated and code needs modification
+              if ($ExportItem.PSObject.Properties.Name -notcontains $ExternalIdToResolvePropertyName) {
+                Write-Error "$($MyInvocation.MyCommand) :: property $ExternalIdToResolvePropertyName not found on object from REST call $($RestApiCall.RestName).  Update ExternalIdToResolvePropertyName properties in Get-ODUStandardExportRestApiCall."
+              } else {
+                $ExportItem.$ExternalIdToResolvePropertyName | ForEach-Object {
+                  $ExternalId = $_
+                  $ExternalDisplayNames += (Get-ODUIdToNameLookupValue -Lookup $IdToNameLookup -Key $ExternalId)
+                }
               }
               # if there are values, sort before adding - only sort if values else sort changes empty array to null
               if ($ExternalDisplayNames.Count -gt 0) { $ExternalDisplayNames = $ExternalDisplayNames | Sort-Object }

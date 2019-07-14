@@ -77,7 +77,7 @@ Describe 'get filtered export rest api call' {
 
     BeforeAll {
       $BlackList1 = 'Authentication'
-      $BlackList2 = 'BuiltInRepository'
+      $BlackList2 = 'ExternalSecurityGroups'
       function Get-ODUConfigTypeBlacklist { @($BlackList1, $BlackList2) }
       function Get-ODUConfigTypeWhitelist { }
     }
@@ -93,7 +93,7 @@ Describe 'get filtered export rest api call' {
 
     BeforeAll {
       $WhiteList1 = 'Authentication'
-      $WhiteList2 = 'BuiltInRepository'
+      $WhiteList2 = 'ExternalSecurityGroups'
       function Get-ODUConfigTypeBlacklist { }
       function Get-ODUConfigTypeWhitelist { @($WhiteList1, $WhiteList2) }
     }
