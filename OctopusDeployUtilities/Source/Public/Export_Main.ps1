@@ -86,6 +86,7 @@ function Export-ODUJob {
     [string[]]$ItemIdOnlyReferencePropertyNames
   )
   process {
+    Write-Verbose "$($MyInvocation.MyCommand) :: Calling Url $($ExportJobDetail.Url) with API Key (first 7 characters) $($ExportJobDetail.ApiKey.Substring(0,8))..."
     $ExportItems = Invoke-ODURestMethod -Url $ExportJobDetail.Url -ApiKey $ExportJobDetail.ApiKey
 
     [hashtable]$ItemIdOnlyReferenceValues = @{}
